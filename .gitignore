@@ -27,4 +27,5 @@ logs
 ´
 # Python & Rust
 .venv
+__pycache__/
 target

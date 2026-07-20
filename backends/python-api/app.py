@@ -5,11 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(title="portfolio-python-api")
 app.add_middleware(
     CORSMiddleware,
-    allow_originms=[
+    allow_origins=[
         "https://impablo.dev",
 
         # Local development
-        "http://localhost:3000"
+        "http://localhost:3000",
     ]
 )
 
