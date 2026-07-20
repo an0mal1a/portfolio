@@ -1,5 +1,6 @@
 APScheduler
 requests
+pydantic
 fastapi
 psycopg
 uvicorn
