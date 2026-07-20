@@ -1,3 +1,5 @@
+APScheduler
+requests
 fastapi
 psycopg
 uvicorn
