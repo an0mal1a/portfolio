@@ -1,8 +1,7 @@
 services:
   rust-api: 
     build:
-      context: rust-backend-api
-      target: development
+      context: ./backends/rust-api
     env_file: 
       - ./backends/.env
     ports: 
@@ -14,8 +13,7 @@ services:
 
   python-api:
     build:
-      context: python-backend-api
-      target: development
+      context: ./backends/python-api
     env_file: 
       - ./backends/.env
     ports: 
@@ -36,29 +34,27 @@ services:
       test:
           [
               "CMD-SHELL",
-              "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+              "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"
           ]
       interval: 5s
       timeout: 5s
       retries: 10  
     
-    frontend:
-      build:
-        context: ./frontend
-        target: development
-      env_file:
-        - ./frontend/.env
-      ports:
-        - "3000:3000" 
-      volumes:
-        - ./frontend:/code/frontend
-        - frontend-node-modules:/code/frontend/node_modules
-      depends_on:
-        - rust-api
-        - python-api
-    
+  frontend:
+    build:
+      context: ./frontend 
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "3000:3000" 
+    volumes:
+      - ./frontend:/code/frontend
+      - frontend-node-modules:/code/frontend/node_modules
+    depends_on:
+      - rust-api
+      - python-api
 
-  volumes: 
-    db-data:
-    rust-target:
-    frontend-node-modules:
+volumes: 
+  db-data:
+  rust-target:
+  frontend-node-modules:
