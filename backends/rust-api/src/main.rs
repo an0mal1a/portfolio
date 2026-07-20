@@ -11,7 +11,7 @@ async fn health_check() -> Json<Value> {
 #[tokio::main]
 async fn main() {
     let app: Router = Router::new()
-        .route("/", get(health_check));
+        .route("/health", get(health_check));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
     println!("Running on: http://localhost:8001");
