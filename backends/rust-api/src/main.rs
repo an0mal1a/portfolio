@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 async fn health_check() -> Json<Value> {
     Json(json!({
         "status": "ok",
-        "message": "Server is running correctly!"
+        "message": "Server is running correctly (rust)!"
     }))
 }
 
