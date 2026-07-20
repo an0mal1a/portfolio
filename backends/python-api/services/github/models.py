@@ -13,6 +13,7 @@ class Lang(BaseModel):
 
 
 class Repository(BaseModel):
+    id: int
     name: str
     description: str
     repo_url: str
@@ -26,6 +27,7 @@ class Repository(BaseModel):
      
     forks: int
     open_issues: int
+    star_count: int
 
     # Meta
     created_at: datetime

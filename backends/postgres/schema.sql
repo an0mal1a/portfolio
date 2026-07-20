@@ -20,42 +20,71 @@ CREATE ROLE sync_writer
     NOCREATEROLE
     NOREPLICATION;
 
+-- Github repositories tables
+CREATE TABLE github.accounts (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    github_login TEXT NOT NULL UNIQUE,
+    avatar_url TEXT,
+    profile_url TEXT,
+    account_type TEXT NOT NULL,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT accounts_type_check
+        CHECK (
+            account_type IN (
+                'User',
+                'Organization',
+                'Bot'
+            )
+        )
+);
+
 
 CREATE TABLE github.repositories (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
     github_id BIGINT NOT NULL UNIQUE,
-    owner TEXT NOT NULL,
-    name TEXT NOT NULL,
-    full_name TEXT NOT NULL UNIQUE,
 
+    owner_id BIGINT NOT NULL
+        REFERENCES github.accounts(id)
+        ON DELETE RESTRICT,
+
+    name TEXT NOT NULL,
     description TEXT,
-    visibility TEXT NOT NULL,
-    primary_language TEXT,
+    repository_url TEXT NOT NULL,
+    main_language TEXT,
 
     is_private BOOLEAN NOT NULL DEFAULT FALSE,
     is_fork BOOLEAN NOT NULL DEFAULT FALSE,
     is_archived BOOLEAN NOT NULL DEFAULT FALSE,
 
+    forks_count INTEGER NOT NULL DEFAULT 0,
+    open_issues_count INTEGER NOT NULL DEFAULT 0,
+    stars_count INTEGER NOT NULL DEFAULT 0,
+
     is_portfolio_visible BOOLEAN NOT NULL DEFAULT FALSE,
     display_name TEXT,
     display_description TEXT,
 
-    repository_url TEXT,
-    homepage_url TEXT,
-
-    github_created_at TIMESTAMPTZ,
-    github_updated_at TIMESTAMPTZ,
+    github_created_at TIMESTAMPTZ NOT NULL,
+    github_updated_at TIMESTAMPTZ NOT NULL,
     github_pushed_at TIMESTAMPTZ,
 
     synced_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
-    CONSTRAINT repositories_visibility_check
-        CHECK (visibility IN ('public', 'private', 'internal'))
+    CONSTRAINT repositories_owner_name_unique
+        UNIQUE (owner_id, name),
 
+    CONSTRAINT repositories_counts_check
+        CHECK (
+            forks_count >= 0
+            AND open_issues_count >= 0
+            AND stars_count >= 0
+        )
 );
-CREATE INDEX repositories_portfolio_visible_idx ON github.repositories (is_portfolio_visible) WHERE is_portfolio_visible = TRUE;
-CREATE INDEX repositories_github_pushed_at_idx ON github.repositories (github_pushed_at DESC);
 
 
 CREATE TABLE github.repository_languages (
@@ -65,11 +94,56 @@ CREATE TABLE github.repository_languages (
 
     language TEXT NOT NULL,
     bytes BIGINT NOT NULL DEFAULT 0,
+    percentage NUMERIC(5, 2) NOT NULL DEFAULT 0,
 
-    PRIMARY KEY (repository_id, language)
+    PRIMARY KEY (repository_id, language),
+
+    CONSTRAINT repository_languages_values_check
+        CHECK (
+            bytes >= 0
+            AND percentage >= 0
+            AND percentage <= 100
+        )
 );
 
 
+CREATE TABLE github.repository_topics (
+    repository_id BIGINT NOT NULL
+        REFERENCES github.repositories(id)
+        ON DELETE CASCADE,
+
+    topic TEXT NOT NULL,
+
+    PRIMARY KEY (repository_id, topic)
+);
+
+
+CREATE TABLE github.repository_collaborators (
+    repository_id BIGINT NOT NULL
+        REFERENCES github.repositories(id)
+        ON DELETE CASCADE,
+
+    account_id BIGINT NOT NULL
+        REFERENCES github.accounts(id)
+        ON DELETE CASCADE,
+
+    PRIMARY KEY (repository_id, account_id)
+);
+CREATE INDEX repositories_owner_id_idx ON github.repositories (owner_id);
+CREATE INDEX repositories_pushed_at_idx ON github.repositories (github_pushed_at DESC);
+CREATE INDEX repositories_synced_at_idx ON github.repositories (synced_at DESC);
+CREATE INDEX repositories_main_language_idx ON github.repositories (main_language) WHERE main_language IS NOT NULL;
+CREATE INDEX repositories_portfolio_visible_idx ON github.repositories (github_pushed_at DESC) WHERE is_portfolio_visible = TRUE;
+CREATE INDEX repositories_public_visible_idx ON github.repositories (github_pushed_at DESC)
+    WHERE (
+        is_portfolio_visible = TRUE
+        AND is_private = FALSE
+    );
+CREATE INDEX repository_languages_language_idx ON github.repository_languages (language);
+CREATE INDEX repository_topics_topic_idx ON github.repository_topics (topic);
+CREATE INDEX repository_collaborators_account_idx ON github.repository_collaborators (account_id);
+
+-- Portfolio tables
 CREATE TABLE portfolio.clients (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name TEXT NOT NULL,
@@ -131,6 +205,8 @@ CREATE INDEX projects_featured_idx ON portfolio.projects (is_featured) WHERE is_
 CREATE INDEX projects_client_id_idx ON portfolio.projects (client_id);
 CREATE INDEX projects_github_repository_id_idx ON portfolio.projects (github_repository_id);
 
+
+-- Contact messages table
 CREATE TABLE contact.messages (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
@@ -144,7 +220,7 @@ CREATE TABLE contact.messages (
 );
 CREATE INDEX messages_created_at_idx ON contact.messages (created_at DESC);
 
-
+-- View for visible repositories in the portfolio
 CREATE VIEW portfolio.visible_repositories AS
 SELECT
     id,
@@ -166,6 +242,8 @@ SELECT
     synced_at
 FROM github.repositories
 WHERE is_portfolio_visible = TRUE;
+
+
 
 GRANT CONNECT ON DATABASE portfolio_db TO api_reader, sync_writer;
 

@@ -189,6 +189,7 @@ class GitHubClient:
         
         # Define the list of easy values to scrap
         map = { 
+            "id": "id",
             "name": "name",
             "description": "description",
             "repo_url": "html_url",
@@ -196,6 +197,7 @@ class GitHubClient:
             "is_private": "private",  
             "forks": "forks",
             "open_issues": "open_issues",
+            "star_count": "stargazers_count",
             "created_at": "created_at",
             "updated_at": "updated_at",
             "pushed_at": "pushed_at",
@@ -210,9 +212,10 @@ class GitHubClient:
                 repo[key] = raw_repo[raw_key]
 
             # Get main owner
+            owner_info = raw_repo["owner"]
             repo.owner = Owner(
-                name=raw_repo["login"], avatar_url=raw_repo["avatar_url"],
-                profile_url=raw_repo["html_url"], type=raw_repo["type"]
+                name=owner_info["login"], avatar_url=owner_info["avatar_url"],
+                profile_url=owner_info["html_url"], type=owner_info["type"]
             )
 
             # Get topics
