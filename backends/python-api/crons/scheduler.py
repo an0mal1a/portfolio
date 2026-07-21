@@ -3,7 +3,9 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 # Config
-from ..config import GH_TOKEN, GH_USERNAME
+from config import GH_TOKEN, GH_USERNAME
+
+from datetime import datetime, timedelta
 
 scheduler = AsyncIOScheduler(timezone="Europe/Madrid")
 
@@ -16,4 +18,4 @@ def setup_scheduler():
     from .tasks.github_sync import sync_gihub
 
     # ── Github Sync - every day at 00:00 ───────────────────────
-    scheduler.add_job(sync_gihub, CronTrigger(hour=0, minute=0), gh_token=GH_TOKEN, username=GH_USERNAME)
+    scheduler.add_job(sync_gihub, CronTrigger(hour=0, minute=0), kwargs={ "gh_token": GH_TOKEN, "gh_user": GH_USERNAME }, next_run_time=datetime.now() + timedelta(seconds=10))

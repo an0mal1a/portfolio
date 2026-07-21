@@ -29,7 +29,8 @@ services:
       - ./backends/.env 
     volumes:
       - db-data:/var/lib/postgresql
-      - ./backends/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./backends/postgres/01-init.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
+      - ./backends/postgres/schema.sql:/opt/postgres/schema.sql:ro
     healthcheck:
       test:
           [

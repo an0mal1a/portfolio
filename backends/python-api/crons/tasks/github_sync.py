@@ -6,13 +6,13 @@ from services.github.models import Repository
 # Shared errors
 from services.errors import MissingData
 
-def sync_gihub(gh_token, gh_username) -> bool: 
+def sync_gihub(gh_token, gh_user) -> bool: 
     if not gh_token:
         print("No github token, stopping task")
         return False
     
     try:
-        gh_client = GitHubClient(gh_token=gh_token, gh_user=gh_username)
+        gh_client = GitHubClient(gh_token=gh_token, gh_user=gh_user)
     except (GitHubInvalidAuth, MissingData, Exception) as e:
         print(f"[CRONJOB.GH_SYNC_TASK] !> Invalid auth token, details={e}")
         return False

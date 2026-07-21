@@ -7,4 +7,4 @@ psql \
     --dbname "$POSTGRES_DB" \
     --set=api_reader_password="$API_READER_PASSWORD" \
     --set=sync_writer_password="$SYNC_WRITER_PASSWORD" \
-    --file=/docker-entrypoint-initdb.d/schema.sql
+    --file=/opt/postgres/schema.sql

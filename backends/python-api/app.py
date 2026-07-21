@@ -1,5 +1,5 @@
 # Cronjobs
-from crons import setup_scheduler, scheduler
+from crons.scheduler import setup_scheduler, scheduler
 
 # FastAPI imports
 from fastapi.middleware.cors import CORSMiddleware
