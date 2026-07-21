@@ -1,6 +1,7 @@
 # Internal modules
-from .errors import GitHubInvalidAuth, MissingData
 from .models import Repository, Owner, Lang
+from .errors import GitHubInvalidAuth
+from ..errors import MissingData
 
 # Requests
 import requests
@@ -180,8 +181,9 @@ class GitHubClient:
 
     """
     Function oriented to return a readable/processable object of repos (private/publics) 
+    returns everything needed to feed the tables of the DB.
     """
-    def process_repositories(self) -> list:
+    def process_repositories(self) -> list[Repository]:
         repos = self.list_repositories()
 
         if len(repos) == 0 or repos is None:
@@ -203,7 +205,10 @@ class GitHubClient:
             "pushed_at": "pushed_at",
         }      
         
-        processed_repos = []
+        processed_repos: list[Repository] = []
+        # unique_owners: list[Owner] = []
+        # repo_langs: list[Owner] = []
+
         for raw_repo in repos:
             repo = Repository()
 
@@ -218,6 +223,10 @@ class GitHubClient:
                 profile_url=owner_info["html_url"], type=owner_info["type"]
             )
 
+            # # Append the owner to the list if its not added already
+            # if repo.owner not in unique_owners:
+            #     unique_owners.append(repo.owner)
+
             # Get topics
             repo.topics = self.list_repo_topics(repo["name"])
 
@@ -230,6 +239,9 @@ class GitHubClient:
             # Append procesed repo
             processed_repos.append(repo)
 
-                  
-            
         
+        # Return processed data
+        return processed_repos
+
+                
+
