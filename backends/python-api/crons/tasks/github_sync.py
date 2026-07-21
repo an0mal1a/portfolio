@@ -3,9 +3,6 @@ from services.github.errors import GitHubInvalidAuth
 from services.github.client import GitHubClient
 from services.github.models import Repository
 
-# PostgreSQL Service
-from services.database.client import DBClient
-
 # Shared errors
 from services.errors import MissingData
 
@@ -19,35 +16,36 @@ def sync_gihub(gh_token, gh_username) -> bool:
     except (GitHubInvalidAuth, MissingData, Exception) as e:
         print(f"[CRONJOB.GH_SYNC_TASK] !> Invalid auth token, details={e}")
         return False
-    
-    try:
-        db_client = DBClient()
-    except MissingData as e:
-        print(f"[CRONJOB.GH_SYNC_TASK] !> Missing database data, details={e}")
 
     print("[CRONJOB.GH_SYNC_TASK] > Starting GitHub sync task")
     
     # Get all the repos information
     gh_repos_info: list[Repository] = gh_client.list_repositories()
     
+    for repo in gh_repos_info:
+        # Account info
+        owner_id = gh_client.add_owner(repo.owner)
+        
+        if not owner_id:
+            print(f"[CRONJOB.GH_SYNC_TASK] !> Missing owner_id, ignoring repo={repo.name}, owner_id={owner_id}")
+            continue
 
-    # Made connection
-    with db_client.get_db_connection() as conn:
-        with conn.cursor() as cur:
-            
-            for repo in gh_repos_info:
-                # Account info (owner)
-                repo.owner
+        repo_id = gh_client.add_repo(repo, owner_id)
 
-                # Repo lang
+        if not repo_id:
+            print(f"[CRONJOB.GH_SYNC_TASK] !> Missing repo_id, ignoring repo={repo.name}, repo_id={repo_id}")
+            continue
 
-                # Topics info
-
-                # Collaboratos
-
-                # Repo info
+        # Collaborators         
+        for collaborator in repo.collaborators:
+            collaborator_id = gh_client.add_owner(collaborator)
+            gh_client.add_collaborator(repo_id, collaborator_id)
 
 
-    
+        # Topics info -> Depends on repo info
+        gh_client.add_owner(repo_id, repo.topics)
 
+        # Repo lang -> Depends on repo info
+        for lang in repo.languages:
+            gh_client.add_lang(repo_id, lang)
 

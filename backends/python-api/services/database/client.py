@@ -3,6 +3,7 @@ from config import POSTGRES_DB, POSTGRES_DB_PORT, POSTGRES_DB_HOST, SYNC_WRITER_
 from ..errors import MissingData
  
 # PostgreSQL
+from psycopg.rows import dict_row
 from psycopg import connect
 
 # Other
@@ -31,6 +32,8 @@ class DBClient:
             password=self.__password,
             host=self.host,
             port=self.port,
+            row_factory=dict_row
         ) as conn:
             yield conn
-                
+
+

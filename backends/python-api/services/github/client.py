@@ -1,9 +1,15 @@
+# DB Client
+from services.database.client import DBClient
+
 # Internal modules
 from .models import Repository, Owner, Lang
 from .errors import GitHubInvalidAuth
 from ..errors import MissingData
+from config import TIMEZONE
 
-# Requests
+# Other
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import requests
 
 class GitHubClient:
@@ -13,6 +19,7 @@ class GitHubClient:
         self.token = gh_token
         self.username = gh_user 
         self._current_request = None
+        self._db_client = None
 
         # Define the required headers in all endpoints
         self.headers = {
@@ -242,6 +249,220 @@ class GitHubClient:
         
         # Return processed data
         return processed_repos
+    
 
+    """
+    function to add a owner to the database
+    """
+    def add_owner(self, owner: Owner):
+        if not self._db_client:
+            self._db_client = DBClient()
+        
+
+        with self._db_client.get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO github.accounts (
+                        github_login,
+                        avatar_url,
+                        profile_url,
+                        account_type
+                    )
+                    VALUES (%s, %s, %s, %s)
+                    ON CONFLICT (github_login)
+                    DO UPDATE SET
+                        avatar_url = EXCLUDED.avatar_url,
+                        profile_url = EXCLUDED.profile_url,
+                        account_type = EXCLUDED.account_type
+                    RETURNING id
+                    """,
+                    (
+                        owner.name,
+                        owner.avatar_url,
+                        owner.profile_url,
+                        owner.type,
+                    ),
+                )
+                owner_id = cur.fetchone()["id"]
+
+        return owner_id
+    
+    """
+    function to add collaborators to the database
+    """
+    def add_collaborator(self, repo_id: int, collab_id: int):
+        if not self._db_client:
+            self._db_client = DBClient()
+        
+
+        with self._db_client.get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                        """
+                        INSERT INTO github.collaborators (
+                            repository_id,
+                            account_id
+                        )
+                        VALUES (
+                            %s, %s
+                        ) ON CONFLICT (repository_id, account_id) DO NOTHING
+                        """,
+                        (repo_id, collab_id)
+                    )
                 
+        return True
+    
 
+    """
+    function to add topics to the database
+    """
+    def add_topics(self, repo_id: int, topics: list):
+        if not self._db_client:
+            self._db_client = DBClient()
+        
+
+        with self._db_client.get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO github.repository_topics (
+                        repository_id,
+                        topic
+                    )
+                    VALUES (
+                        %s, %s
+                    ) ON CONFLICT DO UPDATE SET
+                        topics = EXCLUDED.topics
+                    """,
+                    (repo_id, topics)
+                )
+                
+        return True
+    
+
+    """
+    function to add langs to the database
+    """
+    def add_langs(self, repo_id: int, lang: Lang):
+        if not self._db_client:
+            self._db_client = DBClient()
+        
+
+        with self._db_client.get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO github.repository_languages (
+                        repository_id,
+                        language,
+                        percentage
+                    )
+                    VALUES (
+                        %s, %s
+                    ) ON CONFLICT DO UPDATE SET
+                        language = EXCLUDED.language,
+                        percentage = EXCLUDED.percentage
+                    """,
+                    (repo_id, lang.name, lang.percentage)
+                )
+                
+        return True
+        
+
+    """
+    function to add a repo to the database
+    """
+    def add_repo(self, repo: Repository, owner_id: int):
+        if not self._db_client:
+            self._db_client = DBClient()
+        
+
+        with self._db_client.get_db_connection() as conn:
+            with conn.cursor() as cur:
+                # Repo info
+                cur.execute(
+                    """
+                    INSERT INTO github.repositories (
+                        github_id,
+                        owner_id,
+                        
+                        name,
+                        description,
+                        repository_url,
+                        main_language,
+
+                        is_private,
+                        is_fork,
+                        is_archived,
+
+                        forks_count,
+                        open_issues_count,
+                        stars_count,
+
+                        is_portfolio_visible,
+                        display_name,
+                        display_description,
+
+                        github_created_at,
+                        github_updated_at,
+                        github_pushed_at,
+
+                        synced_at
+                    )
+                    VALUES (
+                       %s, %s, %s, %s, 
+                       %s, %s, %s, %s, 
+                       %s, %s, %s, %s, 
+                       %s, %s, %s, %s, 
+                       %s, %s, %s
+                    )
+                    ON CONFLICT (github_id) 
+                    DO UPDATE SET
+                        name = EXCLUDED.name,
+                        description = EXCLUDED.description,
+                        repository_url = EXCLUDED.repository_url,
+                        main_language = EXCLUDED.main_language,
+                        is_private = EXCLUDED.is_private,
+                        is_fork = EXCLUDED.is_fork,
+                        is_archived = EXCLUDED.is_archived,
+                        forks_count = EXCLUDED.forks_count,
+                        open_issues_count = EXCLUDED.open_issues_count,
+                        starts_count = EXCLUDED.starts_count,
+                        is_portfolio_visible = EXCLUDED.is_portfolio_visible,
+                        display_name = EXCLUDED.display_name,
+                        display_description = EXCLUDED.display_description,
+                        github_created_at = EXCLUDED.github_created_at,
+                        github_updated_at = EXCLUDED.github_updated_at,
+                        github_pushed_at = EXCLUDED.github_pushed_at,
+                        synced_at = EXCLUDED.synced_at
+                    RETURNING id
+                    """,
+                    (
+                        repo.id,
+                        owner_id,
+                        repo.name,
+                        repo.description,
+                        repo.repo_url,
+                        repo.main_language,
+                        repo.is_private,
+                        False,
+                        False,
+                        repo.forks,
+                        repo.open_issues,
+                        repo.star_count,
+                        False if repo.is_private else True, # is_portfolio_visible
+                        
+                        repo.name,         # -> DisplayName
+                        repo.description,  # -> DisplayDesk
+
+                        repo.created_at,
+                        repo.updated_at,
+                        repo.pushed_at,
+
+                        datetime.now(ZoneInfo(TIMEZONE)).isoformat() # SyncedAt
+                    )
+                )
+                repo_id = cur.fetchone()["id"]
+
+        return repo_id
