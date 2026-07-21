@@ -1,4 +1,12 @@
 import os
 
+# GitHub
 GH_TOKEN = os.getenv("GH_TOKEN")
 GH_USERNAME = os.getenv("GH_USERNAME")
+
+# PostgreSQL 
+POSTGRES_DB = os.getenv("POSTGRES_DB")
+POSTGRES_DB_PORT = os.getenv("POSTGRES_DB_PORT", 5432)
+POSTGRES_DB_HOST = os.getenv("POSTGRES_DB_HOST")
+SYNC_WRITER_USER = os.getenv("SYNC_WRITER_USER")
+SYNC_WRITER_PASSWORD = os.getenv("SYNC_WRITER_PASSWORD")
