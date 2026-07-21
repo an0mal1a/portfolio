@@ -1,14 +1,11 @@
-# Cronjobs
-from crons.scheduler import setup_scheduler, scheduler
+from crons.lifespan import lifespan
 
 # FastAPI imports
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
-# Other imports
-from contextlib import asynccontextmanager
 
-app = FastAPI(title="portfolio-python-api")
+app = FastAPI(title="portfolio-python-api", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -18,12 +15,6 @@ app.add_middleware(
         "http://localhost:3000",
     ]
 )
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # This function start the scheduler service
-    setup_scheduler()
-
 
 @app.get("/health")
 def health():
