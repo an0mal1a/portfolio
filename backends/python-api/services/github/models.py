@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 class Owner(BaseModel):
     name: str
@@ -15,13 +16,13 @@ class Lang(BaseModel):
 class Repository(BaseModel):
     id: int
     name: str
-    description: str
+    description: Optional[str] = None
     repo_url: str
-    main_language: str
+    main_language: Optional[str] = None
     is_private: bool
     owner: Owner
     
-    collaborators: list[Owner]
+    contributors: list[Owner]
     languages: list[Lang]
     topics: list
      
@@ -30,8 +31,8 @@ class Repository(BaseModel):
     star_count: int
 
     # Meta
-    created_at: datetime
-    updated_at: datetime
-    pushed_at: datetime
+    created_at: str
+    updated_at: str
+    pushed_at: Optional[str] = None
 
 

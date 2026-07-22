@@ -20,7 +20,7 @@ def sync_gihub(gh_token, gh_user) -> bool:
     print("[CRONJOB.GH_SYNC_TASK] > Starting GitHub sync task")
     
     # Get all the repos information
-    gh_repos_info: list[Repository] = gh_client.list_repositories()
+    gh_repos_info: list[Repository] = gh_client.process_repositories()
     
     for repo in gh_repos_info:
         # Account info
@@ -36,14 +36,14 @@ def sync_gihub(gh_token, gh_user) -> bool:
             print(f"[CRONJOB.GH_SYNC_TASK] !> Missing repo_id, ignoring repo={repo.name}, repo_id={repo_id}")
             continue
 
-        # Collaborators         
-        for collaborator in repo.collaborators:
-            collaborator_id = gh_client.add_owner(collaborator)
-            gh_client.add_collaborator(repo_id, collaborator_id)
+        # contributors         
+        for contributors in repo.contributors:
+            contributor_id = gh_client.add_owner(contributors)
+            gh_client.add_contributor(repo_id, contributor_id)
 
 
         # Topics info -> Depends on repo info
-        gh_client.add_owner(repo_id, repo.topics)
+        gh_client.add_topics(repo_id, repo.topics)
 
         # Repo lang -> Depends on repo info
         for lang in repo.languages:

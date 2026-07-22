@@ -65,7 +65,7 @@ CREATE TABLE github.repositories (
     open_issues_count INTEGER NOT NULL DEFAULT 0,
     stars_count INTEGER NOT NULL DEFAULT 0,
 
-    is_portfolio_visible BOOLEAN NOT NULL DEFAULT FALSE,
+    is_portfolio_visible BOOLEAN NOT NULL,
     display_name TEXT,
     display_description TEXT,
 
@@ -118,7 +118,7 @@ CREATE TABLE github.repository_topics (
 );
 
 
-CREATE TABLE github.repository_collaborators (
+CREATE TABLE github.repository_contributors (
     repository_id BIGINT NOT NULL
         REFERENCES github.repositories(id)
         ON DELETE CASCADE,
@@ -141,7 +141,7 @@ CREATE INDEX repositories_public_visible_idx ON github.repositories (github_push
     );
 CREATE INDEX repository_languages_language_idx ON github.repository_languages (language);
 CREATE INDEX repository_topics_topic_idx ON github.repository_topics (topic);
-CREATE INDEX repository_collaborators_account_idx ON github.repository_collaborators (account_id);
+CREATE INDEX repository_contributors_account_idx ON github.repository_contributors (account_id);
 
 -- Portfolio tables
 CREATE TABLE portfolio.clients (

@@ -8,6 +8,7 @@ from ..errors import MissingData
 from config import TIMEZONE
 
 # Other
+from json.decoder import JSONDecodeError
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import requests
@@ -44,13 +45,38 @@ class GitHubClient:
     class `GitHubInvalidAuth`.
     """
     def check_response(self):
-        if self._current_request.status_code != 200:
+        url = self._current_request.url
+        status = self._current_request.status_code
+        text = self._current_request.text
+        headers = self._current_request.headers
 
-            # Raise invalid token error (custom)
-            if self._current_request.status_code == 401:
-                raise GitHubInvalidAuth("Invalid GitHub token.")
-            
-            raise Exception(f"Github API returned {self._current_request.status_code}")
+        if status == 200 or status == 204: return
+
+        if status == 401:
+            raise GitHubInvalidAuth(f"Invalid GitHub token. Response: {text}")
+
+        if status in (403, 404):
+            perms = headers.get("X-Accepted-GitHub-Permissions")
+            sso = headers.get("X-GitHub-SSO")
+            details = []
+
+            if perms: details.append(f"Required permissions: {perms}")
+            if sso: details.append(f"SAML SSO info: {sso}")
+
+            raise Exception(
+                f"GitHub API access denied ({status}). "
+                + " ".join(details)
+                + f" Response: {text}"
+            )
+
+        if status == 422:
+            raise Exception(f"GitHub validation error: {text}")
+
+        raise Exception(
+            f"GitHub API returned {status}. "
+            f"Response: {text}"
+            f"Url: {url}"
+        )
 
     """
     This function recvs the user information (is used to check that the token is valid)
@@ -86,7 +112,10 @@ class GitHubClient:
         self.check_response()
 
         # return response
-        return self._current_request.json()
+        try:
+            return self._current_request.json()
+        except JSONDecodeError:
+            return []
     
 
     """
@@ -98,32 +127,38 @@ class GitHubClient:
             raise MissingData(f"No repo or username found. username={self.username}, repo_name={repo_name}")
         
         # make req
-        self._current_request = requests.get(f"{self.base_path}/repos/{self.username}/{repo_name}/topics")
+        self._current_request = requests.get(f"{self.base_path}/repos/{self.username}/{repo_name}/topics", headers=self.headers)
 
         # check valid auth
         self.check_response()
 
         # Extract the list from the dict
-        return self._current_request.json().get("names", [])
+        try:
+            return self._current_request.json().get("names", [])
+        except JSONDecodeError:
+            return []
     
 
     """
-    the function used to list all the collaboratos on the repository.
-    this function dont extract permissions of collaboratos.
+    the function used to list all the contributors on the repository.
+    this function dont extract permissions of contributors.
     """
-    def list_repo_collaborators(self, repo_name) -> list[Owner]:
+    def list_repo_contributors(self, repo_name) -> list[Owner]:
         # Check required vaulues
         if not repo_name or not self.username:
             raise MissingData(f"No repo or username found. username={self.username}, repo_name={repo_name}")
         
-        # make req
-        self._current_request = requests.get(f"{self.base_path}/repos/{self.username}/{repo_name}/collaborators")
+        # make req 
+        self._current_request = requests.get(f"{self.base_path}/repos/{self.username}/{repo_name}/contributors", headers=self.headers)
 
         # check valid auth
         self.check_response()
 
         # Extract the list from the dict
-        raw = self._current_request.json()
+        try:
+            raw = self._current_request.json()
+        except JSONDecodeError:
+            return []
  
         return [
             Owner(
@@ -147,12 +182,16 @@ class GitHubClient:
             raise MissingData(f"No repo or username found. username={self.username}, repo_name={repo_name}")
         
         # make req
-        self._current_request = requests.get(f"{self.base_path}/repos/{self.username}/{repo_name}/languages")
+        self._current_request = requests.get(f"{self.base_path}/repos/{self.username}/{repo_name}/languages", headers=self.headers)
 
         # Check auth
         self.check_response()
 
-        r = self._current_request.json()
+        r = self._current_request
+        try:
+            r = self._current_request.json()
+        except JSONDecodeError:
+            return []
 
         total = sum(r.values()) # sum the total of files
         if total == 0: return []
@@ -160,30 +199,11 @@ class GitHubClient:
         return [
             Lang(
                 name=lang,
-                percentage=(value / total) * 100 
+                percentage=int((value / total) * 100)
 
             )
             for lang, value in r.items()
         ] 
-    
-
-    """
-    function to extract and process all the repo languages
-    this function requires (also) the size arg to create a %
-    over 100
-    """
-    def list_repo_forks(self, repo_name) -> int:
-        # Check required vaulues
-        if not repo_name or not self.username:
-            raise MissingData(f"No repo or username found. username={self.username}, repo_name={repo_name}")
-        
-        # make req
-        self._current_request = requests.get(f"{self.base_path}/repos/{self.username}/{repo_name}/forks")
-
-        # Check auth
-        self.check_response()
-
-        r = self._current_request.json()
 
 
     """
@@ -213,11 +233,9 @@ class GitHubClient:
         }      
         
         processed_repos: list[Repository] = []
-        # unique_owners: list[Owner] = []
-        # repo_langs: list[Owner] = []
 
         for raw_repo in repos:
-            repo = Repository()
+            repo = {}
 
             # Iterate over `map` to construct `repo` dict
             for key, raw_key in map.items():
@@ -225,26 +243,22 @@ class GitHubClient:
 
             # Get main owner
             owner_info = raw_repo["owner"]
-            repo.owner = Owner(
+            repo["owner"] = Owner(
                 name=owner_info["login"], avatar_url=owner_info["avatar_url"],
                 profile_url=owner_info["html_url"], type=owner_info["type"]
             )
 
-            # # Append the owner to the list if its not added already
-            # if repo.owner not in unique_owners:
-            #     unique_owners.append(repo.owner)
-
             # Get topics
-            repo.topics = self.list_repo_topics(repo["name"])
+            repo["topics"] = self.list_repo_topics(raw_repo["name"])
 
-            # Get collaboratos
-            repo.collaborators = self.list_repo_collaborators(repo["name"])
+            # Get contributors
+            repo["contributors"] = self.list_repo_contributors(raw_repo["name"])
 
             # Get languages
-            repo.languages = self.list_repo_langs(repo["name"])
+            repo["languages"] = self.list_repo_langs(raw_repo["name"])
 
             # Append procesed repo
-            processed_repos.append(repo)
+            processed_repos.append(Repository.model_validate(repo))
 
         
         # Return processed data
@@ -289,9 +303,9 @@ class GitHubClient:
         return owner_id
     
     """
-    function to add collaborators to the database
+    function to add contributors to the database
     """
-    def add_collaborator(self, repo_id: int, collab_id: int):
+    def add_contributor(self, repo_id: int, collab_id: int):
         if not self._db_client:
             self._db_client = DBClient()
         
@@ -300,7 +314,7 @@ class GitHubClient:
             with conn.cursor() as cur:
                 cur.execute(
                         """
-                        INSERT INTO github.collaborators (
+                        INSERT INTO github.repository_contributors (
                             repository_id,
                             account_id
                         )
@@ -332,8 +346,8 @@ class GitHubClient:
                     )
                     VALUES (
                         %s, %s
-                    ) ON CONFLICT DO UPDATE SET
-                        topics = EXCLUDED.topics
+                    ) ON CONFLICT (repository_id, topic) DO UPDATE SET
+                        topic = EXCLUDED.topic
                     """,
                     (repo_id, topics)
                 )
@@ -344,7 +358,7 @@ class GitHubClient:
     """
     function to add langs to the database
     """
-    def add_langs(self, repo_id: int, lang: Lang):
+    def add_lang(self, repo_id: int, lang: Lang):
         if not self._db_client:
             self._db_client = DBClient()
         
@@ -359,8 +373,8 @@ class GitHubClient:
                         percentage
                     )
                     VALUES (
-                        %s, %s
-                    ) ON CONFLICT DO UPDATE SET
+                        %s, %s, %s
+                    ) ON CONFLICT (repository_id, language) DO UPDATE SET
                         language = EXCLUDED.language,
                         percentage = EXCLUDED.percentage
                     """,
@@ -428,7 +442,7 @@ class GitHubClient:
                         is_archived = EXCLUDED.is_archived,
                         forks_count = EXCLUDED.forks_count,
                         open_issues_count = EXCLUDED.open_issues_count,
-                        starts_count = EXCLUDED.starts_count,
+                        stars_count = EXCLUDED.stars_count,
                         is_portfolio_visible = EXCLUDED.is_portfolio_visible,
                         display_name = EXCLUDED.display_name,
                         display_description = EXCLUDED.display_description,
