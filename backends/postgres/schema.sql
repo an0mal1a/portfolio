@@ -92,8 +92,7 @@ CREATE TABLE github.repository_languages (
         REFERENCES github.repositories(id)
         ON DELETE CASCADE,
 
-    language TEXT NOT NULL,
-    bytes BIGINT NOT NULL DEFAULT 0,
+    language TEXT NOT NULL, 
     percentage NUMERIC(5, 2) NOT NULL DEFAULT 0,
 
     PRIMARY KEY (repository_id, language),
