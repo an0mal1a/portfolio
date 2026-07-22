@@ -1,6 +1,12 @@
 use axum::{self, Json, Router, routing::get};
 use serde_json::{Value, json};
 
+pub mod services;
+pub mod config;
+pub mod core;
+
+use config::{Config, CONFIG};
+
 async fn health_check() -> Json<Value> {
     Json(json!({
         "status": "ok",
@@ -10,6 +16,9 @@ async fn health_check() -> Json<Value> {
 
 #[tokio::main]
 async fn main() {
+    let config = Config::load().unwrap();
+    CONFIG.set(config).expect("Config already initialized");
+
     let app: Router = Router::new()
         .route("/health", get(health_check));
 
