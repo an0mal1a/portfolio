@@ -10,10 +10,20 @@ use postgres::error::SqlState;
 impl DBClient {
     /// this funcion creates and return 
     pub fn new(permission: Permission) -> Self {
-        let cfg = CONFIG.get().expect("CONFIG not initialized");
+        let cfg = CONFIG.get().expect("[Core.Database.new] !> CONFIG not initialized");
+
+        // Check basic vars
+        if ![&cfg.postgres_host, &cfg.postgres_db].iter().all(|c| !c.is_empty()) {
+            panic!("[Core.Database.new] !> Database client has no host (required=[POSTGRES_HOST,POSTGRES_DB])")
+        }
 
         match permission {
             Permission::READER => {
+                // Check if we have all the needed creds
+                if ![&cfg.postgres_reader_pass, &cfg.postgres_reader_pass].iter().all(|c| !c.is_empty()) {
+                    panic!("[Core.Database.new] !> Database Reader credentials not found (required=[POSTGRES_READER_PASS,POSTGRES_READER_PASS])")
+                }
+
                 Self {
                     user: cfg.postgres_reader_pass.clone(),
                     pass: cfg.postgres_reader_pass.clone(),
@@ -23,6 +33,11 @@ impl DBClient {
                 }
             }, 
             Permission::WRITER => {
+                // Check if we have all the needed creds
+                if ![&cfg.postgres_writer_user, &cfg.postgres_writer_pass].iter().all(|c| !c.is_empty()) {
+                    panic!("[Core.Database.new] !> Database Writer credentials not found (required=[POSTGRES_WRITER_USER,POSTGRES_WRITER_PASS])")
+                }
+
                 Self {
                     user: cfg.postgres_writer_user.clone(),
                     pass: cfg.postgres_writer_pass.clone(),
