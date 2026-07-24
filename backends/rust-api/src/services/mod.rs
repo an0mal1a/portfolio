@@ -1,2 +1,2 @@
-mod repos;
-mod smtp;
+pub mod repos;
+pub mod smtp;

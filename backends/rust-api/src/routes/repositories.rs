@@ -1,4 +1,4 @@
-use axum::{routing::get, Router, Json};
+use axum::{Json, Router, extract::Path, routing::get};
 use serde_json::{Value, json};
 
 pub fn router() -> Router {
@@ -15,7 +15,7 @@ pub async fn list_repositories() -> Json<Value> {
     }))
 }
 
-pub async fn get_repository(repo_id: u32) -> Json<Value> {
+pub async fn get_repository(Path(slug): Path<String>) -> Json<Value> {
     return Json(json!({
         "status": "ok",
         "data": {}

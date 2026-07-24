@@ -8,9 +8,9 @@ pub mod health;
 
 pub fn router() -> Router {
     Router::new()
-        .nest("/projects", projects::router())
         .nest("/repositories", repositories::router())
-        .merge(clients::router())
-        .merge(contact::router())
+        .nest("/projects", projects::router())
+        .nest("/clients", clients::router())
+        .nest("/contact", contact::router())
         .merge(health::router())
 }
