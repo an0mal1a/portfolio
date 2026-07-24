@@ -1,7 +1,7 @@
 // Config
 use crate::config::CONFIG;
 
-use lettre::message::Mailbox;
+use lettre::message::{Mailbox, MultiPart, SinglePart};
 use lettre::message::header::ContentType;
 // SMTP Imports
 use lettre::{Message, SmtpTransport, Transport};
@@ -80,7 +80,7 @@ impl SMTPClient {
 
             .subject(format!("New client request - {}", subject))
             .header(ContentType::TEXT_HTML)
-            .body(body)
+            .multipart(body)
             .map_err(|_| SMTPError::MailConstruct)?;
 
         let mailer = self.get_conn_details()?;
@@ -97,18 +97,18 @@ impl SMTPClient {
         }
     }
 
-    pub fn email_builder(self, name: String, email: String, phone: String, message: String) -> MultiPart {
+    pub fn email_builder(&self, name: String, email: String, phone: String, message: String) -> MultiPart {
         let html_content = CONTACT_TEMPLATE
-            .replace("{{name}}", escape_html(&name))
-            .replace("{{email}}", escape_html(&email))
-            .replace("{{phone}}", escape_html(&phone))
-            .replace("{{message}}", escape_html(&message)); 
+            .replace("{{name}}", &self.escape_html(name))
+            .replace("{{email}}", &self.escape_html(email))
+            .replace("{{phone}}", &self.escape_html(phone))
+            .replace("{{message}}", &self.escape_html(message)); 
 
         // Construct multipart
         MultiPart::alternative().singlepart(SinglePart::html(html_content.to_string()))
     }
 
-    pub fn escape_html(value: &str) -> String {
+    pub fn escape_html(&self, value: String) -> String {
         value
             .replace('&', "&amp;")
             .replace('<', "&lt;")
