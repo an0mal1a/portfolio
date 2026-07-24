@@ -15,6 +15,7 @@ pub struct Config {
     pub postgres_port: u16,
 
     pub recipient_email: String,
+    pub recipient_cc: String,
 
     pub use_smtp: bool,
     pub smtp_user: String,
@@ -41,7 +42,8 @@ impl Config {
             postgres_db:   env::var("POSTGRES_DB").unwrap_or("portfolio".to_string()),
 
             // SMTP Config
-            recipient_email: env::var("USE_SMTP").unwrap_or_default(),
+            recipient_email: env::var("RECIPIENT_EMAIL").unwrap_or_default(),
+            recipient_cc: env::var("RECIPIENT_CC").unwrap_or_default(),
  
             use_smtp:  env::var("USE_SMTP").ok().and_then(|v| v.parse::<bool>().ok()).unwrap_or(true),
             smtp_user: env::var("SMTP_USER").unwrap_or_default(),
