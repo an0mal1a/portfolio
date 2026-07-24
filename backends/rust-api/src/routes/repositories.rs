@@ -1,8 +1,10 @@
 use axum::{Json, Router, extract::Path, routing::get};
 use serde_json::{Value, json};
 
-pub fn router() -> Router {
-    Router::new()
+use crate::app_state::AppState;
+
+pub fn router() -> Router<AppState> {
+    Router::<AppState>::new()
         .route("/", get(list_repositories))
         .route("/{slug}", get(get_repository))
         // .route("/:slug", get(get_project))

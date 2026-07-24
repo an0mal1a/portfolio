@@ -1,2 +1,2 @@
-mod write;
-mod read;
+pub mod write;
+pub mod read;

@@ -2,7 +2,7 @@ use axum::{Json, Router, routing::post};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json}; 
 
-use crate::services::smtp::client::SMTPClient;
+use crate::{app_state::AppState, services::smtp::client::SMTPClient};
 
 // Contact model    
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -17,8 +17,8 @@ pub struct Contact {
     pub phone: String,
 }
 
-pub fn router() -> Router {
-    Router::new()
+pub fn router() -> Router<AppState> {
+    Router::<AppState>::new()
         .route("/", post(contact)) 
 }
 
@@ -33,7 +33,7 @@ pub async fn contact(Json(contact_data): Json<Contact>) -> Json<Value> {
             }))
         }
     }
-    
+
     
     let smtp = SMTPClient::new();
     let multipart = smtp.email_builder(
@@ -43,7 +43,6 @@ pub async fn contact(Json(contact_data): Json<Contact>) -> Json<Value> {
         contact_data.subject.clone(), 
         contact_data.message
     );
-
 
 
     match smtp.send_mail(contact_data.subject, multipart) {
