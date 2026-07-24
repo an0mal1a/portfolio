@@ -1,5 +1,5 @@
 
-mod app_state;º
+mod app_state;
 mod services;
 mod config;
 mod routes;
