@@ -69,61 +69,92 @@ impl SMTPClient {
     /// Function used to send a specific email, the body of 
     /// the constructed email has to be HTML and be _______
     pub fn send_mail(&self, subject: String, multipart: MultiPart) -> Result<(), SMTPError> {
-        // Prepare email
+        let sender_address = self
+            .smtp_user
+            .parse()
+            .map_err(|_| SMTPError::MailConstruct)?;
+
+        let recipient_address = self
+            .recipient_email
+            .parse()
+            .map_err(|_| SMTPError::MailConstruct)?;
+
         let mut builder = Message::builder()
             .from(Mailbox {
-                name: Some("Portfolio".to_string()),
-                email: self.smtp_user.clone().parse().unwrap(),
+                name: Some("Vestta".to_string()),
+                email: sender_address,
             })
-
-
             .to(Mailbox {
-                name: Some("Portfolio".to_string()),
-                email: self.recipient_email.clone().parse().unwrap(),
+                name: None,
+                email: recipient_address,
             });
 
-        // If there is a CC env, fill it
-        for cc_email in self.recipient_cc.split(",") {
+        for cc_email in self.recipient_cc.split(',') {
             let cc_email = cc_email.trim();
-            if !cc_email.is_empty() {
-                builder = builder.cc(Mailbox {
-                    name: Some("Portfolio".to_string()),
-                    email: cc_email.parse().unwrap(),
-                })
+
+            if cc_email.is_empty() {
+                continue;
             }
+
+            let cc_address = cc_email
+                .parse()
+                .map_err(|_| SMTPError::MailConstruct)?;
+
+            builder = builder.cc(Mailbox {
+                name: None,
+                email: cc_address,
+            });
         }
 
-        // Finish the email build
         let email = builder
-            .subject(format!("New client request - {}", subject))
-            .header(ContentType::TEXT_HTML)
+            .subject(format!("Nueva solicitud de contacto: {subject}"))
             .multipart(multipart)
             .map_err(|_| SMTPError::MailConstruct)?;
 
-        // Get conn & send
         let mailer = self.get_conn_details()?;
-        match mailer.send(&email) {
-            Ok(_) => {
-                println!("[Services.SMTP.send_mail] > Mail sended successfully");
-                return Ok(())
-            }
-            Err(e) => {
-                println!("[Services.SMTP.send_mail] !> Could not send email: {e:?}");
-                return Err(SMTPError::SendError)
-            }
-        }
+
+        mailer.send(&email).map_err(|error| {
+            eprintln!(
+                "[Services.SMTP.send_mail] Could not send email: {error:?}"
+            );
+
+            SMTPError::SendError
+        })?;
+
+        println!(
+            "[Services.SMTP.send_mail] Mail sent successfully"
+        );
+
+        Ok(())
     }
 
     pub fn email_builder(&self, name: String, email: String, phone: String, subject: String, message: String) -> MultiPart {
-        let html_content = CONTACT_TEMPLATE
-            .replace("{{subject}}", &self.escape_html(subject))
-            .replace("{{name}}", &self.escape_html(name))
-            .replace("{{email}}", &self.escape_html(email))
-            .replace("{{phone}}", &self.escape_html(phone))
-            .replace("{{message}}", &self.escape_html(message)); 
+        let escaped_name = self.escape_html(name.clone());
+        let escaped_email = self.escape_html(email.clone());
+        let escaped_phone = self.escape_html(phone.clone());
+        let escaped_subject = self.escape_html(subject.clone());
+        let escaped_message = self.escape_html(message.clone());
 
-        // Construct multipart
-        MultiPart::alternative().singlepart(SinglePart::html(html_content.to_string()))
+        let html_content = CONTACT_TEMPLATE
+            .replace("{{subject}}", &escaped_subject)
+            .replace("{{name}}", &escaped_name)
+            .replace("{{email}}", &escaped_email)
+            .replace("{{phone}}", &escaped_phone)
+            .replace("{{message}}", &escaped_message);
+
+        let plain_content = format!(
+            "Nueva solicitud de contacto\n\n\
+            Asunto: {subject}\n\
+            Nombre: {name}\n\
+            Email: {email}\n\
+            Teléfono: {phone}\n\n\
+            Mensaje:\n{message}"
+        );
+
+        MultiPart::alternative_plain_html(
+            plain_content,
+            html_content,
+        )
     }
 
     pub fn escape_html(&self, value: String) -> String {
