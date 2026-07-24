@@ -1,7 +1,6 @@
 use axum::{Json, Router, routing::post};
 use serde::{Deserialize, Serialize};
-use serde_json::{Value, json};
-use validator::Validate;
+use serde_json::{Value, json}; 
 
 use crate::services::smtp::client::SMTPClient;
 
@@ -25,8 +24,17 @@ pub fn router() -> Router {
 
 pub async fn contact(Json(contact_data): Json<Contact>) -> Json<Value> {
     // Make sure data is correct
-
-
+    match SMTPClient::validate_email(contact_data.email.as_str()){
+        Ok(_) => (),
+        Err(_) => {
+            return Json(json!({
+                "status": "ko",
+                "error": "invalid_mail"
+            }))
+        }
+    }
+    
+    
     let smtp = SMTPClient::new();
     let multipart = smtp.email_builder(
         contact_data.name, 

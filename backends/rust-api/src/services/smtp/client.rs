@@ -1,8 +1,7 @@
 // Config
 use crate::config::CONFIG;
 
-use lettre::message::{Mailbox, MultiPart, SinglePart};
-use lettre::message::header::ContentType;
+use lettre::message::{Mailbox, MultiPart};
 // SMTP Imports
 use lettre::{Message, SmtpTransport, Transport};
 use lettre::transport::smtp::authentication::Credentials;
@@ -164,5 +163,32 @@ impl SMTPClient {
             .replace('>', "&gt;")
             .replace('"', "&quot;")
             .replace('\'', "&#39;")
+    }
+    
+    pub fn validate_email(email: &str) -> Result<Mailbox, &'static str> {
+        let email = email.trim();
+
+
+        if email.is_empty() || email.len() > 254 
+        {
+            return Err("Dirección de email inválida");
+        }
+
+        let (_, domain) = email
+            .rsplit_once('@')
+            .ok_or("Dirección de email inválida")?;
+
+        if !domain.contains('.') {
+            return Err("El dominio del email no es válido");
+        }
+
+        if domain.starts_with('.') || domain.ends_with('.') || domain.contains("..")
+        {
+            return Err("El dominio del email no es válido");
+        }
+
+        email
+            .parse::<Mailbox>()
+            .map_err(|_| "Dirección de email inválida")
     }
 }
