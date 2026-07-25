@@ -99,9 +99,8 @@ CREATE TABLE github.repository_languages (
 
     CONSTRAINT repository_languages_values_check
         CHECK (
-            bytes >= 0
-            AND percentage >= 0
-            AND percentage <= 100
+            percentage >= 0
+                AND percentage <= 100
         )
 );
 
