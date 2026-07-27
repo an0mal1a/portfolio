@@ -158,6 +158,8 @@ CREATE TABLE portfolio.projects (
         REFERENCES github.repositories(id)
         ON DELETE SET NULL,
 
+    github_repository_github_id BIGINT,
+
     client_id BIGINT REFERENCES portfolio.clients(id)
         ON DELETE SET NULL,
 
@@ -198,10 +200,55 @@ CREATE TABLE portfolio.projects (
             OR completed_at >= started_at
         )
 );
-CREATE INDEX projects_public_idx ON portfolio.projects (is_public) WHERE is_public = TRUE;
-CREATE INDEX projects_featured_idx ON portfolio.projects (is_featured) WHERE is_featured = TRUE;
 CREATE INDEX projects_client_id_idx ON portfolio.projects (client_id);
+CREATE INDEX projects_public_idx ON portfolio.projects (is_public) WHERE is_public = TRUE;
 CREATE INDEX projects_github_repository_id_idx ON portfolio.projects (github_repository_id);
+CREATE INDEX projects_featured_idx ON portfolio.projects (is_featured) WHERE is_featured = TRUE;
+CREATE INDEX projects_github_repository_github_id_idx ON portfolio.projects (github_repository_github_id);
+
+
+-- Function to resolve internal github.repos (id) to portfolio.projects (github_id)
+CREATE OR REPLACE FUNCTION portfolio.resolve_project_repository()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    SELECT id
+    INTO NEW.github_repository_id
+    FROM github.repositories
+    WHERE github_id = NEW.github_repository_github_id;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER resolve_project_repository_before_save
+BEFORE INSERT OR UPDATE OF github_repository_github_id
+ON portfolio.projects
+FOR EACH ROW
+EXECUTE FUNCTION portfolio.resolve_project_repository();
+
+
+CREATE OR REPLACE FUNCTION github.link_pending_projects()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE portfolio.projects
+    SET github_repository_id = NEW.id,
+        updated_at = NOW()
+    WHERE github_repository_github_id = NEW.github_id
+      AND github_repository_id IS DISTINCT FROM NEW.id;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER link_pending_projects_after_repository_sync
+AFTER INSERT OR UPDATE
+ON github.repositories
+FOR EACH ROW
+EXECUTE FUNCTION github.link_pending_projects();
 
 
 -- Contact messages table
@@ -221,26 +268,25 @@ CREATE INDEX messages_created_at_idx ON contact.messages (created_at DESC);
 -- View for visible repositories in the portfolio
 CREATE VIEW portfolio.visible_repositories AS
 SELECT
-    id,
-    github_id,
-    owner,
-    name,
-    full_name,
-    COALESCE(display_name, name) AS display_name,
-    COALESCE(display_description, description) AS description,
-    visibility,
-    primary_language,
-    is_fork,
-    is_archived,
-    repository_url,
-    homepage_url,
-    github_created_at,
-    github_updated_at,
-    github_pushed_at,
-    synced_at
-FROM github.repositories
-WHERE is_portfolio_visible = TRUE;
-
+    r.id,
+    r.github_id,
+    a.github_login AS owner,
+    r.name,
+    a.github_login || '/' || r.name AS full_name,
+    COALESCE(r.display_name, r.name) AS display_name,
+    COALESCE(r.display_description, r.description) AS description,
+    CASE WHEN r.is_private THEN 'private' ELSE 'public' END AS visibility,
+    r.main_language AS primary_language,
+    r.is_fork,
+    r.is_archived,
+    r.repository_url,
+    r.github_created_at,
+    r.github_updated_at,
+    r.github_pushed_at,
+    r.synced_at
+FROM github.repositories r
+JOIN github.accounts a ON a.id = r.owner_id
+WHERE r.is_portfolio_visible = TRUE;
 
 
 GRANT CONNECT ON DATABASE portfolio_db TO api_reader, sync_writer;

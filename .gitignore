@@ -29,3 +29,6 @@ logs
 .venv
 __pycache__/
 target
+
+# OwnData
+backends/postgres/hardcoded_data/*.sql

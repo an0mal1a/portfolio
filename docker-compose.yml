@@ -35,6 +35,7 @@ services:
       - db-data:/var/lib/postgresql
       - ./backends/postgres/01-init.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
       - ./backends/postgres/schema.sql:/opt/postgres/schema.sql:ro
+      - ./backends/postgres/hardcoded_data:/opt/postgres/data:ro
     healthcheck:
       test:
           [

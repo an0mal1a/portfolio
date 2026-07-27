@@ -1,0 +1,32 @@
+INSERT INTO portfolio.clients (
+    name,
+    website,
+    logo_url
+) VALUES (
+    ('Test 1', 'https://example.com', 'https://logo_url.com'),
+    ('Test 2', 'https://example.com', 'https://logo_url.com'),
+    ('Test 3', 'https://example.com', 'https://logo_url.com')
+);
+
+INSERT INTO portfolio.projects (
+    github_repository_github_id,
+    client_id,
+    name,
+    slug,
+    tagline,
+    description,
+    project_type,
+    status,
+    repository_url,
+    live_url,
+    is_featured,
+    is_public,
+    started_at,
+    completed_at
+) VALUES (
+    (1000000001, null, 'Proyecto Mock 1', 'mock-project-1', 'Mock tagline 1', 'Descripción mock para el proyecto 1.', 'web', 'published', null, 'https://example.com/project-1', true, true, '2026-01-10', null),
+    (1000000002, 1, 'Proyecto Mock 2', 'mock-project-2', 'Mock tagline 2', 'Descripción mock para el proyecto 2.', 'web', 'in_progress', null, 'https://example.com/project-2', false, true, '2026-02-15', null),
+    (1000000003, 2, 'Proyecto Mock 3', 'mock-project-3', 'Mock tagline 3', 'Descripción mock para el proyecto 3.', 'saas', 'archived', 'https://github.com/example/mock-project-3', null, false, true, '2026-03-20', '2026-04-01'),
+    (1000000004, null, 'Proyecto Mock 4', 'mock-project-4', 'Mock tagline 4', 'Descripción mock para el proyecto 4.', 'automation', 'published', null, 'https://example.com/project-4', true, true, '2026-05-05', null),
+    (1000000005, 3, 'Proyecto Mock 5', 'mock-project-5', 'Mock tagline 5', 'Descripción mock para el proyecto 5.', 'tool', 'in_progress', 'https://github.com/example/mock-project-5', null, false, true, '2026-06-12', null)
+);
