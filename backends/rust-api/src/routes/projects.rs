@@ -13,7 +13,7 @@ pub fn router() -> Router<AppState> {
 }
 
 pub async fn list_projects(State(state): State<AppState>) -> (StatusCode, Json<Value>) {
-    match projects::get_projects(&state.reader_db).await {
+    match projects::list_projects(&state.reader_db).await {
         Ok(projects) => (
             StatusCode::OK,
             Json(json!({
@@ -35,9 +35,32 @@ pub async fn list_projects(State(state): State<AppState>) -> (StatusCode, Json<V
     }
 }
 
-pub async fn get_project(Path(slug): Path<String>) -> Json<Value> {
-    return Json(json!({
-        "status": "ok",
-        "data": {}
-    }))
+pub async fn get_project(State(state): State<AppState>, Path(slug): Path<String>) -> (StatusCode, Json<Value>) {
+    match projects::get_project(&state.reader_db, slug).await {
+        Ok(Some(project)) => (
+            StatusCode::OK,
+            Json(json!({
+                "status": "ok",
+                "project": project,
+            }))
+        ),
+        Ok(None) => (
+            StatusCode::NOT_FOUND,
+            Json(json!({
+                "status": "ko",
+                "error": "project_not_found",
+            }))
+        ),
+        Err(error) => {
+            eprintln!("[Routes.Projects.get_project] Database error: {error}");
+
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({
+                    "status": "ko",
+                    "error": "database_error"
+                })),
+            )
+        }
+    }
 }
