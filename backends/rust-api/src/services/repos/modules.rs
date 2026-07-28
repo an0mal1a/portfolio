@@ -50,3 +50,14 @@ pub struct Repo {
     pub github_pushed_at: Option<DateTime<Utc>>,
     pub synced_at: Option<DateTime<Utc>>,
 }
+
+#[derive(Serialize)]
+pub struct Client {
+    pub id: i64,
+    
+    pub name: String,
+    pub website: Option<String>,
+    pub logo_url: Option<String>,
+
+    pub created_at: Option<DateTime<Utc>>,
+}
