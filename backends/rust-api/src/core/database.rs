@@ -1,20 +1,10 @@
 // Internal modules
+use crate::config::CONFIG;
 use crate::core::defs::errors::DbConnectionError;
 use crate::core::{DBClient, Permission};
-use crate::config::CONFIG;
 
-use deadpool_postgres::{
-    Manager,
-    ManagerConfig,
-    Object,
-    Pool,
-    RecyclingMethod,
-    Runtime
-};
-use tokio_postgres::{
-    Config as PostgresConfig,
-    NoTls
-};
+use deadpool_postgres::{Manager, ManagerConfig, Object, Pool, RecyclingMethod, Runtime};
+use tokio_postgres::{Config as PostgresConfig, NoTls};
 
 // DBModule
 // use postgres::{Client, NoTls};
@@ -27,19 +17,25 @@ use tokio_postgres::{
 // pub db: String,
 
 impl DBClient {
-    /// this funcion creates and return 
+    /// this funcion creates and return
     pub fn new(permission: Permission) -> Result<Self, DbConnectionError> {
-        let cfg = CONFIG.get().expect("[Core.Database.new] !> CONFIG not initialized");
+        let cfg = CONFIG
+            .get()
+            .expect("[Core.Database.new] !> CONFIG not initialized");
 
         // Check basic vars
-        if ![&cfg.postgres_host, &cfg.postgres_db].iter().all(|c| !c.is_empty()) {
-            panic!("[Core.Database.new] !> Database client has no host (required=[POSTGRES_HOST,POSTGRES_DB])")
+        if ![&cfg.postgres_host, &cfg.postgres_db]
+            .iter()
+            .all(|c| !c.is_empty())
+        {
+            panic!(
+                "[Core.Database.new] !> Database client has no host (required=[POSTGRES_HOST,POSTGRES_DB])"
+            )
         }
 
         let (user, password) = match permission {
             Permission::READER => {
-                if cfg.postgres_reader_user.is_empty() || cfg.postgres_reader_pass.is_empty() 
-                {
+                if cfg.postgres_reader_user.is_empty() || cfg.postgres_reader_pass.is_empty() {
                     return Err(DbConnectionError::MissingCredentials);
                 }
 
@@ -50,8 +46,7 @@ impl DBClient {
             }
 
             Permission::WRITER => {
-                if cfg.postgres_writer_user.is_empty() || cfg.postgres_writer_pass.is_empty()
-                {
+                if cfg.postgres_writer_user.is_empty() || cfg.postgres_writer_pass.is_empty() {
                     return Err(DbConnectionError::MissingCredentials);
                 }
 
@@ -72,14 +67,10 @@ impl DBClient {
             .password(password);
 
         let manager_config = ManagerConfig {
-            recycling_method: RecyclingMethod::Fast
+            recycling_method: RecyclingMethod::Fast,
         };
 
-        let manager = Manager::from_config(
-            pg_config, 
-            NoTls, 
-            manager_config
-        );
+        let manager = Manager::from_config(pg_config, NoTls, manager_config);
 
         let pool = Pool::builder(manager)
             .max_size(16)
@@ -87,10 +78,7 @@ impl DBClient {
             .build()
             .map_err(DbConnectionError::PoolBuild)?;
 
-        Ok(Self {
-            pool,
-        })
-        
+        Ok(Self { pool })
     }
 
     pub async fn get_db_connection(&self) -> Result<Object, DbConnectionError> {

@@ -1,40 +1,56 @@
-
 mod app_state;
-mod services;
 mod config;
-mod routes;
 mod core;
+mod routes;
+mod services;
 
-// Config
-use config::{Config, CONFIG};
+use std::{net::SocketAddr, sync::Arc};
+
+use crate::{
+    app_state::AppState,
+    core::{DBClient, Permission},
+};
+use services::rate_limiter::limiter::{RateLimitState, rate_limit_middleware};
+
+use config::{CONFIG, Config};
 
 // Other modules
-use axum::{self, Router};
-
-use crate::app_state::AppState;
-use crate::core::{
-    DBClient,
-    Permission,
-};
+use axum::{self, Router, middleware};
 
 #[tokio::main]
 async fn main() {
     let config = Config::load().unwrap();
     CONFIG.set(config).expect("Config already initialized");
 
-    let reader_db = DBClient::new(Permission::READER).expect("Could not initialize reader database pool");
-    let writer_db = DBClient::new(Permission::WRITER).expect("Could not initialize writer database pool");
+    // DB App state
+    let reader_db =
+        DBClient::new(Permission::READER).expect("Could not initialize reader database pool");
+    let writer_db =
+        DBClient::new(Permission::WRITER).expect("Could not initialize writer database pool");
 
     let state = AppState {
         reader_db,
         writer_db,
     };
 
+    // Rate limit state
+    let general_limiter = Arc::new(RateLimitState::per_minute(120));
+    let contact_limiter = Arc::new(RateLimitState::per_minute(3));
+
     let app = Router::new()
-        .merge(routes::router())
+        .merge(routes::router(contact_limiter))
+        .layer(middleware::from_fn_with_state(
+            general_limiter,
+            rate_limit_middleware,
+        ))
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
-    println!("Running on: http://localhost:8001");
-    axum::serve(listener, app).await.unwrap();
+    println!("Running on: http://localhost:8000");
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .await
+    .unwrap();
 }

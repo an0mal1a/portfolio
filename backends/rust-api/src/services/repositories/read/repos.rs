@@ -3,13 +3,9 @@ use crate::services::repositories::modules::Repo;
 
 pub async fn list_repositories(db: &DBClient) -> Result<Vec<Repo>, DbConnectionError> {
     let conn = db.get_db_connection().await?;
-    
 
     let raw = conn
-        .query(
-            "SELECT * FROM portfolio.visible_repositories",
-            &[]
-            )
+        .query("SELECT * FROM portfolio.visible_repositories", &[])
         .await?;
 
     let repos: Vec<Repo> = raw
@@ -33,15 +29,17 @@ pub async fn list_repositories(db: &DBClient) -> Result<Vec<Repo>, DbConnectionE
             github_created_at: r.get("github_created_at"),
             github_updated_at: r.get("github_updated_at"),
             github_pushed_at: r.get("github_pushed_at"),
-            synced_at: r.get("synced_at")
+            synced_at: r.get("synced_at"),
         })
         .collect();
-        
 
-    return Ok(repos)
+    return Ok(repos);
 }
 
-pub async fn get_repository(db: &DBClient, name: String) -> Result<Option<Repo>, DbConnectionError> {
+pub async fn get_repository(
+    db: &DBClient,
+    name: String,
+) -> Result<Option<Repo>, DbConnectionError> {
     let conn = db.get_db_connection().await?;
 
     let Some(r) = conn
@@ -51,7 +49,7 @@ pub async fn get_repository(db: &DBClient, name: String) -> Result<Option<Repo>,
         )
         .await?
     else {
-        return Ok(None)
+        return Ok(None);
     };
 
     let repo: Repo = Repo {
@@ -73,8 +71,8 @@ pub async fn get_repository(db: &DBClient, name: String) -> Result<Option<Repo>,
         github_created_at: r.get("github_created_at"),
         github_updated_at: r.get("github_updated_at"),
         github_pushed_at: r.get("github_pushed_at"),
-        synced_at: r.get("synced_at")
+        synced_at: r.get("synced_at"),
     };
 
-    return Ok(Some(repo))    
+    return Ok(Some(repo));
 }

@@ -27,7 +27,6 @@ pub struct Project {
     pub updated_at: DateTime<Utc>,
 }
 
-
 #[derive(Serialize)]
 pub struct Repo {
     pub id: i64,
@@ -54,7 +53,7 @@ pub struct Repo {
 #[derive(Serialize)]
 pub struct Client {
     pub id: i64,
-    
+
     pub name: String,
     pub website: Option<String>,
     pub logo_url: Option<String>,

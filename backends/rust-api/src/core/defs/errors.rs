@@ -1,7 +1,4 @@
-use deadpool_postgres::{
-    BuildError,
-    PoolError,
-};
+use deadpool_postgres::{BuildError, PoolError};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -23,5 +20,4 @@ pub enum DbConnectionError {
 
     #[error("could not retrieve a database connection: {0}")]
     PoolConnection(#[from] PoolError),
-
 }

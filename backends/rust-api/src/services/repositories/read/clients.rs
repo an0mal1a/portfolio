@@ -3,14 +3,8 @@ use crate::services::repositories::modules::Client;
 
 pub async fn list_clients(db: &DBClient) -> Result<Vec<Client>, DbConnectionError> {
     let conn = db.get_db_connection().await?;
-    
 
-    let raw = conn
-        .query(
-            "SELECT * FROM portfolio.clients",
-            &[]
-            )
-        .await?;
+    let raw = conn.query("SELECT * FROM portfolio.clients", &[]).await?;
 
     let clients: Vec<Client> = raw
         .into_iter()
@@ -19,11 +13,11 @@ pub async fn list_clients(db: &DBClient) -> Result<Vec<Client>, DbConnectionErro
             name: c.get("name"),
             website: c.get("website"),
             logo_url: c.get("logo_url"),
-            created_at: c.get("created_at")
+            created_at: c.get("created_at"),
         })
         .collect();
 
-    return Ok(clients)
+    return Ok(clients);
 }
 
 // we wont need this probably
@@ -48,5 +42,5 @@ pub async fn list_clients(db: &DBClient) -> Result<Vec<Client>, DbConnectionErro
 //         created_at: c.get("created_at")
 //     };
 
-//     return Ok(Some(client))    
+//     return Ok(Some(client))
 // }

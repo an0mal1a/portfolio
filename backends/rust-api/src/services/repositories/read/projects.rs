@@ -1,16 +1,11 @@
-use crate::{ core::{DBClient, defs::errors::DbConnectionError} };
+use crate::core::{DBClient, defs::errors::DbConnectionError};
 use crate::services::repositories::modules::Project;
 
 pub async fn list_projects(db: &DBClient) -> Result<Vec<Project>, DbConnectionError> {
     let conn = db.get_db_connection().await?;
-    
+
     // Exeute sql
-    let projects = conn
-        .query(
-            "SELECT * FROM portfolio.projects",
-            &[]
-        )
-        .await?;
+    let projects = conn.query("SELECT * FROM portfolio.projects", &[]).await?;
 
     let projects: Vec<Project> = projects
         .into_iter()
@@ -39,25 +34,24 @@ pub async fn list_projects(db: &DBClient) -> Result<Vec<Project>, DbConnectionEr
             updated_at: r.get("updated_at"),
         })
         .collect();
-        
 
-    return Ok(projects)
+    return Ok(projects);
 }
 
-pub async fn get_project(db: &DBClient, slug: String) -> Result<Option<Project>, DbConnectionError> {
+pub async fn get_project(
+    db: &DBClient,
+    slug: String,
+) -> Result<Option<Project>, DbConnectionError> {
     let conn = db.get_db_connection().await?;
 
     let Some(r) = conn
-        .query_opt(
-            "SELECT * FROM portfolio.projects WHERE slug = $1",
-            &[&slug],
-        )
+        .query_opt("SELECT * FROM portfolio.projects WHERE slug = $1", &[&slug])
         .await?
     else {
-        return Ok(None)
+        return Ok(None);
     };
 
-    let project: Project = Project { 
+    let project: Project = Project {
         id: r.get("id"),
         github_repository_id: r.get("github_repository_id"),
         github_repository_github_id: r.get("github_repository_github_id"),
@@ -82,5 +76,5 @@ pub async fn get_project(db: &DBClient, slug: String) -> Result<Option<Project>,
         updated_at: r.get("updated_at"),
     };
 
-    return Ok(Some(project))    
+    return Ok(Some(project));
 }

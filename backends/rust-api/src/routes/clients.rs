@@ -1,24 +1,11 @@
-use serde_json::{
-    Value,
-    json
-};
+use serde_json::{Value, json};
 
-use axum::{
-    Json, 
-    Router, 
-    routing::get,
-    extract::State, 
-    http::StatusCode
-};
+use axum::{Json, Router, extract::State, http::StatusCode, routing::get};
 
-use crate::{
-    app_state::AppState,
-    services::repositories::read::clients
-};
+use crate::{app_state::AppState, services::repositories::read::clients};
 
 pub fn router() -> Router<AppState> {
-    Router::<AppState>::new()
-        .route("/", get(list_clients)) 
+    Router::<AppState>::new().route("/", get(list_clients))
 }
 
 pub async fn list_clients(State(state): State<AppState>) -> (StatusCode, Json<Value>) {
@@ -28,7 +15,7 @@ pub async fn list_clients(State(state): State<AppState>) -> (StatusCode, Json<Va
             Json(json!({
                 "status": "ok",
                 "clients": c
-            }))
+            })),
         ),
         Err(error) => {
             eprintln!("[Routes.Projects.list_projects] Database error: {error}");
