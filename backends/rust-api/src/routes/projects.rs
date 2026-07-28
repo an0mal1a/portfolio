@@ -1,7 +1,7 @@
 use axum::{Json, Router, extract::{Path, State}, http::StatusCode, routing::get};
 use serde_json::{Value, json};
 
-use crate::services::repos::read::projects;
+use crate::services::repositories::read::projects;
 use crate::app_state::AppState;
 
 

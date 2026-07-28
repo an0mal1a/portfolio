@@ -13,7 +13,7 @@ use axum::{
 
 use crate::{
     app_state::AppState,
-    services::repos::read::clients
+    services::repositories::read::clients
 };
 
 pub fn router() -> Router<AppState> {

@@ -1,7 +1,7 @@
 use axum::{Json, Router, extract::{Path, State}, http::StatusCode, routing::get};
 use serde_json::{Value, json};
 
-use crate::services::repos::read::repos;
+use crate::services::repositories::read::repos;
 use crate::app_state::AppState;
 
 pub fn router() -> Router<AppState> {

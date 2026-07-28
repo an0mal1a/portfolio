@@ -6,7 +6,7 @@ use crate::{
     app_state::AppState,
     services::{
         email::client::EmailClient,
-        repos::write
+        repositories::write
     }
 };
 
