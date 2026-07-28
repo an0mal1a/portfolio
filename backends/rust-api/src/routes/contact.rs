@@ -1,8 +1,14 @@
-use axum::{Json, Router, routing::post};
+use axum::{Json, Router, extract::State, routing::post};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json}; 
 
-use crate::{app_state::AppState, services::email::client::EmailClient};
+use crate::{
+    app_state::AppState,
+    services::{
+        email::client::EmailClient,
+        repos::write
+    }
+};
 
 // Contact model    
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -22,7 +28,7 @@ pub fn router() -> Router<AppState> {
         .route("/", post(contact)) 
 }
 
-pub async fn contact(Json(contact_data): Json<Contact>) -> Json<Value> {
+pub async fn contact(State(state): State<AppState>, Json(contact_data): Json<Contact>) -> Json<Value> {
     // Make sure data is correct
     match EmailClient::validate_email(contact_data.email.as_str()){
         Ok(_) => (),
@@ -34,26 +40,47 @@ pub async fn contact(Json(contact_data): Json<Contact>) -> Json<Value> {
         }
     }
 
-    // Store message in DB
-
-    // Send message    
+    // Prepare mail
     let email = EmailClient::new();
     let multipart = email.email_builder(
-        contact_data.name, 
-        contact_data.email, 
-        contact_data.phone, 
+        contact_data.name.clone(), 
+        contact_data.email.clone(), 
+        contact_data.phone.clone(), 
         contact_data.subject.clone(), 
-        contact_data.message
+        contact_data.message.clone()
     );
 
+    // Send & Store message (or message try to db)
+    match email.send_mail(contact_data.subject.clone(), multipart) {
+        Ok(()) => {
+            match write::register_request(&state.writer_db, &contact_data).await
+            {
+                Ok(()) => {
+                    Json(json!({
+                        "status": "ok",
+                    }))
+                }
+                Err(error) => {
+                    eprintln!(
+                        "[Routes.Contact.contact] Error storing contact request: {error:?}"
+                    );
 
-    match email.send_mail(contact_data.subject, multipart) {
-        Ok(()) => Json (json!({ "status": "ok" })),
-        Err(e) => {
-            println!("[ROUTES.Contact.Contact()] !> Error sending email: {e:?}");
-            Json (json!({ "status": "ko" }))
+                    Json(json!({
+                        "status": "ko",
+                        "error": "database_error",
+                    }))
+                }
+            }
         }
+        Err(error) => {
+            eprintln!("[Routes.Contact.contact] Error sending email: {error:?}");
+            let _ = write::register_request(&state.writer_db, &contact_data).await;
 
+            Json(json!({
+                "status": "ko",
+                "error": "email_error",
+            }))
+        }
     }
 
 
