@@ -17,15 +17,11 @@ pub struct Config {
     pub recipient_email: String,
     pub recipient_cc: String,
 
-    pub use_smtp: bool,
     pub smtp_user: String,
     pub smtp_pass: String,
-    pub smtp_host: String,
-    pub smtp_port: u16,
-    
-    pub use_google: bool,
-    pub google_mail: String,
-    pub google_app_pass: String,
+    pub smtp_host: String, 
+    pub from_name: String, 
+    pub from_email: String, 
 }
 
 impl Config {
@@ -45,15 +41,11 @@ impl Config {
             recipient_email: env::var("RECIPIENT_EMAIL").unwrap_or_default(),
             recipient_cc: env::var("RECIPIENT_CC").unwrap_or_default(),
  
-            use_smtp:  env::var("USE_SMTP").ok().and_then(|v| v.parse::<bool>().ok()).unwrap_or(true),
             smtp_user: env::var("SMTP_USER").unwrap_or_default(),
             smtp_pass: env::var("SMTP_PASS").unwrap_or_default(),
-            smtp_host: env::var("SMTP_HOST").unwrap_or_default(),
-            smtp_port: env::var("SMTP_PORT").ok().and_then(|v| v.parse::<u16>().ok()).unwrap_or(454),
-            
-            use_google:      env::var("USE_GOOGLE").ok().and_then(|v| v.parse::<bool>().ok()).unwrap_or(false),
-            google_mail:     env::var("GOOGLE_MAIL").unwrap_or_default(),
-            google_app_pass: env::var("GOOGLE_APP_PASS").unwrap_or_default(),
+            smtp_host: env::var("SMTP_HOST").unwrap_or_default(), 
+            from_name: env::var("FROM_NAME").unwrap_or_default(), 
+            from_email: env::var("FROM_EMAIL").unwrap_or_default(), 
         })
     }
 }

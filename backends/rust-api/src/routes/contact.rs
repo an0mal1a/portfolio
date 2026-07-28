@@ -2,7 +2,7 @@ use axum::{Json, Router, routing::post};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json}; 
 
-use crate::{app_state::AppState, services::smtp::client::SMTPClient};
+use crate::{app_state::AppState, services::email::client::EmailClient};
 
 // Contact model    
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -24,7 +24,7 @@ pub fn router() -> Router<AppState> {
 
 pub async fn contact(Json(contact_data): Json<Contact>) -> Json<Value> {
     // Make sure data is correct
-    match SMTPClient::validate_email(contact_data.email.as_str()){
+    match EmailClient::validate_email(contact_data.email.as_str()){
         Ok(_) => (),
         Err(_) => {
             return Json(json!({
@@ -34,9 +34,11 @@ pub async fn contact(Json(contact_data): Json<Contact>) -> Json<Value> {
         }
     }
 
-    
-    let smtp = SMTPClient::new();
-    let multipart = smtp.email_builder(
+    // Store message in DB
+
+    // Send message    
+    let email = EmailClient::new();
+    let multipart = email.email_builder(
         contact_data.name, 
         contact_data.email, 
         contact_data.phone, 
@@ -45,7 +47,7 @@ pub async fn contact(Json(contact_data): Json<Contact>) -> Json<Value> {
     );
 
 
-    match smtp.send_mail(contact_data.subject, multipart) {
+    match email.send_mail(contact_data.subject, multipart) {
         Ok(()) => Json (json!({ "status": "ok" })),
         Err(e) => {
             println!("[ROUTES.Contact.Contact()] !> Error sending email: {e:?}");
