@@ -11,6 +11,7 @@ use crate::{
     core::{DBClient, Permission},
 };
 use services::rate_limiter::limiter::{RateLimitState, rate_limit_middleware};
+use tower_http::cors::CorsLayer;
 
 use config::{CONFIG, Config};
 
@@ -36,6 +37,10 @@ async fn main() {
     // Rate limit state
     let general_limiter = Arc::new(RateLimitState::per_minute(120));
     let contact_limiter = Arc::new(RateLimitState::per_minute(3));
+    
+    // Cors layer
+    let allowed_origins = ["http://localhost:3000".parse().unwrap(), "https://impablo.dev".parse().unwrap()];
+    let cors = CorsLayer::new().allow_origin(allowed_origins);
 
     let app = Router::new()
         .merge(routes::router(contact_limiter))
@@ -43,6 +48,7 @@ async fn main() {
             general_limiter,
             rate_limit_middleware,
         ))
+        .layer(cors)
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
