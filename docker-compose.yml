@@ -41,7 +41,7 @@ services:
     build:
       context: ./frontend  
     environment:
-      NUXT_API_BASE: https://rust-api.impablo.dev
+      NUXT_PUBLIC_API_BASE: https://rust-api.impablo.dev
     ports:
       - "3000:3000" 
     volumes:
