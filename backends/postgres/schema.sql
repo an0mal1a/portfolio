@@ -2,23 +2,49 @@ CREATE SCHEMA IF NOT EXISTS portfolio;
 CREATE SCHEMA IF NOT EXISTS github;
 CREATE SCHEMA IF NOT EXISTS contact;
 
-CREATE ROLE api_reader
-    WITH
-    LOGIN
-    PASSWORD :'api_reader_password'
-    NOSUPERUSER
-    NOCREATEDB
-    NOCREATEROLE
-    NOREPLICATION;
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'api_reader') THEN
+        CREATE ROLE api_reader
+            WITH
+            LOGIN
+            PASSWORD :'api_reader_password'
+            NOSUPERUSER
+            NOCREATEDB
+            NOCREATEROLE
+            NOREPLICATION;
+    ELSE
+        ALTER ROLE api_reader
+            WITH
+            LOGIN
+            PASSWORD :'api_reader_password'
+            NOSUPERUSER
+            NOCREATEDB
+            NOCREATEROLE
+            NOREPLICATION;
+    END IF;
 
-CREATE ROLE sync_writer
-    WITH
-    LOGIN
-    PASSWORD :'sync_writer_password'
-    NOSUPERUSER
-    NOCREATEDB
-    NOCREATEROLE
-    NOREPLICATION;
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sync_writer') THEN
+        CREATE ROLE sync_writer
+            WITH
+            LOGIN
+            PASSWORD :'sync_writer_password'
+            NOSUPERUSER
+            NOCREATEDB
+            NOCREATEROLE
+            NOREPLICATION;
+    ELSE
+        ALTER ROLE sync_writer
+            WITH
+            LOGIN
+            PASSWORD :'sync_writer_password'
+            NOSUPERUSER
+            NOCREATEDB
+            NOCREATEROLE
+            NOREPLICATION;
+    END IF;
+END
+$$;
 
 -- Github repositories tables
 CREATE TABLE github.accounts (
