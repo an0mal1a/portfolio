@@ -12,19 +12,21 @@ interface ClientsResponse { status: string; clients: Client[] }
 interface ContactResponse { status: 'ok' | 'ko'; error?: string }
 
 export const usePortfolio = () => {
+  const config = useRuntimeConfig();
+
   const buildApiUrl = (path: string) => {
+    const baseUrl = config.public.apiBase.replace(/\/$/, '')
     const normalizedPath = path.startsWith('/') ? path : `/${path}`
-    // Use Nuxt's server route as a same-origin proxy. The upstream host is
-    // configured server-side via NUXT_API_BASE, so it is neither baked into
-    // the client bundle nor subject to browser CORS restrictions.
-    return `/api/portfolio${normalizedPath}`
+
+    console.log(`API URL: ${baseUrl}${normalizedPath}`)
+    return `${baseUrl}${normalizedPath}`
   }
 
   const { data, status, error, refresh } = useAsyncData('portfolio-data', async () => {
     const [projectsResponse, repositoriesResponse, clientsResponse] = await Promise.all([
-      $fetch<ProjectsResponse>(buildApiUrl('/portfolio/projects')),
-      $fetch<RepositoriesResponse>(buildApiUrl('/portfolio/repositories')),
-      $fetch<ClientsResponse>(buildApiUrl('/portfolio/clients')),
+      $fetch<ProjectsResponse>(buildApiUrl('/projects')),
+      $fetch<RepositoriesResponse>(buildApiUrl('/repositories')),
+      $fetch<ClientsResponse>(buildApiUrl('/clients')),
     ])
 
     return {
@@ -56,7 +58,7 @@ export const usePortfolio = () => {
   const publicRepositories = computed(() => repositories.value
     .filter(repository => repository.visibility === 'public' && !repository.is_archived))
 
-  const sendContact = (payload: ContactPayload) => $fetch<ContactResponse>(buildApiUrl('/portfolio/contact'), {
+  const sendContact = (payload: ContactPayload) => $fetch<ContactResponse>(buildApiUrl('/contact'), {
     method: 'POST',
     body: payload,
   })

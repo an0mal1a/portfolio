@@ -16,7 +16,7 @@ use tower_http::cors::CorsLayer;
 use config::{CONFIG, Config};
 
 // Other modules
-use axum::{self, Router, middleware};
+use axum::{self, Router, http::{Method, header}, middleware};
 
 #[tokio::main]
 async fn main() {
@@ -40,7 +40,10 @@ async fn main() {
     
     // Cors layer
     let allowed_origins = ["http://localhost:4001".parse().unwrap(), "https://impablo.dev".parse().unwrap()];
-    let cors = CorsLayer::new().allow_origin(allowed_origins);
+    let cors = CorsLayer::new()
+        .allow_origin(allowed_origins)
+        .allow_methods([Method::GET, Method::POST])
+        .allow_headers([header::CONTENT_TYPE]);
 
     let app = Router::new()
         .merge(routes::router(contact_limiter))

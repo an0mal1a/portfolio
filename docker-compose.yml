@@ -20,12 +20,10 @@ services:
     restart: unless-stopped
 
   db:
-    image: postgres:18 
+    build:
+      context: ./backend/postgres
     volumes:
       - db-data:/var/lib/postgresql
-      - ./backends/postgres/01-init.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
-      - ./backends/postgres/schema.sql:/opt/postgres/schema.sql:ro
-      - ./backends/postgres/hardcoded_data:/opt/postgres/data:ro
     healthcheck:
       test:
           [
@@ -34,14 +32,15 @@ services:
           ]
       interval: 5s
       timeout: 5s
-      retries: 10  
+      retries: 20  
+      start_period: 15s
     restart: unless-stopped
     
   frontend:
     build:
       context: ./frontend  
     environment:
-      NUXT_API_BASE: https://rust-api.impablo.dev
+      NUXT_PUBLIC_API_BASE: https://rust-api.impablo.dev
     ports:
       - "3000:3000" 
     volumes:
