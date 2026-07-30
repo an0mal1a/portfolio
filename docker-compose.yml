@@ -5,28 +5,24 @@ services:
     env_file: 
       - ./backends/.env
     ports: 
-      - "8082:8000" 
-    volumes:
-      - ./backends/rust-api:/code/rust-api
+      - "8082:8000"  
     depends_on:
-      - db
+      - db:
+        condition: service_healthy
+    restart: unless-stopped
 
   python-api:
     build:
-      context: ./backends/python-api
-    env_file: 
-      - ./backends/.env
+      context: ./backends/python-api 
     environment:
-        PYTHONUNBUFFERED: "1" # This is used to ensure that the logs are printed in real-time and not buffered.
-    volumes: 
-      - ./backends/python-api:/code/python-api
+        PYTHONUNBUFFERED: "1" # This is used to ensure that the logs are printed in real-time and not buffered. 
     depends_on:
-      - db
+      - db:
+        condition: service_healthy
+    restart: unless-stopped
 
   db:
-    image: postgres:18
-    env_file: 
-      - ./backends/.env 
+    image: postgres:18 
     volumes:
       - db-data:/var/lib/postgresql
       - ./backends/postgres/01-init.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
@@ -41,12 +37,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10  
+    restart: unless-stopped
     
   frontend:
     build:
-      context: ./frontend 
-    env_file:
-      - ./frontend/.env
+      context: ./frontend  
     environment:
       NUXT_API_BASE: http://rust-api:8000
     ports:
@@ -55,8 +50,11 @@ services:
       - ./frontend:/code/frontend
       - frontend-node-modules:/code/frontend/node_modules
     depends_on:
-      - rust-api
-      - python-api
+        rust-api:
+            condition: service_started
+        python-api:
+            condition: service_started
+    restart: unless-stopped
 
 volumes: 
   db-data:
