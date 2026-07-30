@@ -13,6 +13,7 @@ app.add_middleware(
 
         # Local development
         "http://localhost:3000",
+        "http://localhost:4001",
     ]
 )
 

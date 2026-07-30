@@ -48,6 +48,15 @@ pub struct Repo {
     pub github_updated_at: Option<DateTime<Utc>>,
     pub github_pushed_at: Option<DateTime<Utc>>,
     pub synced_at: Option<DateTime<Utc>>,
+
+    pub contributors: Vec<Contributor>,
+}
+
+#[derive(Serialize)]
+pub struct Contributor {
+    pub github_login: String,
+    pub avatar_url: Option<String>,
+    pub profile_url: Option<String>,
 }
 
 #[derive(Serialize)]

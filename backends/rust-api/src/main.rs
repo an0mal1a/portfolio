@@ -39,7 +39,7 @@ async fn main() {
     let contact_limiter = Arc::new(RateLimitState::per_minute(3));
     
     // Cors layer
-    let allowed_origins = ["http://localhost:3000".parse().unwrap(), "https://impablo.dev".parse().unwrap()];
+    let allowed_origins = ["http://localhost:4001".parse().unwrap(), "https://impablo.dev".parse().unwrap()];
     let cors = CorsLayer::new().allow_origin(allowed_origins);
 
     let app = Router::new()

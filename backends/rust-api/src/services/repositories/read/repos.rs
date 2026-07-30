@@ -1,5 +1,30 @@
 use crate::core::{DBClient, defs::errors::DbConnectionError};
-use crate::services::repositories::modules::Repo;
+use crate::services::repositories::modules::{Contributor, Repo};
+
+async fn list_contributors(
+    conn: &deadpool_postgres::Client,
+    repository_id: i64,
+) -> Result<Vec<Contributor>, tokio_postgres::Error> {
+    let rows = conn
+        .query(
+            "SELECT a.github_login, a.avatar_url, a.profile_url
+             FROM github.repository_contributors rc
+             JOIN github.accounts a ON a.id = rc.account_id
+             WHERE rc.repository_id = $1
+             ORDER BY a.github_login",
+            &[&repository_id],
+        )
+        .await?;
+
+    Ok(rows
+        .into_iter()
+        .map(|row| Contributor {
+            github_login: row.get("github_login"),
+            avatar_url: row.get("avatar_url"),
+            profile_url: row.get("profile_url"),
+        })
+        .collect())
+}
 
 pub async fn list_repositories(db: &DBClient) -> Result<Vec<Repo>, DbConnectionError> {
     let conn = db.get_db_connection().await?;
@@ -8,10 +33,12 @@ pub async fn list_repositories(db: &DBClient) -> Result<Vec<Repo>, DbConnectionE
         .query("SELECT * FROM portfolio.visible_repositories", &[])
         .await?;
 
-    let repos: Vec<Repo> = raw
-        .into_iter()
-        .map(|r| Repo {
-            id: r.get("id"),
+    let mut repos: Vec<Repo> = Vec::with_capacity(raw.len());
+    for r in raw {
+        let id = r.get("id");
+        let contributors = list_contributors(&conn, id).await?;
+        repos.push(Repo {
+            id,
             github_id: r.get("github_id"),
 
             owner: r.get("owner"),
@@ -30,8 +57,10 @@ pub async fn list_repositories(db: &DBClient) -> Result<Vec<Repo>, DbConnectionE
             github_updated_at: r.get("github_updated_at"),
             github_pushed_at: r.get("github_pushed_at"),
             synced_at: r.get("synced_at"),
-        })
-        .collect();
+
+            contributors,
+        });
+    }
 
     return Ok(repos);
 }
@@ -52,8 +81,10 @@ pub async fn get_repository(
         return Ok(None);
     };
 
+    let id = r.get("id");
+    let contributors = list_contributors(&conn, id).await?;
     let repo: Repo = Repo {
-        id: r.get("id"),
+        id,
         github_id: r.get("github_id"),
 
         owner: r.get("owner"),
@@ -72,6 +103,8 @@ pub async fn get_repository(
         github_updated_at: r.get("github_updated_at"),
         github_pushed_at: r.get("github_pushed_at"),
         synced_at: r.get("synced_at"),
+
+        contributors,
     };
 
     return Ok(Some(repo));

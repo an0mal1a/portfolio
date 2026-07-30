@@ -5,7 +5,14 @@ pub async fn list_projects(db: &DBClient) -> Result<Vec<Project>, DbConnectionEr
     let conn = db.get_db_connection().await?;
 
     // Exeute sql
-    let projects = conn.query("SELECT * FROM portfolio.projects", &[]).await?;
+    let projects = conn
+        .query(
+            "SELECT * FROM portfolio.projects
+             WHERE is_public = TRUE
+             ORDER BY is_featured DESC, started_at DESC NULLS LAST, created_at DESC",
+            &[],
+        )
+        .await?;
 
     let projects: Vec<Project> = projects
         .into_iter()
@@ -45,7 +52,10 @@ pub async fn get_project(
     let conn = db.get_db_connection().await?;
 
     let Some(r) = conn
-        .query_opt("SELECT * FROM portfolio.projects WHERE slug = $1", &[&slug])
+        .query_opt(
+            "SELECT * FROM portfolio.projects WHERE slug = $1 AND is_public = TRUE",
+            &[&slug],
+        )
         .await?
     else {
         return Ok(None);
