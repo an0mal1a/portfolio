@@ -329,8 +329,9 @@ WHERE r.is_portfolio_visible = TRUE;
 GRANT CONNECT ON DATABASE portfolio_db TO api_reader, sync_writer;
 
 -- APIReader role grants
-GRANT USAGE ON SCHEMA portfolio TO api_reader;
+GRANT USAGE ON SCHEMA portfolio, github TO api_reader;
 GRANT SELECT ON ALL TABLES IN SCHEMA portfolio TO api_reader;
+GRANT SELECT ON ALL TABLES IN SCHEMA github TO api_reader;
 ALTER DEFAULT PRIVILEGES IN SCHEMA portfolio GRANT SELECT ON TABLES TO api_reader; 
 
 -- SyncWriter role grants
