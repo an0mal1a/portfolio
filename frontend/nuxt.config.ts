@@ -6,7 +6,9 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
-    apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:4040',
+    // Override this at runtime with NUXT_API_BASE. Keep it private: only the
+    // Nuxt server needs to know where the upstream API is hosted.
+    apiBase: 'http://localhost:4040',
   },
 
   app: {

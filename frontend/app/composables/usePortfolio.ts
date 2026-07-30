@@ -13,14 +13,11 @@ interface ContactResponse { status: 'ok' | 'ko'; error?: string }
 
 export const usePortfolio = () => {
   const buildApiUrl = (path: string) => {
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
     const normalizedPath = path.startsWith('/') ? path : `/${path}`
-
-    if (!baseUrl) {
-      return normalizedPath
-    }
-
-    return `${baseUrl}${/\/api$/i.test(baseUrl) ? '' : '/api'}${normalizedPath}`
+    // Use Nuxt's server route as a same-origin proxy. The upstream host is
+    // configured server-side via NUXT_API_BASE, so it is neither baked into
+    // the client bundle nor subject to browser CORS restrictions.
+    return `/api/portfolio${normalizedPath}`
   }
 
   const { data, status, error, refresh } = useAsyncData('portfolio-data', async () => {

@@ -4,7 +4,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
   const path = getRouterParam(event, 'path') ?? ''
   const method = getMethod(event)
-  const target = `${String(config.apiBase).replace(/\/$/, '')}/${path.replace(/^\//, '')}/`
+  const apiBase = String(config.apiBase).replace(/\/$/, '')
+  const target = `${apiBase}/${path.replace(/^\//, '')}/`
 
   try {
     return await $fetch(target, {
