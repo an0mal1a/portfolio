@@ -2,49 +2,60 @@ CREATE SCHEMA IF NOT EXISTS portfolio;
 CREATE SCHEMA IF NOT EXISTS github;
 CREATE SCHEMA IF NOT EXISTS contact;
 
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'api_reader') THEN
-        CREATE ROLE api_reader
-            WITH
-            LOGIN
-            PASSWORD :'api_reader_password'
-            NOSUPERUSER
-            NOCREATEDB
-            NOCREATEROLE
-            NOREPLICATION;
-    ELSE
-        ALTER ROLE api_reader
-            WITH
-            LOGIN
-            PASSWORD :'api_reader_password'
-            NOSUPERUSER
-            NOCREATEDB
-            NOCREATEROLE
-            NOREPLICATION;
-    END IF;
+SELECT format(
+    'CREATE ROLE api_reader
+        WITH
+        LOGIN
+        PASSWORD %L
+        NOSUPERUSER
+        NOCREATEDB
+        NOCREATEROLE
+        NOREPLICATION',
+    :'api_reader_password'
+)
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM pg_roles
+    WHERE rolname = 'api_reader'
+)
+\gexec
 
-    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sync_writer') THEN
-        CREATE ROLE sync_writer
-            WITH
-            LOGIN
-            PASSWORD :'sync_writer_password'
-            NOSUPERUSER
-            NOCREATEDB
-            NOCREATEROLE
-            NOREPLICATION;
-    ELSE
-        ALTER ROLE sync_writer
-            WITH
-            LOGIN
-            PASSWORD :'sync_writer_password'
-            NOSUPERUSER
-            NOCREATEDB
-            NOCREATEROLE
-            NOREPLICATION;
-    END IF;
-END
-$$;
+ALTER ROLE api_reader
+    WITH
+    LOGIN
+    PASSWORD :'api_reader_password'
+    NOSUPERUSER
+    NOCREATEDB
+    NOCREATEROLE
+    NOREPLICATION;
+
+
+SELECT format(
+    'CREATE ROLE sync_writer
+        WITH
+        LOGIN
+        PASSWORD %L
+        NOSUPERUSER
+        NOCREATEDB
+        NOCREATEROLE
+        NOREPLICATION',
+    :'sync_writer_password'
+)
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM pg_roles
+    WHERE rolname = 'sync_writer'
+)
+\gexec
+
+ALTER ROLE sync_writer
+    WITH
+    LOGIN
+    PASSWORD :'sync_writer_password'
+    NOSUPERUSER
+    NOCREATEDB
+    NOCREATEROLE
+    NOREPLICATION;
 
 -- Github repositories tables
 CREATE TABLE github.accounts (

@@ -4,6 +4,7 @@ set -euo pipefail
 
 echo "Starting PSQL Initialization"
 psql \
+    --set=ON_ERROR_STOP=1 \
     --username "$POSTGRES_USER" \
     --dbname "$POSTGRES_DB" \
     --set=api_reader_password="$API_READER_PASSWORD" \
