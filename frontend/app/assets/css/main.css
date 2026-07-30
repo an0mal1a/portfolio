@@ -1,65 +1,119 @@
 @import "tailwindcss";
 
 @font-face {
-    font-family: "Mung Signature";
-    src: url("/fonts/MungSignature.ttf") format("truetype");
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
+  font-family: "Rainer";
+  src: url("/fonts/Rainer.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: "Rainer";
-    src: url("/fonts/Rainer.woff2") format("woff2");
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
+  font-family: "Mung Signature";
+  src: url("/fonts/MungSignature.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
 }
 
+:root {
+  --ink: #f2f0e9;
+  --ink-dim: #a4a19b;
+  --paper: #080808;
+  --paper-soft: #111110;
+  --line: rgb(242 240 233 / 16%);
+  --red: #e21b2d;
+  --red-dark: #75030e;
+  --acid: #d9ff43;
+  --font-display: "Rainer", "Arial Narrow", sans-serif;
+  --font-hand: "Mung Signature", cursive;
+  --font-body: "Google Sans", Inter, sans-serif;
+  color-scheme: dark;
+}
 
-@theme {
-    /* Base */
-    --color-background: #030303;
-    --color-surface: #0d0d0d;
-    --color-surface-alt: #151515;
+* { box-sizing: border-box; }
 
-    /* Texto */
-    --color-text: #f4f4f5;
-    --color-text-soft: #c4c4c6;
-    --color-text-muted: #8a8a8d;
-    --color-text-subtle: #5d5d60;
+html {
+  background: var(--paper);
+  scroll-behavior: smooth;
+  scrollbar-color: var(--red) var(--paper);
+}
 
-    /* Marca */
-    --color-primary: #d40818;
-    --color-primary-hover: #ef1425;
-    --color-primary-dark: #760008;
-    --color-primary-soft: #a40612;
+body {
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
 
-    /* Estados */
-    --color-success: #2fb36d;
-    --color-warning: #ffb648;
-    --color-danger: #ef4444;
+body::selection { color: var(--paper); background: var(--acid); }
 
-    /* Bordes */
-    --color-border: rgb(255 255 255 / 0.12);
-    --color-border-soft: rgb(255 255 255 / 0.06);
-    --color-border-primary: rgb(212 8 24 / 0.45);
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+img { max-width: 100%; }
 
-    /* Sombras */
-    --shadow-card: 0 10px 30px rgb(0 0 0 / 0.35);
-    --shadow-glow: 0 0 40px rgb(212 8 24 / 0.25);
+.shell {
+  width: min(100%, 112rem);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 3vw, 3.5rem);
+}
 
-    /* Radius */
-    --radius-card: 1rem;
-    --radius-button: .75rem;
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: .7rem;
+  font-weight: 650;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
 
-    /* Tipografía */
-    --font-display: "Anton", sans-serif;
-    --font-heading: "Rainer", sans-serif;
-    --font-hand: "Mung Signature", cursive;
-    --font-body: "Google Sans", sans-serif;
+.eyebrow::before {
+  width: .45rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 .25rem rgb(226 27 45 / 12%);
+  content: "";
+}
 
-    /* Tamaños */
-    --text-hero: clamp(10rem, 22vw, 24rem);
-    --text-display: clamp(4rem, 7vw, 7rem);
+.section-heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(4.75rem, 10.5vw, 12rem);
+  font-weight: 400;
+  line-height: .76;
+  letter-spacing: -.025em;
+  text-transform: uppercase;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(2.5rem);
+  transition: opacity .8s cubic-bezier(.2,.75,.2,1), transform .8s cubic-bezier(.2,.75,.2,1);
+}
+
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1; transform: none; }
 }

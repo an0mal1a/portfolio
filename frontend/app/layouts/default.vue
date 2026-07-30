@@ -1,13 +1,12 @@
 <template>
-    <div class="flex min-h-screen flex-col bg-background">
-        <!-- <AppHeader v-model:menu-open="mobileMenuOpen" :nav-items="navItems" /> -->
-        <main id="main-content" class="flex-1" tabindex="-1">
-            <slot />
-        </main>
-        <!-- <AppFooter /> -->
-        <!-- <CookieConsentBanner /> -->
-    </div>
+  <div class="site-frame">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <AppHeader />
+    <main id="main-content" tabindex="-1"><slot /></main>
+    <AppFooter />
+  </div>
 </template>
 
-<script setup>
-</script>
+<style scoped>
+.site-frame { min-height: 100vh; background: var(--paper); }.skip-link { position: fixed; z-index: 999; top: .75rem; left: .75rem; padding: .75rem 1rem; color: var(--paper); background: var(--acid); transform: translateY(-200%); transition: transform .2s ease; }.skip-link:focus { transform: none; }
+</style>
