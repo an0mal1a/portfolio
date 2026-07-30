@@ -7,8 +7,7 @@ services:
     ports: 
       - "8082:8000"  
     depends_on:
-      - db:
-        condition: service_healthy
+      - db
     restart: unless-stopped
 
   python-api:
@@ -17,8 +16,7 @@ services:
     environment:
         PYTHONUNBUFFERED: "1" # This is used to ensure that the logs are printed in real-time and not buffered. 
     depends_on:
-      - db:
-        condition: service_healthy
+      - db
     restart: unless-stopped
 
   db:
@@ -50,10 +48,8 @@ services:
       - ./frontend:/code/frontend
       - frontend-node-modules:/code/frontend/node_modules
     depends_on:
-        rust-api:
-            condition: service_started
-        python-api:
-            condition: service_started
+      - rust-api 
+      - python-api 
     restart: unless-stopped
 
 volumes: 
