@@ -11,12 +11,12 @@ use crate::{
     core::{DBClient, Permission},
 };
 use services::rate_limiter::limiter::{RateLimitState, rate_limit_middleware};
-use tower_http::cors::CorsLayer;
+use tower_http::cors::{AllowOrigin, CorsLayer};
 
 use config::{CONFIG, Config};
 
 // Other modules
-use axum::{self, Router, http::{Method, header}, middleware};
+use axum::{self, Router, http::{HeaderValue, Method, header}, middleware};
 
 #[tokio::main]
 async fn main() {
@@ -39,9 +39,18 @@ async fn main() {
     let contact_limiter = Arc::new(RateLimitState::per_minute(3));
     
     // Cors layer
-    let allowed_origins = ["http://localhost:3000".parse().unwrap(), "http://localhost:4001".parse().unwrap(), "https://impablo.dev".parse().unwrap()];
     let cors = CorsLayer::new()
-        .allow_origin(allowed_origins)
+        .allow_origin(AllowOrigin::predicate(
+            |origin: &HeaderValue, _request_parts| {
+                let Ok(origin) = origin.to_str() else {
+                    return false;
+                };
+
+                origin == "https://impablo.dev"
+                    || origin == "http://localhost"
+                    || origin.starts_with("http://localhost:")
+            },
+        ))
         .allow_methods([Method::GET, Method::POST])
         .allow_headers([header::CONTENT_TYPE]);
 
