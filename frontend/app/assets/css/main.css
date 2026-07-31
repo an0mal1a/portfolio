@@ -1,134 +1,134 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "PP Neue Montreal";
-  src: url("/fonts/PPNeueMontreal-Book.woff2") format("woff2");
-  font-display: swap;
-  font-style: normal;
-  font-weight: 400;
+    font-family: "PP Neue Montreal";
+    src: url("/fonts/PPNeueMontreal-Book.woff2") format("woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
 }
 
 @font-face {
-  font-family: "PP Neue Montreal";
-  src: url("/fonts/PPNeueMontreal-Medium.woff2") format("woff2");
-  font-display: swap;
-  font-style: normal;
-  font-weight: 500 700;
+    font-family: "PP Neue Montreal";
+    src: url("/fonts/PPNeueMontreal-Medium.woff2") format("woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500 700;
 }
 
 @font-face {
-  font-family: "Mango Grotesque";
-  src: url("/fonts/MangoGrotesque-Regular.woff2") format("woff2");
-  font-display: swap;
-  font-style: normal;
-  font-weight: 400;
+    font-family: "Mango Grotesque";
+    src: url("/fonts/MangoGrotesque-Regular.woff2") format("woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
 }
 
 @theme {
-  --color-background: #080809;
-  --color-background-secondary: #0d0d0f;
-  --color-surface: #141416;
-  --color-surface-raised: #1a1a1d;
-  --color-ink: #f4f4f5;
-  --color-muted: #8b8b92;
-  --color-line: #252529;
-  --color-line-strong: #343439;
-  --color-signal: #e5484d;
-  --font-sans:
-    "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  --font-display: "Mango Grotesque", "PP Neue Montreal", sans-serif;
-  --font-mono:
-    "SFMono-Regular", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+    --color-background: #080809;
+    --color-background-secondary: #0d0d0f;
+    --color-surface: #141416;
+    --color-surface-raised: #1a1a1d;
+    --color-ink: #f4f4f5;
+    --color-muted: #8b8b92;
+    --color-line: #252529;
+    --color-line-strong: #343439;
+    --color-signal: #e5484d;
+    --font-sans:
+        "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    --font-display: "Mango Grotesque", "PP Neue Montreal", sans-serif;
+    --font-mono:
+        "SFMono-Regular", "Cascadia Code", "Roboto Mono", Consolas, monospace;
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    background: var(--color-background);
-    color: var(--color-ink);
-  }
+    html {
+        scroll-behavior: smooth;
+        background: var(--color-background);
+        color: var(--color-ink);
+    }
 
-  body {
-    margin: 0;
-    overflow-x: hidden;
-    background: var(--color-background);
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-  }
+    body {
+        margin: 0;
+        overflow-x: hidden;
+        background: var(--color-background);
+        color: var(--color-ink);
+        font-family: var(--font-sans);
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+    }
 
-  ::selection {
-    color: white;
-    background: var(--color-signal);
-  }
+    ::selection {
+        color: white;
+        background: var(--color-signal);
+    }
 
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 
-  button,
-  input,
-  textarea {
-    font: inherit;
-  }
+    button,
+    input,
+    textarea {
+        font: inherit;
+    }
 
-  button,
-  a {
-    -webkit-tap-highlight-color: transparent;
-  }
+    button,
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
 
-  img {
-    display: block;
-    max-width: 100%;
-  }
+    img {
+        display: block;
+        max-width: 100%;
+    }
 
-  :focus-visible {
-    outline: 2px solid var(--color-signal);
-    outline-offset: 3px;
-  }
+    :focus-visible {
+        outline: 2px solid var(--color-signal);
+        outline-offset: 3px;
+    }
 }
 
 /* Efectos globales que no tienen una utilidad Tailwind estable. */
 [data-reveal] {
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 0.6s cubic-bezier(0.2, 0.75, 0.2, 1),
-    transform 0.6s cubic-bezier(0.2, 0.75, 0.2, 1);
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+        opacity 0.6s cubic-bezier(0.2, 0.75, 0.2, 1),
+        transform 0.6s cubic-bezier(0.2, 0.75, 0.2, 1);
 }
 
 [data-reveal].is-visible {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .soft-noise::after {
-  position: absolute;
-  inset: 0;
-  opacity: 0.04;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    content: "";
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+    html {
+        scroll-behavior: auto;
+    }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 
-  [data-reveal] {
-    opacity: 1;
-    transform: none;
-  }
+    [data-reveal] {
+        opacity: 1;
+        transform: none;
+    }
 }
