@@ -34,3 +34,4 @@ target
 backends/postgres/hardcoded_data/*.sql
 /graphify-out
 docker-compose.override.yml
+/frontend/graphify-out

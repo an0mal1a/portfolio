@@ -1,51 +1,163 @@
 <template>
-  <section id="contact" class="contact" aria-labelledby="contact-title">
-    <div class="contact__inner shell">
-      <header class="contact__header reveal">
-        <p class="eyebrow">New business / Say hello</p>
-        <h2 id="contact-title">Have a hard<br>problem? <i>Good.</i></h2>
-        <p>Tell me what you’re building, what’s getting in the way and where you want to go.</p>
+  <section
+    id="contact"
+    class="px-4 py-20 sm:px-6 sm:py-28"
+    aria-labelledby="contact-title"
+  >
+    <div
+      class="mx-auto grid max-w-[92rem] gap-14 border-t border-line pt-14 lg:grid-cols-[0.8fr_1.2fr]"
+      data-reveal
+    >
+      <header>
+        <p class="mb-4 flex items-center gap-2 text-xs text-muted">
+          <MessageSquare :size="16" />
+          Contacto
+        </p>
+        <h2
+          id="contact-title"
+          class="m-0 max-w-[8ch] font-display text-[clamp(4.5rem,8vw,8rem)] leading-[0.74] tracking-[-0.03em]"
+        >
+          Resolvamos un problema difícil.
+        </h2>
+        <p class="mt-6 max-w-sm text-sm leading-6 text-muted">
+          El contexto vale más que un pitch. Cuéntame qué estás construyendo y
+          dónde empieza a doler el sistema.
+        </p>
       </header>
 
-      <form class="contact__form reveal" @submit.prevent="submitForm">
-        <label><span>01 / Your name</span><input v-model.trim="form.name" name="name" autocomplete="name" required placeholder="How should I call you?"></label>
-        <label><span>02 / Email</span><input v-model.trim="form.email" name="email" type="email" autocomplete="email" required placeholder="you@company.com"></label>
-        <label><span>03 / Subject</span><input v-model.trim="form.subject" name="subject" required placeholder="A new product, an API, a rescue..."></label>
-        <label><span>04 / The details</span><textarea v-model.trim="form.message" name="message" required rows="4" placeholder="Context, constraints, ambition." /></label>
-        <button type="submit" :disabled="sending"><span>{{ sending ? 'Sending' : 'Send inquiry' }}</span><i>{{ sending ? '···' : '↗' }}</i></button>
-        <p v-if="feedback" class="contact__feedback" :class="{ 'is-error': feedbackError }" aria-live="polite">{{ feedback }}</p>
+      <form class="grid gap-2 sm:grid-cols-2" @submit.prevent="submitForm">
+        <label
+          class="rounded-sm border border-line bg-surface p-3 transition-colors focus-within:border-line-strong focus-within:bg-surface-raised"
+        >
+          <span class="mb-2 block text-xs text-muted">Nombre</span>
+          <input
+            v-model.trim="form.name"
+            name="name"
+            autocomplete="name"
+            required
+            placeholder="Pablo"
+            class="w-full border-0 bg-transparent p-0 text-sm outline-none placeholder:text-white/20"
+          />
+        </label>
+        <label
+          class="rounded-sm border border-line bg-surface p-3 transition-colors focus-within:border-line-strong focus-within:bg-surface-raised"
+        >
+          <span class="mb-2 block text-xs text-muted">Correo</span>
+          <input
+            v-model.trim="form.email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            placeholder="tu@empresa.com"
+            class="w-full border-0 bg-transparent p-0 text-sm outline-none placeholder:text-white/20"
+          />
+        </label>
+        <label
+          class="rounded-sm border border-line bg-surface p-3 transition-colors focus-within:border-line-strong focus-within:bg-surface-raised sm:col-span-2"
+        >
+          <span class="mb-2 block text-xs text-muted">Asunto</span>
+          <input
+            v-model.trim="form.subject"
+            name="subject"
+            required
+            placeholder="Una API, un producto, un rescate..."
+            class="w-full border-0 bg-transparent p-0 text-sm outline-none placeholder:text-white/20"
+          />
+        </label>
+        <label
+          class="rounded-sm border border-line bg-surface p-3 transition-colors focus-within:border-line-strong focus-within:bg-surface-raised sm:col-span-2"
+        >
+          <span class="mb-2 block text-xs text-muted">Detalles</span>
+          <textarea
+            v-model.trim="form.message"
+            name="message"
+            required
+            rows="5"
+            placeholder="Restricciones, ambición y plazos."
+            class="w-full resize-y border-0 bg-transparent p-0 text-sm leading-6 outline-none placeholder:text-white/20"
+          />
+        </label>
+        <button
+          type="submit"
+          :disabled="sending"
+          class="flex items-center justify-between rounded-sm bg-ink px-3 py-2.5 text-xs font-medium text-background transition-colors hover:bg-white disabled:cursor-wait disabled:opacity-50 sm:col-span-2"
+        >
+          <span>{{ sending ? "Enviando…" : "Enviar contexto" }}</span>
+          <LoaderCircle v-if="sending" :size="16" class="animate-spin" />
+          <Send v-else :size="16" />
+        </button>
+        <p
+          v-if="feedback"
+          class="m-0 flex items-center gap-2 rounded-sm border px-3 py-2 text-xs sm:col-span-2"
+          :class="
+            feedbackError
+              ? 'border-signal/25 bg-signal/10 text-red-300'
+              : 'border-emerald-500/20 bg-emerald-500/10 text-emerald-300'
+          "
+          aria-live="polite"
+        >
+          <CircleAlert v-if="feedbackError" :size="16" />
+          <CircleCheck v-else :size="16" />
+          {{ feedback }}
+        </p>
       </form>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ sendContact: (payload: { name: string; email: string; phone?: string; subject: string; message: string }) => Promise<{ status: string; error?: string }> }>()
-const form = reactive({ name: '', email: '', subject: '', message: '', phone: '' })
-const sending = ref(false)
-const feedback = ref('')
-const feedbackError = ref(false)
+import {
+  CircleAlert,
+  CircleCheck,
+  LoaderCircle,
+  MessageSquare,
+  Send,
+} from "@lucide/vue";
+
+const props = defineProps<{
+  sendContact: (payload: {
+    name: string;
+    email: string;
+    phone?: string;
+    subject: string;
+    message: string;
+  }) => Promise<{ status: string; error?: string }>;
+}>();
+
+const form = reactive({
+  name: "",
+  email: "",
+  subject: "",
+  message: "",
+  phone: "",
+});
+const sending = ref(false);
+const feedback = ref("");
+const feedbackError = ref(false);
 
 const submitForm = async () => {
-  sending.value = true
-  feedback.value = ''
-  feedbackError.value = false
-  try {
-    const response = await props.sendContact({ ...form })
-    if (response.status !== 'ok') throw new Error(response.error || 'unknown_error')
-    feedback.value = 'Message received. I’ll get back to you shortly.'
-    Object.assign(form, { name: '', email: '', subject: '', message: '', phone: '' })
-  }
-  catch {
-    feedbackError.value = true
-    feedback.value = 'The message could not be sent. Please try again in a moment.'
-  }
-  finally { sending.value = false }
-}
-</script>
+  sending.value = true;
+  feedback.value = "";
+  feedbackError.value = false;
 
-<style scoped>
-.contact { padding: clamp(7rem, 13vw, 14rem) 0 3rem; border-top: 1px solid var(--line); color: var(--ink); background: var(--paper-raised); }.contact__inner { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(4rem, 9vw, 11rem); }.contact__header h2 { margin: 2.5rem 0; font-family: var(--font-display); font-size: clamp(3.8rem, 8.5vw, 9.5rem); font-weight: 650; line-height: .84; letter-spacing: -.075em; }.contact__header h2 i { color: var(--red); font-style: normal; }.contact__header > p:last-child { max-width: 24rem; color: var(--ink-dim); line-height: 1.7; }
-.contact__form { padding-top: 1rem; }.contact label { display: block; padding: 1.25rem 0; border-bottom: 1px solid var(--line-strong); }.contact label span { display: block; margin-bottom: .7rem; color: var(--ink-dim); font-family: var(--font-mono); font-size: .55rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }.contact input, .contact textarea { width: 100%; padding: 0; border: 0; border-radius: 0; outline: none; color: var(--ink); background: transparent; font-size: clamp(1.1rem, 1.7vw, 1.55rem); resize: vertical; }.contact input::placeholder, .contact textarea::placeholder { color: #62625f; }.contact label:focus-within { border-color: var(--red); }.contact button { display: flex; width: 100%; margin-top: 1.4rem; padding: 1rem 1.2rem; align-items: center; justify-content: space-between; border: 0; color: white; background: var(--red); cursor: pointer; font-family: var(--font-mono); font-size: .65rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; transition: background .25s ease; }.contact button:hover { background: #b71120; }.contact button:disabled { opacity: .6; cursor: wait; }.contact button i { font-size: 1.35rem; font-style: normal; }.contact__feedback { margin: 1rem 0 0; color: var(--ink-soft); font-size: .75rem; }.contact__feedback.is-error { color: var(--red-bright); }
-@media (max-width: 800px) { .contact__inner { grid-template-columns: 1fr; } }
-</style>
+  try {
+    const response = await props.sendContact({ ...form });
+    if (response.status !== "ok")
+      throw new Error(response.error || "unknown_error");
+    feedback.value = "Mensaje recibido. Te responderé lo antes posible.";
+    Object.assign(form, {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+      phone: "",
+    });
+  } catch {
+    feedbackError.value = true;
+    feedback.value = "No se ha podido enviar. Inténtalo de nuevo.";
+  } finally {
+    sending.value = false;
+  }
+};
+</script>

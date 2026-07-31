@@ -12,7 +12,7 @@ pub enum DbConnectionError {
     #[error("database credentials are missing")]
     MissingCredentials,
 
-    #[error("error executing query: {0}")]
+    #[error("error executing query: {0:?}")]
     QueryError(#[from] tokio_postgres::Error),
 
     #[error("could not build database pool: {0}")]

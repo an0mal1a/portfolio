@@ -1,16 +1,34 @@
 <template>
-  <footer class="footer">
-    <div class="footer__inner shell">
-      <p>Pablo Diez ® / {{ year }}</p>
-      <p>Backend engineer & creative developer</p>
-      <a href="#top">Back to top ↑</a>
+  <footer class="border-t border-line bg-background px-4 py-6 sm:px-6">
+    <div
+      class="mx-auto flex max-w-[92rem] flex-col gap-4 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p class="m-0">
+        {{ year }} Pablo Diez. Construido como un sistema, no como una
+        plantilla.
+      </p>
+      <div class="flex items-center gap-4">
+        <NuxtLink
+          to="/system"
+          class="flex items-center gap-1.5 transition-colors hover:text-ink"
+        >
+          Ver arquitectura
+          <Network :size="16" />
+        </NuxtLink>
+        <a
+          href="#top"
+          class="flex items-center gap-1.5 transition-colors hover:text-ink"
+        >
+          Volver arriba
+          <ArrowUp :size="16" />
+        </a>
+      </div>
     </div>
   </footer>
 </template>
 
-<script setup lang="ts">const year = new Date().getFullYear()</script>
+<script setup lang="ts">
+import { ArrowUp, Network } from "@lucide/vue";
 
-<style scoped>
-.footer { color: var(--ink-dim); background: var(--paper-raised); }.footer__inner { display: flex; padding-block: 1.4rem; justify-content: space-between; border-top: 1px solid var(--line); font-family: var(--font-mono); font-size: .55rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }.footer p { margin: 0; }.footer a:hover { color: var(--red-bright); }
-@media (max-width: 620px) { .footer__inner { gap: 1rem; }.footer p:nth-child(2) { display: none; } }
-</style>
+const year = new Date().getFullYear();
+</script>

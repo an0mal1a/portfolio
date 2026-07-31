@@ -1,12 +1,13 @@
 <template>
-  <div class="site-frame">
-    <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="min-h-screen bg-background text-ink">
+    <a
+      class="fixed top-3 left-3 z-[100] -translate-y-24 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-background transition-transform focus:translate-y-0"
+      href="#main-content"
+      >Saltar al contenido</a
+    >
+    <PointerFollower />
     <AppHeader />
     <main id="main-content" tabindex="-1"><slot /></main>
     <AppFooter />
   </div>
 </template>
-
-<style scoped>
-.site-frame { min-height: 100vh; background: var(--paper); }.skip-link { position: fixed; z-index: 999; top: .75rem; left: .75rem; padding: .75rem 1rem; color: white; background: var(--red); transform: translateY(-200%); transition: transform .2s ease; }.skip-link:focus { transform: none; }
-</style>

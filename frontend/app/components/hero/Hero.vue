@@ -1,78 +1,201 @@
 <template>
-  <section id="top" class="hero" aria-labelledby="hero-title">
-    <div class="hero__grid" aria-hidden="true" />
-    <div class="hero__inner shell">
-      <div class="hero__status">
-        <span><i /> Available for selected projects</span>
-        <span>Ibiza, Spain · {{ localTime }}</span>
-      </div>
+  <section
+    id="top"
+    class="relative overflow-hidden border-b border-line px-4 pt-32 pb-16 sm:px-6 sm:pt-36 lg:pt-40 lg:pb-20"
+  >
+    <div
+      class="pointer-events-none absolute inset-x-0 top-0 h-[42rem] bg-[radial-gradient(circle_at_76%_18%,rgba(229,72,77,.08),transparent_30%)]"
+    />
 
-      <div class="hero__copy">
-        <p class="eyebrow">Independent backend & product engineer</p>
-        <h1 id="hero-title">I make complex<br>systems feel <em>clear.</em></h1>
-        <p class="hero__intro">Reliable APIs, resilient infrastructure and thoughtful digital products  engineered from the inside out.</p>
-        <div class="hero__actions">
-          <NuxtLink class="hero__primary" to="/projects">Explore projects <span>↗</span></NuxtLink>
-          <a class="text-link" href="#about">More about me <span>↓</span></a>
+    <div
+      class="relative mx-auto grid max-w-[92rem] gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(24rem,.62fr)] lg:items-center lg:gap-20"
+    >
+      <div data-reveal>
+        <div class="mb-7 flex flex-wrap items-center gap-2">
+          <span
+            class="flex items-center gap-2 rounded-sm border border-line bg-surface px-2 py-1 text-xs text-muted"
+          >
+            <Terminal :size="16" />
+            Backend y producto
+          </span>
+          <span class="flex items-center gap-2 px-2 py-1 text-xs text-muted">
+            <i class="size-1.5 rounded-full bg-signal" />
+            Disponible de forma selectiva
+          </span>
+        </div> 
+
+        <h1
+          class="m-0 font-display text-[clamp(4.8rem,10.5vw,11rem)] leading-[0.78]"
+        >
+          Construyo sistemas que sostienen el producto.
+        </h1>
+
+        <div
+          class="mt-9 grid max-w-3xl gap-7 border-t border-line pt-6 sm:grid-cols-[1fr_auto] sm:items-end"
+        >
+          <p class="m-0 max-w-xl text-base leading-7 text-muted">
+            APIs, infraestructura e interfaces diseñadas para seguir siendo
+            claras cuando la complejidad deja de serlo.
+          </p>
+          <div class="flex gap-2">
+            <NuxtLink
+              to="/projects"
+              class="flex items-center gap-2 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-background transition-transform hover:-translate-y-0.5"
+            >
+              Ver proyectos
+              <ArrowUpRight :size="16" />
+            </NuxtLink>
+            <NuxtLink
+              to="/system"
+              class="flex items-center gap-2 rounded-sm border border-line bg-surface px-3 py-2 text-xs font-medium transition-colors hover:bg-surface-raised"
+            >
+              Explorar sistema
+              <Network :size="16" />
+            </NuxtLink>
+          </div>
         </div>
       </div>
 
-      <div class="hero__portrait" aria-label="Portrait of Pablo Diez">
-        <div class="hero__portrait-frame">
-          <img src="/images/me.png" alt="Pablo Diez" width="600" height="480" fetchpriority="high">
+      <div class="relative mx-auto w-full max-w-[31rem] lg:mx-0" data-reveal>
+        <div
+          class="soft-noise relative overflow-hidden rounded-sm border border-line bg-surface shadow-[0_32px_100px_rgba(0,0,0,.4)] transition-transform duration-300 ease-out"
+          :style="cardTransform"
+          @pointermove="tilt"
+          @pointerleave="resetTilt"
+        >
+          <div
+            class="flex h-10 items-center justify-between border-b border-line px-3 text-xs text-muted"
+          >
+            <span class="flex items-center gap-2">
+              <ScanFace :size="16" />
+              perfil.dev
+            </span>
+            <span class="flex items-center gap-2">
+              <i class="size-1.5 rounded-full bg-signal" />
+              En línea
+            </span>
+          </div>
+          <div
+            class="relative aspect-[1/1.03] overflow-hidden bg-background-secondary"
+          >
+            <div
+              class="absolute inset-0 opacity-50 [background-image:linear-gradient(rgba(255,255,255,.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.04)_1px,transparent_1px)] [background-size:4rem_4rem]"
+            />
+            <span
+              class="absolute top-5 left-5 z-10 max-w-[12rem] text-2xl leading-6 font-medium tracking-[-0.04em]"
+              >Infraestructura silenciosa para ideas ambiciosas.</span
+            >
+            <img
+              src="/images/me.png"
+              alt="Pablo Diez"
+              width="600"
+              height="480"
+              fetchpriority="high"
+              class="absolute right-[-7%] bottom-0 w-[86%] max-w-none saturate-50"
+            />
+            <div
+              class="absolute right-3 bottom-3 flex items-center gap-2 rounded-sm border border-white/10 bg-background/75 px-2 py-1 text-xs text-white/70 backdrop-blur-md"
+            >
+              <MapPin :size="16" />
+              Ibiza · {{ localTime }}
+            </div>
+          </div>
         </div>
-        <p>Backend engineer<br>Creative developer</p>
-        <span class="hero__portrait-code">PD·01</span>
-      </div>
 
-      <dl class="hero__stats" aria-label="Portfolio snapshot">
-        <div><dt>{{ projectCount.toString().padStart(2, '0') }}</dt><dd>Selected<br>projects</dd></div>
-        <div><dt>{{ clientCount.toString().padStart(2, '0') }}</dt><dd>Clients &<br>partners</dd></div>
-        <div><dt>05+</dt><dd>Years<br>building</dd></div>
-      </dl>
+        <div
+          class="absolute -right-2 -bottom-7 flex items-center gap-2 rounded-sm border border-line bg-surface-raised px-2 py-1.5 text-xs text-muted shadow-xl sm:-right-6"
+        >
+          <Activity :size="16" class="text-signal" />
+          Portfolio desplegado y operativo
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="relative mx-auto mt-20 grid max-w-[92rem] grid-cols-2 gap-px overflow-hidden rounded-sm border border-line bg-line sm:grid-cols-4"
+      data-reveal
+    >
+      <div
+        v-for="item in stats"
+        :key="item.label"
+        class="bg-background-secondary p-4"
+      >
+        <component :is="item.icon" :size="16" class="mb-7 text-muted" />
+        <strong class="block text-2xl font-medium tracking-[-0.04em]">{{
+          item.value
+        }}</strong>
+        <span class="mt-1 block text-xs text-muted">{{ item.label }}</span>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-defineProps<{ projectCount: number; clientCount: number }>()
-const localTime = ref('CET')
-let timer: ReturnType<typeof setInterval> | undefined
+import {
+  Activity,
+  ArrowUpRight,
+  Boxes,
+  Database,
+  MapPin,
+  Network,
+  ScanFace,
+  Server,
+  Terminal,
+} from "@lucide/vue";
+
+const props = defineProps<{
+  projectCount: number;
+  clientCount: number;
+}>();
+
+const localTime = ref("CET");
+const rotate = reactive({ x: 0, y: 0 });
+let timer: ReturnType<typeof setInterval> | undefined;
+
+const cardTransform = computed(() => ({
+  transform: `perspective(900px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
+}));
+
+const stats = computed(() => [
+  {
+    icon: Boxes,
+    value: props.projectCount.toString().padStart(2, "0"),
+    label: "proyectos públicos",
+  },
+  { icon: Server, value: "03", label: "servicios desplegados" },
+  {
+    icon: Database,
+    value: props.clientCount.toString().padStart(2, "0"),
+    label: "clientes y partners",
+  },
+  { icon: Activity, value: "24/7", label: "sistema monitorizado" },
+]);
+
 const updateTime = () => {
-  localTime.value = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date())
-}
-onMounted(() => { updateTime(); timer = setInterval(updateTime, 60_000) })
-onBeforeUnmount(() => clearInterval(timer))
+  localTime.value = new Intl.DateTimeFormat("es-ES", {
+    timeZone: "Europe/Madrid",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date());
+};
+
+const tilt = (event: PointerEvent) => {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  rotate.y = ((event.clientX - rect.left) / rect.width - 0.5) * 5;
+  rotate.x = -((event.clientY - rect.top) / rect.height - 0.5) * 5;
+};
+
+const resetTilt = () => {
+  rotate.x = 0;
+  rotate.y = 0;
+};
+
+onMounted(() => {
+  updateTime();
+  timer = setInterval(updateTime, 60_000);
+});
+
+onBeforeUnmount(() => clearInterval(timer));
 </script>
-
-<style scoped>
-.hero { position: relative; isolation: isolate; min-height: max(52rem, 100svh); overflow: hidden; border-bottom: 1px solid var(--line); background: radial-gradient(circle at 78% 45%, rgb(225 29 46 / 13%), transparent 28%), var(--paper); }
-.hero__grid { position: absolute; z-index: -1; inset: 0; opacity: .52; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: clamp(4rem, 8vw, 9rem) clamp(4rem, 8vw, 9rem); mask-image: linear-gradient(to bottom, black, transparent 92%); }
-.hero__inner { position: relative; min-height: max(52rem, 100svh); padding-top: 7rem; padding-bottom: 2rem; }
-.hero__status { display: flex; justify-content: space-between; color: var(--ink-dim); font-family: var(--font-mono); font-size: .61rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; }
-.hero__status span:first-child { color: var(--ink-soft); }.hero__status i { display: inline-block; width: .4rem; aspect-ratio: 1; margin-right: .5rem; border-radius: 50%; background: var(--red); box-shadow: 0 0 .65rem var(--red); }
-.hero__copy { position: relative; z-index: 4; max-width: min(72rem, 72vw); margin-top: clamp(8rem, 19vh, 13rem); }
-.hero h1 { margin: 1.8rem 0 0; font-size: clamp(4.6rem, 9.3vw, 11rem); font-weight: 650; line-height: .84; letter-spacing: -.085em; }
-.hero h1 em { color: var(--red); font-style: normal; }
-.hero__intro { max-width: 35rem; margin: 2.2rem 0 0; color: var(--ink-dim); font-size: clamp(1rem, 1.35vw, 1.3rem); line-height: 1.65; }
-.hero__actions { display: flex; align-items: center; gap: 1.6rem; margin-top: 2.25rem; }
-.hero__primary { display: inline-flex; min-width: 11rem; padding: .9rem 1rem; align-items: center; justify-content: space-between; border: 1px solid var(--red); background: var(--red); font-family: var(--font-mono); font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; transition: background .2s ease; }.hero__primary:hover { background: #b71120; }
-.hero__portrait { position: absolute; z-index: 2; right: clamp(1rem, 4vw, 5rem); bottom: 6rem; width: clamp(20rem, 31vw, 39rem); }
-.hero__portrait-frame { position: relative; aspect-ratio: 1 / 1.1; overflow: hidden; border: 1px solid var(--line); background: linear-gradient(145deg, #1c1c1c, #090909 70%); }
-.hero__portrait-frame::before { position: absolute; inset: 0; background: linear-gradient(90deg, transparent 49.8%, rgb(255 255 255 / 8%) 50%, transparent 50.2%), linear-gradient(transparent 49.8%, rgb(255 255 255 / 8%) 50%, transparent 50.2%); content: ""; }
-.hero__portrait img { position: absolute; right: -5%; bottom: 0; width: 112%; max-width: none; filter: saturate(.78) contrast(1.08); }
-.hero__portrait p { margin: .8rem 0 0; color: var(--ink-dim); font-family: var(--font-mono); font-size: .57rem; line-height: 1.45; letter-spacing: .08em; text-transform: uppercase; }
-.hero__portrait-code { position: absolute; right: .8rem; bottom: -1.2rem; color: var(--red); font-family: var(--font-mono); font-size: .58rem; }
-.hero__stats { position: absolute; z-index: 5; right: clamp(1rem, 4vw, 5rem); bottom: 1.7rem; display: grid; grid-template-columns: repeat(3, auto); gap: clamp(1.2rem, 2.5vw, 3rem); margin: 0; }
-.hero__stats div { display: flex; align-items: flex-end; gap: .6rem; }.hero__stats dt { color: var(--red); font-size: clamp(1.9rem, 2.6vw, 3.2rem); font-weight: 600; line-height: .75; letter-spacing: -.06em; }.hero__stats dd { margin: 0; color: var(--ink-dim); font-family: var(--font-mono); font-size: .5rem; line-height: 1.4; letter-spacing: .07em; text-transform: uppercase; }
-
-@media (max-width: 1040px) {
-  .hero__copy { max-width: 82vw; }.hero__portrait { right: -5rem; width: 29rem; opacity: .72; }.hero__intro { max-width: 28rem; }
-}
-@media (max-width: 700px) {
-  .hero, .hero__inner { min-height: 51rem; }.hero__inner { padding-top: 5.75rem; }.hero__status span:last-child { display: none; }
-  .hero__copy { max-width: none; margin-top: 5.4rem; }.hero h1 { font-size: clamp(3.8rem, 18vw, 6.3rem); line-height: .86; }.hero__intro { max-width: 19rem; font-size: .94rem; }
-  .hero__actions { align-items: flex-start; flex-direction: column; gap: 1.15rem; }.hero__portrait { right: -6rem; bottom: 4.8rem; width: 21rem; opacity: .66; }.hero__portrait p, .hero__portrait-code { display: none; }
-  .hero__stats { right: auto; bottom: 1.25rem; left: 1rem; gap: 1.25rem; }.hero__stats div:last-child { display: none; }
-}
-</style>

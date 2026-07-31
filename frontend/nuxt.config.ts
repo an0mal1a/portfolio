@@ -1,30 +1,28 @@
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  css: ['~/assets/css/main.css'],
+  css: ["~/assets/css/main.css"],
 
   runtimeConfig: {
     public: {
-      apiBase: ''
+      apiBase: "",
     },
   },
 
   app: {
     head: {
-      htmlAttrs: { lang: 'en' },
+      htmlAttrs: { lang: "es" },
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'theme-color', content: '#080808' },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "theme-color", content: "#080809" },
       ],
-      link: [
-        { rel: 'icon', href: '/favicon.ico' },
-      ],
+      link: [{ rel: "icon", href: "/favicon.ico" }],
     },
   },
 
   vite: {
-    plugins: [tailwindcss()], 
+    plugins: [tailwindcss()],
   },
-})
+});
