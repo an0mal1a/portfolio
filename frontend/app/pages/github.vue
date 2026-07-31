@@ -11,7 +11,7 @@
                     {{ repositories.length.toString().padStart(2, "0") }}
                 </p>
                 <h1
-                    class="m-0 max-w-[10ch] font-display text-[clamp(4.8rem,10vw,10rem)] leading-[0.72] tracking-[-0.03em]"
+                    class="m-0 max-w-[12ch] font-display text-[clamp(4.8rem,10vw,10rem)] leading-[0.72] tracking-[-0.03em]"
                 >
                     El trabajo también vive en el código.
                 </h1>
