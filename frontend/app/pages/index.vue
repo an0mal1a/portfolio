@@ -18,9 +18,9 @@
 const { projects, repositories, clients, status, error, refresh, sendContact } = usePortfolio()
 
 useSeoMeta({
-  title: 'Pablo Diez — Backend Engineer & Creative Developer',
+  title: 'Pablo Diez  Backend & Product Engineer',
   description: 'Independent backend engineer and creative developer building reliable systems, APIs and digital products.',
-  ogTitle: 'Pablo Diez — Systems with a pulse',
+  ogTitle: 'Pablo Diez  Complex systems, made clear',
   ogDescription: 'Backend engineering, product thinking and creative development.',
   ogType: 'website',
   twitterCard: 'summary_large_image',
