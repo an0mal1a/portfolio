@@ -1,13 +1,35 @@
 use serde_json::{Value, json};
 
-use axum::{Json, Router, extract::State, http::StatusCode, routing::get};
+use axum::{Json, extract::State, http::StatusCode};
+use utoipa::ToSchema;
+use utoipa_axum::{router::OpenApiRouter, routes};
 
-use crate::{app_state::AppState, services::repositories::read::clients};
+use crate::{
+    app_state::AppState,
+    routes::openapi::ApiErrorResponse,
+    services::repositories::{modules::Client, read::clients},
+};
 
-pub fn router() -> Router<AppState> {
-    Router::<AppState>::new().route("/", get(list_clients))
+#[derive(ToSchema)]
+#[allow(dead_code)]
+struct ClientsResponse {
+    status: String,
+    clients: Vec<Client>,
 }
 
+pub fn router() -> OpenApiRouter<AppState> {
+    OpenApiRouter::<AppState>::new().routes(routes!(list_clients))
+}
+
+#[utoipa::path(
+    get,
+    path = "/",
+    tag = "Clients",
+    responses(
+        (status = 200, description = "Clientes del portfolio", body = ClientsResponse),
+        (status = 500, description = "Error al consultar la base de datos", body = ApiErrorResponse)
+    )
+)]
 pub async fn list_clients(State(state): State<AppState>) -> (StatusCode, Json<Value>) {
     match clients::list_clients(&state.reader_db).await {
         Ok(c) => (

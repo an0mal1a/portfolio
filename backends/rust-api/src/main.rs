@@ -12,11 +12,16 @@ use crate::{
 };
 use services::rate_limiter::limiter::{RateLimitState, rate_limit_middleware};
 use tower_http::cors::{AllowOrigin, CorsLayer};
+use utoipa_swagger_ui::SwaggerUi;
 
 use config::{CONFIG, Config};
 
 // Other modules
-use axum::{self, Router, http::{HeaderValue, Method, header}, middleware};
+use axum::{
+    self,
+    http::{HeaderValue, Method, header},
+    middleware,
+};
 
 #[tokio::main]
 async fn main() {
@@ -37,7 +42,7 @@ async fn main() {
     // Rate limit state
     let general_limiter = Arc::new(RateLimitState::per_minute(120));
     let contact_limiter = Arc::new(RateLimitState::per_minute(3));
-    
+
     // Cors layer
     let cors = CorsLayer::new()
         .allow_origin(AllowOrigin::predicate(
@@ -54,8 +59,10 @@ async fn main() {
         .allow_methods([Method::GET, Method::POST])
         .allow_headers([header::CONTENT_TYPE]);
 
-    let app = Router::new()
-        .merge(routes::router(contact_limiter))
+    let (api_router, openapi) = routes::router(contact_limiter).split_for_parts();
+
+    let app = api_router
+        .merge(SwaggerUi::new("/docs").url("/api-docs/openapi.json", openapi))
         .layer(middleware::from_fn_with_state(
             general_limiter,
             rate_limit_middleware,

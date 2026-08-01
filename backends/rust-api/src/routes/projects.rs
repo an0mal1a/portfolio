@@ -1,21 +1,45 @@
 use axum::{
-    Json, Router,
+    Json,
     extract::{Path, State},
     http::StatusCode,
-    routing::get,
 };
 use serde_json::{Value, json};
+use utoipa::ToSchema;
+use utoipa_axum::{router::OpenApiRouter, routes};
 
-use crate::app_state::AppState;
+use crate::services::repositories::modules::Project;
 use crate::services::repositories::read::projects;
+use crate::{app_state::AppState, routes::openapi::ApiErrorResponse};
 
-pub fn router() -> Router<AppState> {
-    Router::<AppState>::new()
-        .route("/", get(list_projects))
-        .route("/{slug}", get(get_project))
-    // .route("/:slug", get(get_project))
+#[derive(ToSchema)]
+#[allow(dead_code)]
+struct ProjectsResponse {
+    status: String,
+    projects: Vec<Project>,
 }
 
+#[derive(ToSchema)]
+#[allow(dead_code)]
+struct ProjectResponse {
+    status: String,
+    project: Project,
+}
+
+pub fn router() -> OpenApiRouter<AppState> {
+    OpenApiRouter::<AppState>::new()
+        .routes(routes!(list_projects))
+        .routes(routes!(get_project))
+}
+
+#[utoipa::path(
+    get,
+    path = "/",
+    tag = "Projects",
+    responses(
+        (status = 200, description = "Proyectos publicados", body = ProjectsResponse),
+        (status = 500, description = "Error al consultar la base de datos", body = ApiErrorResponse)
+    )
+)]
 pub async fn list_projects(State(state): State<AppState>) -> (StatusCode, Json<Value>) {
     match projects::list_projects(&state.reader_db).await {
         Ok(projects) => (
@@ -39,6 +63,17 @@ pub async fn list_projects(State(state): State<AppState>) -> (StatusCode, Json<V
     }
 }
 
+#[utoipa::path(
+    get,
+    path = "/{slug}",
+    tag = "Projects",
+    params(("slug" = String, Path, description = "Slug del proyecto")),
+    responses(
+        (status = 200, description = "Proyecto encontrado", body = ProjectResponse),
+        (status = 404, description = "Proyecto no encontrado", body = ApiErrorResponse),
+        (status = 500, description = "Error al consultar la base de datos", body = ApiErrorResponse)
+    )
+)]
 pub async fn get_project(
     State(state): State<AppState>,
     Path(slug): Path<String>,
