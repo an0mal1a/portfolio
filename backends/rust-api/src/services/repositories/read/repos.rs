@@ -30,7 +30,10 @@ pub async fn list_repositories(db: &DBClient) -> Result<Vec<Repo>, DbConnectionE
     let conn = db.get_db_connection().await?;
 
     let raw = conn
-        .query("SELECT * FROM portfolio.visible_repositories", &[])
+        .query(
+            "SELECT * FROM portfolio.visible_repositories ORDER BY github_pushed_at DESC",
+            &[],
+        )
         .await?;
 
     let mut repos: Vec<Repo> = Vec::with_capacity(raw.len());
@@ -52,6 +55,10 @@ pub async fn list_repositories(db: &DBClient) -> Result<Vec<Repo>, DbConnectionE
 
             is_fork: r.get("is_fork"),
             is_archived: r.get("is_archived"),
+
+            forks_count: r.get("forks_count"),
+            open_issues_count: r.get("open_issues_count"),
+            stars_count: r.get("stars_count"),
 
             github_created_at: r.get("github_created_at"),
             github_updated_at: r.get("github_updated_at"),
@@ -98,6 +105,10 @@ pub async fn get_repository(
 
         is_fork: r.get("is_fork"),
         is_archived: r.get("is_archived"),
+
+        forks_count: r.get("forks_count"),
+        open_issues_count: r.get("open_issues_count"),
+        stars_count: r.get("stars_count"),
 
         github_created_at: r.get("github_created_at"),
         github_updated_at: r.get("github_updated_at"),
