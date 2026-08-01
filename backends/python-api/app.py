@@ -1,9 +1,9 @@
 from crons.lifespan import lifespan
+from routes import api_router
 
 # FastAPI imports
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
-
 
 app = FastAPI(title="portfolio-python-api", lifespan=lifespan)
 app.add_middleware(
@@ -17,6 +17,11 @@ app.add_middleware(
     ]
 )
 
+# Router construct
+app.include_router(api_router)
+
+# Health path
+@app.get("/")
 @app.get("/health")
 def health():
     return {
