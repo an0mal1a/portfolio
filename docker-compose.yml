@@ -1,0 +1,57 @@
+services:
+  rust-api: 
+    build:
+      context: ./backends/rust-api
+    env_file: 
+      - ./backends/.env
+    ports: 
+      - "8082:8000"  
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  python-api:
+    build:
+      context: ./backends/python-api 
+    environment:
+        PYTHONUNBUFFERED: "1" # This is used to ensure that the logs are printed in real-time and not buffered. 
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    build:
+      context: ./backends/postgres
+    volumes:
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test:
+          [
+              "CMD-SHELL",
+              "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"
+          ]
+      interval: 5s
+      timeout: 5s
+      retries: 20  
+      start_period: 15s
+    restart: unless-stopped
+    
+  frontend:
+    build:
+      context: ./frontend  
+    environment:
+      NUXT_PUBLIC_API_BASE: https://rust-api.impablo.dev
+    ports:
+      - "3000:3000" 
+    volumes:
+      - ./frontend:/code/frontend
+      - frontend-node-modules:/code/frontend/node_modules
+    depends_on:
+      - rust-api 
+      - python-api 
+    restart: unless-stopped
+
+volumes: 
+  db-data:
+  rust-target:
+  frontend-node-modules:

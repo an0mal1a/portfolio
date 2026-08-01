@@ -1,0 +1,204 @@
+INSERT INTO portfolio.clients (
+    name,
+    website,
+    logo_url
+)
+SELECT 'Test 1', 'https://example.com', 'https://logo_url.com'
+WHERE NOT EXISTS (
+    SELECT 1 FROM portfolio.clients WHERE name = 'Test 1' AND website = 'https://example.com'
+);
+
+INSERT INTO portfolio.clients (
+    name,
+    website,
+    logo_url
+)
+SELECT 'Test 2', 'https://example.com', 'https://logo_url.com'
+WHERE NOT EXISTS (
+    SELECT 1 FROM portfolio.clients WHERE name = 'Test 2' AND website = 'https://example.com'
+);
+
+INSERT INTO portfolio.clients (
+    name,
+    website,
+    logo_url
+)
+SELECT 'Test 3', 'https://example.com', 'https://logo_url.com'
+WHERE NOT EXISTS (
+    SELECT 1 FROM portfolio.clients WHERE name = 'Test 3' AND website = 'https://example.com'
+);
+
+INSERT INTO portfolio.projects (
+    github_repository_github_id,
+    client_id,
+    name,
+    slug,
+    tagline,
+    description,
+    project_type,
+    status,
+    repository_url,
+    live_url,
+    is_featured,
+    is_public,
+    started_at,
+    completed_at
+)
+SELECT
+    1000000001,
+    NULL,
+    'Proyecto Mock 1',
+    'mock-project-1',
+    'Mock tagline 1',
+    'Descripción mock para el proyecto 1.',
+    'web',
+    'published',
+    NULL,
+    'https://example.com/project-1',
+    TRUE,
+    TRUE,
+    '2026-01-10',
+    NULL
+WHERE NOT EXISTS (
+    SELECT 1 FROM portfolio.projects WHERE slug = 'mock-project-1'
+);
+
+INSERT INTO portfolio.projects (
+    github_repository_github_id,
+    client_id,
+    name,
+    slug,
+    tagline,
+    description,
+    project_type,
+    status,
+    repository_url,
+    live_url,
+    is_featured,
+    is_public,
+    started_at,
+    completed_at
+)
+SELECT
+    1000000002,
+    (SELECT id FROM portfolio.clients WHERE name = 'Test 1' AND website = 'https://example.com'),
+    'Proyecto Mock 2',
+    'mock-project-2',
+    'Mock tagline 2',
+    'Descripción mock para el proyecto 2.',
+    'web',
+    'in_progress',
+    NULL,
+    'https://example.com/project-2',
+    FALSE,
+    TRUE,
+    '2026-02-15',
+    NULL
+WHERE NOT EXISTS (
+    SELECT 1 FROM portfolio.projects WHERE slug = 'mock-project-2'
+);
+
+INSERT INTO portfolio.projects (
+    github_repository_github_id,
+    client_id,
+    name,
+    slug,
+    tagline,
+    description,
+    project_type,
+    status,
+    repository_url,
+    live_url,
+    is_featured,
+    is_public,
+    started_at,
+    completed_at
+)
+SELECT
+    1000000003,
+    (SELECT id FROM portfolio.clients WHERE name = 'Test 2' AND website = 'https://example.com'),
+    'Proyecto Mock 3',
+    'mock-project-3',
+    'Mock tagline 3',
+    'Descripción mock para el proyecto 3.',
+    'saas',
+    'archived',
+    'https://github.com/example/mock-project-3',
+    NULL,
+    FALSE,
+    TRUE,
+    '2026-03-20',
+    '2026-04-01'
+WHERE NOT EXISTS (
+    SELECT 1 FROM portfolio.projects WHERE slug = 'mock-project-3'
+);
+
+INSERT INTO portfolio.projects (
+    github_repository_github_id,
+    client_id,
+    name,
+    slug,
+    tagline,
+    description,
+    project_type,
+    status,
+    repository_url,
+    live_url,
+    is_featured,
+    is_public,
+    started_at,
+    completed_at
+)
+SELECT
+    1000000004,
+    NULL,
+    'Proyecto Mock 4',
+    'mock-project-4',
+    'Mock tagline 4',
+    'Descripción mock para el proyecto 4.',
+    'automation',
+    'published',
+    NULL,
+    'https://example.com/project-4',
+    TRUE,
+    TRUE,
+    '2026-05-05',
+    NULL
+WHERE NOT EXISTS (
+    SELECT 1 FROM portfolio.projects WHERE slug = 'mock-project-4'
+);
+
+INSERT INTO portfolio.projects (
+    github_repository_github_id,
+    client_id,
+    name,
+    slug,
+    tagline,
+    description,
+    project_type,
+    status,
+    repository_url,
+    live_url,
+    is_featured,
+    is_public,
+    started_at,
+    completed_at
+)
+SELECT
+    1000000005,
+    (SELECT id FROM portfolio.clients WHERE name = 'Test 3' AND website = 'https://example.com'),
+    'Proyecto Mock 5',
+    'mock-project-5',
+    'Mock tagline 5',
+    'Descripción mock para el proyecto 5.',
+    'tool',
+    'in_progress',
+    'https://github.com/example/mock-project-5',
+    NULL,
+    FALSE,
+    TRUE,
+    '2026-06-12',
+    NULL
+WHERE NOT EXISTS (
+    SELECT 1 FROM portfolio.projects WHERE slug = 'mock-project-5'
+);
