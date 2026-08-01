@@ -108,11 +108,13 @@
                     </div>
                 </div>
 
+                <!-- class="absolute -right-2 -bottom-5 flex items-center gap-2 rounded-sm border border-line bg-surface-raised px-2 py-1.5 text-xs text-muted shadow-xl sm:right-3" -->
                 <div
-                    class="absolute -right-2 -bottom-7 flex items-center gap-2 rounded-sm border border-line bg-surface-raised px-2 py-1.5 text-xs text-muted shadow-xl sm:-right-6"
+                    class="absolute -right-2 -bottom-5 flex items-center gap-2 rounded-sm border border-line bg-surface-raised px-2 py-1.5 text-xs text-muted shadow-xl sm:-right-6"
                 >
                     <Activity :size="16" class="text-signal" />
-                    Portfolio desplegado y operativo
+                    <!-- Portfolio desplegado y operativo -->
+                    Desarrollando<a href="https://www.vestta.app" class="hover-underline -ml-1">Vestta CRM</a>
                 </div>
             </div>
         </div>
@@ -207,3 +209,29 @@ onMounted(() => {
 
 onBeforeUnmount(() => clearInterval(timer));
 </script>
+
+<style scoped>
+.hover-underline {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.hover-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 200ms ease;
+}
+
+.hover-underline:hover::after {
+    transform: scaleX(1);
+}
+</style>

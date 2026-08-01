@@ -14,7 +14,10 @@ export interface Repository {
     visibility: "public" | "private" | string;
     primary_language?: string | null;
     repository_url?: string | null;
-    is_fork: boolean;
+    stars_count?: number | null;
+    forks_count?: number | null;
+    open_issues_count?: number | null;
+    is_fork: boolean;  
     is_archived: boolean;
     github_created_at?: string | null;
     github_updated_at?: string | null;

@@ -81,10 +81,7 @@ export const useRepositories = () => {
     retryAfterHydration(state.error, state.refresh);
 
     const repositories = computed(() =>
-        state.data.value.filter(
-            (repository) =>
-                repository.visibility === "public" && !repository.is_archived,
-        ),
+        state.data.value
     );
 
     return {

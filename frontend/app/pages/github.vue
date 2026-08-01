@@ -18,9 +18,8 @@
             </div>
             <div>
                 <p class="m-0 max-w-md text-sm leading-6 text-muted">
-                    Repositorios públicos sincronizados con GitHub.
-                    Arquitectura, experimentos y producto con sus colaboradores
-                    reales.
+                    Repositorios sincronizados con GitHub. Arquitectura, experimentos 
+                    y producto con sus colaboradores y lenguajes reales.
                 </p>
                 <NuxtLink
                     to="/system#source-code"
@@ -54,43 +53,70 @@
                     </span>
                 </div>
 
-                <div
-                    v-if="languages.length > 1"
-                    class="flex max-w-full gap-1 overflow-x-auto rounded-sm border border-line bg-surface p-1"
-                    aria-label="Filtrar repositorios por lenguaje"
-                >
-                    <button
-                        type="button"
-                        class="shrink-0 rounded-sm px-2 py-1 text-xs transition-colors"
-                        :class="
-                            activeLanguage === 'Todos'
-                                ? 'bg-ink text-background'
-                                : 'text-muted hover:bg-surface-raised hover:text-ink'
-                        "
-                        @click="activeLanguage = 'Todos'"
+                <div class="flex gap-2">
+                    <div 
+                        class="flex max-w-full gap-1 overflow-visible rounded-sm border border-line bg-surface p-1"
+                        aria-label="Ordenar repositorios"
                     >
-                        Todos
-                        <span class="ml-1 opacity-55">{{
-                            repositories.length
-                        }}</span>
-                    </button>
-                    <button
-                        v-for="language in languages"
-                        :key="language"
-                        type="button"
-                        class="shrink-0 rounded-sm px-2 py-1 text-xs transition-colors"
-                        :class="
-                            activeLanguage === language
-                                ? 'bg-ink text-background'
-                                : 'text-muted hover:bg-surface-raised hover:text-ink'
-                        "
-                        @click="activeLanguage = language"
+
+                        <CustomSelect
+                            v-model="sorting"
+                            class="w-24"
+                            :options="{
+                                    push: {
+                                        label: 'Push',
+                                        icon: GitCommit
+                                    },
+                                    star: {
+                                        label: 'Stars',
+                                        icon: Star
+                                    },
+                                    fork: {
+                                        label: 'Forks',
+                                        icon: GitFork
+                                    },
+                                }"
+                        />
+                    </div>
+
+                    <div
+                        v-if="languages.length > 1"
+                        class="flex max-w-full gap-1 overflow-x-auto rounded-sm border border-line bg-surface p-1"
+                        aria-label="Filtrar repositorios por lenguaje"
                     >
-                        {{ language }}
-                        <span class="ml-1 opacity-55">{{
-                            countByLanguage(language)
-                        }}</span>
-                    </button>
+                        <button
+                            type="button"
+                            class="shrink-0 rounded-sm px-2 py-1 text-xs transition-colors"
+                            :class="
+                                activeLanguage === 'Todos'
+                                    ? 'bg-ink text-background'
+                                    : 'text-muted hover:bg-surface-raised hover:text-ink'
+                            "
+                            @click="activeLanguage = 'Todos'"
+                        >
+                            Todos
+                            <span class="ml-1 opacity-55">{{
+                                repositories.length
+                            }}</span>
+                        </button>
+                        <button
+                            v-for="language in languages"
+                            :key="language"
+                            type="button"
+                            class="shrink-0 rounded-sm px-2 py-1 text-xs transition-colors"
+                            :class="
+                                activeLanguage === language
+                                    ? 'bg-ink text-background'
+                                    : 'text-muted hover:bg-surface-raised hover:text-ink'
+                            "
+                            @click="activeLanguage = language"
+                        >
+                            {{ language }}
+                            <span class="ml-1 opacity-55">{{
+                                countByLanguage(language)
+                            }}</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -158,11 +184,12 @@
 </template>
 
 <script setup lang="ts">
-import { CircleOff, GitFork, Network, RefreshCw } from "@lucide/vue";
+import { CircleOff, GitCommit, GitFork, Network, RefreshCw, Star } from "@lucide/vue";
 import type { Repository } from "~/types/portfolio";
 
 const { repositories, status, error, refresh } = useRepositories();
 const activeLanguage = ref("Todos");
+const sorting = ref("push");
 
 const repositoryName = (repository: Repository) =>
     repository.display_name ||
@@ -185,7 +212,22 @@ const orderedRepositories = computed(() =>
         const bIsPortfolio = repositoryName(b).toLowerCase() === "portfolio";
 
         if (aIsPortfolio !== bIsPortfolio) return aIsPortfolio ? -1 : 1;
-        return repositoryName(a).localeCompare(repositoryName(b));
+
+        if (sorting.value === "star") {
+            return (b.stars_count || 0) - (a.stars_count || 0);
+        }
+
+        if (sorting.value === "fork") {
+            return (b.forks_count || 0) - (a.forks_count || 0);
+        }
+
+        const aDate = new Date(
+            a.github_pushed_at || a.github_updated_at || a.synced_at || 0,
+        ).getTime();
+        const bDate = new Date(
+            b.github_pushed_at || b.github_updated_at || b.synced_at || 0,
+        ).getTime();
+        return bDate - aDate;
     }),
 );
 

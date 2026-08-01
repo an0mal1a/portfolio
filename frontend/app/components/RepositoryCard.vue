@@ -1,13 +1,24 @@
 <template>
     <article
-        class="group flex min-h-64 flex-col justify-between rounded-sm border border-line bg-surface p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-raised"
+        class="group flex min-h-64 flex-col justify-between rounded-sm border p-3 transition-all duration-300 hover:-translate-y-0.5 border-line bg-surface hover:border-line-strong hover:bg-surface-raised" 
     >
         <div>
             <div class="flex items-center justify-between text-xs text-muted">
                 <span class="flex items-center gap-2">
-                    <GitBranch :size="16" />
+                    <GitFork v-if="repository.is_fork" :size="16" />
+                    <GitBranch v-else :size="16" />
                     {{ repository.owner }} / {{ repositoryName }}
+                    <Lock v-if="repository.visibility === 'private' || false" :size="12" />
+                    
+                    <span
+                        v-if="isPortfolioRepository"
+                        class="inline-flex items-center gap-1 rounded-sm border border-signal/50 bg-signal/10 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em] text-ink"
+                    >
+                        <BadgeCheck :size="12" aria-hidden="true" />
+                        Este portfolio
+                    </span>
                 </span>
+                    
                 <a
                     v-if="repository.repository_url"
                     :href="repository.repository_url"
@@ -43,13 +54,29 @@
                     {{ repository.primary_language }}
                 </span>
                 <span
-                    class="rounded-sm border border-line bg-background px-2 py-1"
+                    v-if="repository.is_fork"
+                    class="flex gap-1.5 items-center rounded-sm border border-line bg-background px-2 py-1"
                 >
-                    {{ repository.visibility }}
+                    <GitFork :size="12" />
+                    fork
+                </span>
+                <span
+                    v-if="repository.stars_count"
+                    class="flex items-center gap-2 px-1 py-1"
+                >
+                    <Star :size="16" />
+                    {{ repository.stars_count }}
+                </span>
+                <span
+                    v-if="repository.forks_count"
+                    class="flex items-center gap-2 px-1 py-1"
+                >
+                    <GitFork :size="16" />
+                    {{ repository.forks_count }}
                 </span>
                 <span
                     v-if="updatedLabel"
-                    class="flex items-center gap-2 px-2 py-1"
+                    class="flex items-center gap-2 px-1 py-1"
                 >
                     <Clock3 :size="16" />
                     {{ updatedLabel }}
@@ -74,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowUpRight, Clock3, GitBranch, Users } from "@lucide/vue";
+import { ArrowUpRight, BadgeCheck, Clock3, GitBranch, GitFork, Lock, Star, Users } from "@lucide/vue";
 import type { Repository } from "~/types/portfolio";
 
 const props = defineProps<{
@@ -86,6 +113,10 @@ const repositoryName = computed(
         props.repository.display_name ||
         props.repository.full_name?.split("/").pop() ||
         "repository",
+);
+
+const isPortfolioRepository = computed(
+    () => repositoryName.value.trim().toLowerCase() === "portfolio",
 );
 
 const contributorLabel = computed(() => {
