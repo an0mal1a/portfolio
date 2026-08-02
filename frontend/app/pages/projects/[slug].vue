@@ -670,6 +670,7 @@ useSeoMeta({
 
 .project-rich-text :deep(ul),
 .project-rich-text :deep(ol) {
+    list-style-type: disc;
     padding-left: 1.4rem;
 }
 
