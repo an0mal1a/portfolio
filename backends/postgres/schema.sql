@@ -204,10 +204,12 @@ CREATE TABLE portfolio.projects (
     slug TEXT NOT NULL UNIQUE,
     tagline TEXT,
     description TEXT NOT NULL,
+    content_html TEXT,
 
     project_type TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'draft',
 
+    image TEXT,
     repository_url TEXT,
     live_url TEXT,
 

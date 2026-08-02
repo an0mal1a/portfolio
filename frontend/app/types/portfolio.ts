@@ -43,10 +43,12 @@ export interface Project {
     slug: string;
     tagline?: string | null;
     description: string;
+    content_html?: string | null;
     project_type: string;
     status: "draft" | "in_progress" | "published" | "archived" | string;
     repository_url?: string | null;
     live_url?: string | null;
+    image?: string | null;
     is_featured: boolean;
     is_public: boolean;
     started_at?: string | null;

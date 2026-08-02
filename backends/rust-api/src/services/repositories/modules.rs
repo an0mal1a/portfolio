@@ -13,9 +13,11 @@ pub struct Project {
     pub slug: String,
     pub tagline: Option<String>,
     pub description: String,
+    pub content_html: Option<String>,
 
     pub project_type: String,
     pub status: String,
+    pub image: Option<String>,
     pub repository_url: Option<String>,
     pub live_url: Option<String>,
 
