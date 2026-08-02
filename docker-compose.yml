@@ -24,6 +24,7 @@ services:
       context: ./backends/postgres
     volumes:
       - db-data:/var/lib/postgresql
+      - /data/portfolio/postgres-hardcoded:/opt/postgres/data:ro
     healthcheck:
       test:
           [
