@@ -372,7 +372,7 @@
                         </p> -->
                         <div class="project-notes-intro" aria-label="Formato de notas personales">
                             <span>cuaderno de trabajo</span>
-                            <span>apuntes personales, sin guion cerrado</span>
+                            <span>apuntes personales</span>
                         </div>
                         <div
                             v-if="sanitizedContent"

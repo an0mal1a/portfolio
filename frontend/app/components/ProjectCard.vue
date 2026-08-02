@@ -40,21 +40,16 @@
                 aria-hidden="true"
             />
             <template v-else>
-                <div
-                    class="absolute inset-x-0 top-9 bottom-0 opacity-60 [background-image:linear-gradient(rgba(255,255,255,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.045)_1px,transparent_1px)] [background-size:4rem_4rem]"
+                <RepositoryFallbackCover
+                    :name="project.name"
+                    :display-name="project.repository?.display_name"
+                    :language="project.repository?.primary_language"
+                    :project-type="project.project_type"
+                    :archived="project.status === 'archived' || Boolean(project.repository?.is_archived)"
                 />
-                <div
-                    class="absolute top-[26%] right-[11%] size-[38%] rounded-full border border-white/10 transition-transform duration-700 group-hover:scale-110"
-                >
-                    <i
-                        class="absolute inset-[20%] rounded-full border border-white/10"
-                    />
-                    <i
-                        class="absolute inset-[42%] rounded-full bg-signal shadow-[0_0_45px_rgba(229,72,77,.22)]"
-                    />
-                </div>
             </template>
             <p
+                v-if="hasProjectImage"
                 class="absolute bottom-4 left-4 z-10 max-w-[82%] font-display leading-[0.72] font-semibold"
                 :class="
                     compact
