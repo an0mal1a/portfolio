@@ -97,6 +97,7 @@ const items = [
     { label: "Inicio", to: "/" },
     { label: "Proyectos", to: "/projects" },
     { label: "GitHub", to: "/github" },
+    { label: "Mi entorno", to: "/workspace" },
     { label: "Sistema", to: "/system" },
 ];
 </script>
