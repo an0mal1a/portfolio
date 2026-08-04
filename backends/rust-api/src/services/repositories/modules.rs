@@ -1,7 +1,8 @@
 use chrono::{DateTime, NaiveDate, Utc};
 use serde::Serialize;
+use utoipa::ToSchema;
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct Project {
     pub id: i64,
     pub github_repository_id: Option<i64>,
@@ -12,9 +13,11 @@ pub struct Project {
     pub slug: String,
     pub tagline: Option<String>,
     pub description: String,
+    pub content_html: Option<String>,
 
     pub project_type: String,
     pub status: String,
+    pub image: Option<String>,
     pub repository_url: Option<String>,
     pub live_url: Option<String>,
 
@@ -27,7 +30,7 @@ pub struct Project {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct Repo {
     pub id: i64,
     pub github_id: Option<i64>,
@@ -39,6 +42,10 @@ pub struct Repo {
     pub description: Option<String>,
     pub visibility: String,
     pub primary_language: Option<String>,
+
+    pub forks_count: Option<i32>,
+    pub open_issues_count: Option<i32>,
+    pub stars_count: Option<i32>,
 
     pub is_fork: bool,
     pub is_archived: bool,
@@ -52,14 +59,14 @@ pub struct Repo {
     pub contributors: Vec<Contributor>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct Contributor {
     pub github_login: String,
     pub avatar_url: Option<String>,
     pub profile_url: Option<String>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct Client {
     pub id: i64,
 

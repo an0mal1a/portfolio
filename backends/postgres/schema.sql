@@ -204,10 +204,12 @@ CREATE TABLE portfolio.projects (
     slug TEXT NOT NULL UNIQUE,
     tagline TEXT,
     description TEXT NOT NULL,
+    content_html TEXT,
 
     project_type TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'draft',
 
+    image TEXT,
     repository_url TEXT,
     live_url TEXT,
 
@@ -316,6 +318,9 @@ SELECT
     r.main_language AS primary_language,
     r.is_fork,
     r.is_archived,
+    r.forks_count,
+    r.open_issues_count,
+    r.stars_count,
     r.repository_url,
     r.github_created_at,
     r.github_updated_at,

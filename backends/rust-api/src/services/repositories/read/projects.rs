@@ -9,7 +9,7 @@ pub async fn list_projects(db: &DBClient) -> Result<Vec<Project>, DbConnectionEr
         .query(
             "SELECT * FROM portfolio.projects
              WHERE is_public = TRUE
-             ORDER BY is_featured DESC, started_at DESC NULLS LAST, created_at DESC",
+             ORDER BY is_featured DESC, (image IS NOT NULL) DESC, started_at DESC NULLS LAST, created_at DESC",
             &[],
         )
         .await?;
@@ -26,9 +26,11 @@ pub async fn list_projects(db: &DBClient) -> Result<Vec<Project>, DbConnectionEr
             slug: r.get("slug"),
             tagline: r.get("tagline"),
             description: r.get("description"),
+            content_html: r.get("content_html"),
 
             project_type: r.get("project_type"),
             status: r.get("status"),
+            image: r.get("image"),
             repository_url: r.get("repository_url"),
             live_url: r.get("live_url"),
 
@@ -71,9 +73,11 @@ pub async fn get_project(
         slug: r.get("slug"),
         tagline: r.get("tagline"),
         description: r.get("description"),
+        content_html: r.get("content_html"),
 
         project_type: r.get("project_type"),
         status: r.get("status"),
+        image: r.get("image"),
         repository_url: r.get("repository_url"),
         live_url: r.get("live_url"),
 

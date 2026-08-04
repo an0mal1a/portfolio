@@ -5,10 +5,10 @@
             class="grid min-h-[75svh] place-items-center px-4 pt-24 text-xs text-muted"
             aria-live="polite"
         >
-            <span class="flex items-center gap-2"
-                ><LoaderCircle :size="16" class="animate-spin" />Cargando caso
-                de estudio</span
-            >
+            <span class="flex items-center gap-2">
+                <LoaderCircle :size="16" class="animate-spin" />
+                Cargando caso de estudio
+            </span>
         </div>
 
         <template v-else-if="project">
@@ -17,161 +17,202 @@
                 class="fixed right-3 bottom-3 z-40 flex max-w-sm flex-col gap-3 rounded-sm border border-signal/30 bg-surface/95 px-3 py-3 text-xs text-muted shadow-xl backdrop-blur sm:flex-row sm:items-center"
                 role="status"
             >
-                <span
-                    >Parte de los metadatos del proyecto no está
-                    disponible.</span
-                >
+                <span>Parte de los metadatos no está disponible.</span>
                 <button
                     type="button"
-                    class="shrink-0 rounded-sm bg-ink px-2 py-1 font-medium text-background"
+                    class="shrink-0 cursor-pointer rounded-sm bg-ink px-2 py-1 font-medium text-background"
                     @click="refresh()"
                 >
                     Reintentar
                 </button>
             </aside>
 
-            <section class="px-3 pt-28 pb-3 sm:px-6 sm:pt-36" data-reveal>
+            <section class="px-4 pt-28 pb-4 sm:px-6 sm:pt-36">
                 <div class="mx-auto max-w-[92rem]">
                     <NuxtLink
-                        class="inline-flex items-center gap-2 text-xs text-muted transition-colors hover:text-ink"
+                        class="inline-flex cursor-pointer items-center gap-2 text-xs text-muted transition-colors hover:text-ink"
                         to="/projects"
                     >
                         <ArrowLeft :size="16" />
                         Archivo de proyectos
                     </NuxtLink>
 
-                    <div
-                        class="mt-8 overflow-hidden rounded-sm border border-line bg-surface shadow-[0_30px_100px_rgba(0,0,0,.3)] sm:mt-10"
+                    <header
+                        class="mt-9 grid gap-8 border-t border-line pt-5 lg:grid-cols-[1fr_28rem] lg:items-end"
+                    >
+                        <div>
+                            <p
+                                class="mb-7 flex items-center gap-2 text-xs text-signal"
+                            >
+                                <Layers3 :size="16" />
+                                {{ project.project_type }} /
+                                {{ statusLabel(project.status) }}
+                            </p>
+                            <h1
+                                class="m-0 max-w-[14ch] font-display text-[clamp(5rem,11vw,11rem)] leading-[0.7] tracking-[-0.03em]"
+                            >
+                                {{ project.name }}
+                            </h1>
+                        </div>
+                        <div class="lg:pb-2">
+                            <p class="m-0 text-[15px] leading-7 text-muted">
+                                {{ project.tagline || project.description }}
+                            </p>
+                            <div class="mt-6 flex flex-wrap gap-2">
+                                <a
+                                    v-if="project.live_url"
+                                    :href="project.live_url"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex cursor-pointer items-center gap-2 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-background transition-transform hover:-translate-y-0.5"
+                                >
+                                    Ver online
+                                    <ArrowUpRight :size="16" />
+                                </a>
+                                <a
+                                    v-if="sourceUrl"
+                                    :href="sourceUrl"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex cursor-pointer items-center gap-2 rounded-sm border border-line bg-surface px-3 py-2 text-xs font-medium transition-colors hover:bg-surface-raised"
+                                >
+                                    Ver repositorio
+                                    <Code2 :size="16" />
+                                </a>
+                            </div>
+                        </div>
+                    </header>
+
+                    <figure
+                        class="mx-auto mt-10 max-w-6xl overflow-hidden rounded-sm border border-line bg-surface shadow-[0_30px_100px_rgba(0,0,0,.3)] sm:mt-14"
                     >
                         <div
                             class="flex h-10 items-center justify-between border-b border-line px-3 text-xs text-muted"
                         >
-                            <span class="flex items-center gap-2"
-                                ><Box :size="16" />Caso
-                                {{
-                                    project.id.toString().padStart(3, "0")
-                                }}</span
-                            >
-                            <span class="hidden sm:block"
-                                >{{ yearOf(project) }} /
-                                {{ project.project_type }}</span
-                            >
-                            <span class="flex items-center gap-2"
-                                ><i class="size-1.5 rounded-full bg-signal" />{{
-                                    statusLabel(project.status)
-                                }}</span
-                            >
+                            <span class="flex items-center gap-2">
+                                <Box :size="16" />
+                                Proyecto
+                                {{ project.id.toString().padStart(3, "0") }}
+                            </span>
+                            <span class="hidden sm:block">
+                                {{ dateRange(project) }}
+                            </span>
+                            <span class="flex items-center gap-2">
+                                <i class="size-1.5 rounded-full bg-signal" />
+                                {{ statusLabel(project.status) }}
+                            </span>
                         </div>
 
                         <div
-                            class="relative grid min-h-[34rem] overflow-hidden p-5 sm:p-8 lg:min-h-[40rem] lg:grid-cols-[1.15fr_0.85fr] lg:p-10"
+                            class="relative aspect-[16/9] overflow-hidden bg-background-secondary"
                         >
-                            <div
-                                class="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(255,255,255,.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.04)_1px,transparent_1px)] [background-size:5rem_5rem]"
+                            <img
+                                v-if="hasHeroImage"
+                                ref="heroImageElement"
+                                :src="project.image || undefined"
+                                :alt="`Vista general del proyecto ${project.name}`"
+                                class="absolute inset-0 size-full rounded-[inherit] object-cover"
+                                fetchpriority="high"
+                                decoding="async"
+                                @error="heroImageFailed = true"
                             />
-                            <div
-                                class="relative z-10 flex flex-col justify-between"
-                            >
-                                <p
-                                    class="m-0 flex items-center gap-2 text-xs text-signal"
-                                >
-                                    <Layers3 :size="16" />Trabajo seleccionado /
-                                    {{ project.project_type }}
-                                </p>
-                                <div class="my-14 lg:my-10">
-                                    <h1
-                                        class="m-0 max-w-[9ch] font-display text-[clamp(5rem,10vw,10rem)] leading-[0.7] tracking-[-0.03em]"
-                                    >
-                                        {{ project.name }}
-                                    </h1>
-                                    <p
-                                        class="mt-7 max-w-xl text-sm leading-6 text-muted"
-                                    >
-                                        {{
-                                            project.tagline ||
-                                            project.description
-                                        }}
-                                    </p>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <a
-                                        v-if="project.live_url"
-                                        :href="project.live_url"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-2 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-background transition-transform hover:-translate-y-0.5"
-                                    >
-                                        Ver online
-                                        <ArrowUpRight :size="16" />
-                                    </a>
-                                    <a
-                                        v-if="sourceUrl"
-                                        :href="sourceUrl"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-2 rounded-sm border border-line bg-background-secondary px-3 py-2 text-xs font-medium transition-colors hover:bg-surface-raised"
-                                    >
-                                        Ver código
-                                        <Code2 :size="16" />
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div
-                                class="pointer-events-none relative hidden items-center justify-center lg:flex"
-                                aria-hidden="true"
-                            >
+                            <template v-else>
                                 <div
-                                    class="relative aspect-square w-[72%] rounded-full border border-white/10"
+                                    class="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(255,255,255,.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.04)_1px,transparent_1px)] [background-size:5rem_5rem]"
+                                />
+                                <div
+                                    class="absolute top-1/2 left-1/2 aspect-square w-[38%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"
+                                    aria-hidden="true"
                                 >
                                     <i
-                                        class="absolute inset-[16%] rounded-full border border-white/10"
+                                        class="absolute inset-[20%] rounded-full border border-white/10"
                                     />
                                     <i
-                                        class="absolute inset-[34%] rounded-full border border-white/10"
+                                        class="absolute inset-[43%] rounded-full bg-signal shadow-[0_0_80px_rgba(229,72,77,.2)]"
                                     />
-                                    <i
-                                        class="absolute inset-[45%] rounded-full bg-signal shadow-[0_0_80px_rgba(229,72,77,.2)]"
-                                    />
-                                    <span
-                                        class="absolute -right-3 bottom-[20%] rounded-sm border border-line bg-surface-raised px-2 py-1 text-xs text-muted"
-                                        >{{ shortTitle(project.name) }}</span
-                                    >
                                 </div>
-                            </div>
+                            </template>
                         </div>
-                    </div>
+
+                        <figcaption
+                            class="flex flex-col gap-1 border-t border-line px-3 py-2 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"
+                        >
+                            <span>{{ project.name }} / vista principal</span>
+                            <span>{{ projectOwner(project) }}</span>
+                        </figcaption>
+                    </figure>
                 </div>
             </section>
 
-            <section class="px-3 py-20 sm:px-6 sm:py-28">
+            <section class="px-4 py-20 sm:px-6 sm:py-28">
                 <div
-                    class="mx-auto grid max-w-[92rem] gap-14 lg:grid-cols-[17rem_1fr] lg:gap-24"
+                    class="mx-auto grid max-w-[92rem] gap-14 lg:grid-cols-[19rem_1fr] lg:gap-24"
                 >
                     <aside
-                        class="h-fit rounded-sm border border-line bg-surface p-2 lg:sticky lg:top-24"
-                        aria-label="Detalles del proyecto"
+                        class="h-fit overflow-hidden rounded-sm border border-line bg-surface lg:sticky lg:top-24"
+                        aria-label="Metadatos del proyecto"
                         data-reveal
                     >
                         <div
-                            class="border-b border-line px-2 py-2 text-xs text-muted"
+                            class="border-b border-line px-4 py-3 text-xs text-muted"
                         >
                             Metadatos del proyecto
                         </div>
                         <dl class="m-0">
-                            <div class="border-b border-line px-2 py-3">
+                            <div class="border-b border-line px-4 py-3">
                                 <dt
                                     class="mb-2 flex items-center gap-2 text-xs text-muted"
                                 >
-                                    <CalendarDays :size="16" />Periodo
+                                    <Layers3 :size="16" />Estado
                                 </dt>
-                                <dd class="m-0 text-xs font-medium">
-                                    {{ dateRange(project) }}
+                                <dd
+                                    class="m-0 flex items-center gap-2 text-xs font-medium"
+                                >
+                                    <i
+                                        class="size-1.5 rounded-full bg-signal"
+                                    />
+                                    {{ statusLabel(project.status) }} ·
+                                    {{ project.project_type }}
                                 </dd>
                             </div>
+
+                            <div class="grid grid-cols-2 border-b border-line">
+                                <div class="border-r border-line px-4 py-3">
+                                    <dt
+                                        class="mb-2 text-xs text-muted"
+                                    >
+                                        Inicio
+                                    </dt>
+                                    <dd class="m-0 text-xs font-medium">
+                                        {{
+                                            fullDateLabel(
+                                                project.started_at ||
+                                                    project.created_at,
+                                            )
+                                        }}
+                                    </dd>
+                                </div>
+                                <div class="px-4 py-3">
+                                    <dt
+                                        class="mb-2 text-xs text-muted"
+                                    >
+                                        Finalización
+                                    </dt>
+                                    <dd class="m-0 text-xs font-medium">
+                                        {{
+                                            project.completed_at
+                                                ? fullDateLabel(
+                                                      project.completed_at,
+                                                  )
+                                                : "En curso"
+                                        }}
+                                    </dd>
+                                </div>
+                            </div>
+
                             <div
                                 v-if="project.client"
-                                class="border-b border-line px-2 py-3"
+                                class="border-b border-line px-4 py-3"
                             >
                                 <dt
                                     class="mb-2 flex items-center gap-2 text-xs text-muted"
@@ -184,34 +225,117 @@
                                         :href="project.client.website"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-1.5 hover:text-white/70"
-                                        >{{ project.client.name
-                                        }}<ArrowUpRight :size="16"
-                                    /></a>
-                                    <template v-else>{{
-                                        project.client.name
-                                    }}</template>
+                                        class="inline-flex cursor-pointer items-center gap-1.5 transition-colors hover:text-white/70"
+                                    >
+                                        {{ project.client.name }}
+                                        <ArrowUpRight :size="16" />
+                                    </a>
+                                    <template v-else>
+                                        {{ project.client.name }}
+                                    </template>
                                 </dd>
                             </div>
-                            <div
-                                v-if="project.repository?.primary_language"
-                                class="border-b border-line px-2 py-3"
-                            >
-                                <dt
-                                    class="mb-2 flex items-center gap-2 text-xs text-muted"
+
+                            <template v-if="project.repository">
+                                <div class="border-b border-line px-4 py-3">
+                                    <dt
+                                        class="mb-2 flex items-center gap-2 text-xs text-muted"
+                                    >
+                                        <Code2 :size="16" />Repositorio
+                                    </dt>
+                                    <dd class="m-0 text-xs font-medium">
+                                        <a
+                                            v-if="sourceUrl"
+                                            :href="sourceUrl"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="inline-flex cursor-pointer items-center gap-1.5 transition-colors hover:text-white/70"
+                                        >
+                                            {{ repositoryName }}
+                                            <ArrowUpRight :size="16" />
+                                        </a>
+                                        <span v-else>{{ repositoryName }}</span>
+                                    </dd>
+                                </div>
+
+                                <div
+                                    v-if="project.repository.primary_language"
+                                    class="border-b border-line px-4 py-3"
                                 >
-                                    <Code2 :size="16" />Lenguaje principal
-                                </dt>
-                                <dd class="m-0 text-xs font-medium">
-                                    {{ project.repository.primary_language }}
-                                </dd>
-                            </div>
+                                    <dt class="mb-2 text-xs text-muted">
+                                        Lenguaje principal
+                                    </dt>
+                                    <dd class="m-0 text-xs font-medium">
+                                        {{
+                                            project.repository.primary_language
+                                        }}
+                                    </dd>
+                                </div>
+
+                                <div
+                                    v-if="project.repository.github_created_at"
+                                    class="grid grid-cols-2 border-b border-line"
+                                >
+                                    <div
+                                        class="border-r border-line px-4 py-3"
+                                    >
+                                        <dt class="mb-2 text-xs text-muted">
+                                            Repo creado
+                                        </dt>
+                                        <dd class="m-0 text-xs font-medium">
+                                            {{
+                                                fullDateLabel(
+                                                    project.repository
+                                                        .github_created_at,
+                                                )
+                                            }}
+                                        </dd>
+                                    </div>
+                                    <div class="px-4 py-3">
+                                        <dt class="mb-2 text-xs text-muted">
+                                            Última actividad
+                                        </dt>
+                                        <dd class="m-0 text-xs font-medium">
+                                            {{
+                                                fullDateLabel(
+                                                    project.repository
+                                                        .github_pushed_at ||
+                                                        project.repository
+                                                            .github_updated_at,
+                                                )
+                                            }}
+                                        </dd>
+                                    </div>
+                                </div>
+
+                                <div
+                                    v-if="
+                                        project.repository.visibility ===
+                                        'public'
+                                    "
+                                    class="grid grid-cols-3 border-b border-line"
+                                >
+                                    <div
+                                        v-for="stat in repositoryStats"
+                                        :key="stat.label"
+                                        class="border-r border-line px-3 py-3 last:border-r-0"
+                                    >
+                                        <dt class="mb-2 text-[11px] text-muted">
+                                            {{ stat.label }}
+                                        </dt>
+                                        <dd class="m-0 text-xs font-medium">
+                                            {{ formatCount(stat.value) }}
+                                        </dd>
+                                    </div>
+                                </div>
+                            </template>
+
                             <div
                                 v-if="project.repository?.contributors?.length"
-                                class="px-2 py-3"
+                                class="px-4 py-3"
                             >
                                 <dt
-                                    class="mb-2 flex items-center gap-2 text-xs text-muted"
+                                    class="mb-3 flex items-center gap-2 text-xs text-muted"
                                 >
                                     <Users :size="16" />Colaboradores
                                 </dt>
@@ -227,81 +351,65 @@
                         </dl>
                     </aside>
 
-                    <div data-reveal>
+                    <article data-reveal>
                         <p
                             class="mb-5 flex items-center gap-2 text-xs text-signal"
                         >
-                            <FileText :size="16" />El proyecto
+                            <FileText :size="16" />Notas de proyecto
                         </p>
                         <h2
-                            class="m-0 max-w-[15ch] font-display text-[clamp(4rem,8vw,8rem)] leading-[0.73] tracking-[-0.03em]"
+                            class="m-0 max-w-[26ch] font-sans text-[clamp(1.4rem,3vw,3.5rem)] leading-[0.80] tracking-[-0.015em]"
                         >
                             {{
                                 project.tagline ||
                                 "Diseñado para ser claro. Construido para evolucionar."
                             }}
                         </h2>
-                        <p
+                        <!-- <p
                             class="mt-8 max-w-3xl whitespace-pre-line text-[15px] leading-7 text-muted"
                         >
                             {{ project.description }}
-                        </p>
-
-                        <div
-                            class="mt-16 grid border-t border-l border-line sm:mt-20 sm:grid-cols-3"
-                        >
-                            <article
-                                v-for="(principle, index) in principles"
-                                :key="principle.title"
-                                class="min-h-60 border-r border-b border-line p-4 sm:min-h-64"
-                            >
-                                <span
-                                    class="grid size-7 place-items-center rounded-sm border border-line bg-surface text-xs text-muted"
-                                    >{{ index + 1 }}</span
-                                >
-                                <div class="mt-16 sm:mt-20">
-                                    <h3
-                                        class="m-0 text-lg font-medium tracking-[-0.03em]"
-                                    >
-                                        {{ principle.title }}
-                                    </h3>
-                                    <p
-                                        class="mt-3 mb-0 text-xs leading-5 text-muted"
-                                    >
-                                        {{ principle.copy }}
-                                    </p>
-                                </div>
-                            </article>
+                        </p> -->
+                        <div class="project-notes-intro" aria-label="Formato de notas personales">
+                            <span>cuaderno de trabajo</span>
+                            <span>apuntes personales</span>
                         </div>
-                    </div>
+                        <div
+                            v-if="sanitizedContent"
+                            class="project-rich-text mt-14 border-t border-line pt-10 sm:mt-18 sm:pt-14"
+                            v-html="sanitizedContent"
+                        />
+                    </article>
                 </div>
             </section>
 
             <section
-                class="border-t border-line bg-background-secondary px-3 sm:px-6"
+                class="border-t border-line bg-background-secondary px-4 sm:px-6"
             >
                 <NuxtLink
                     v-if="nextProject"
                     :to="`/projects/${nextProject.slug}`"
-                    class="mx-auto grid max-w-[92rem] gap-4 py-14 sm:grid-cols-[9rem_1fr_auto] sm:items-center sm:py-20"
+                    class="mx-auto grid max-w-[92rem] cursor-pointer gap-4 py-14 sm:grid-cols-[9rem_1fr_auto] sm:items-center sm:py-20"
                 >
                     <span class="text-xs text-muted">Siguiente proyecto</span>
                     <strong
-                        class="font-display text-[clamp(3.8rem,8vw,8rem)] leading-[0.72] tracking-[-0.03em]"
-                        >{{ nextProject.name }}</strong
+                        class="font-display text-[clamp(3.8rem,8vw,8rem)] leading-[0.72] font-normal tracking-[-0.03em]"
                     >
+                        {{ nextProject.name }}
+                    </strong>
                     <ArrowUpRight :size="20" class="text-signal" />
                 </NuxtLink>
                 <NuxtLink
                     v-else
                     to="/projects"
-                    class="mx-auto grid max-w-[92rem] gap-4 py-14 sm:grid-cols-[9rem_1fr_auto] sm:items-center sm:py-20"
+                    class="mx-auto grid max-w-[92rem] cursor-pointer gap-4 py-14 sm:grid-cols-[9rem_1fr_auto] sm:items-center sm:py-20"
                 >
                     <span class="text-xs text-muted">Fin del archivo</span>
                     <strong
-                        class="font-display text-[clamp(3.8rem,8vw,8rem)] leading-[0.72] tracking-[-0.03em]"
-                        >Ver todos</strong
+                        class="font-display text-[clamp(3.8rem,8vw,8rem)] leading-[0.72] font-normal tracking-[-0.03em]"
                     >
+                        Ver todos
+                    </strong>
                     <ArrowUpRight :size="20" class="text-signal" />
                 </NuxtLink>
             </section>
@@ -317,31 +425,33 @@
                     404 / Proyecto no disponible
                 </p>
                 <h1
-                    class="mx-auto mt-5 mb-0 max-w-[9ch] font-display text-[clamp(4.5rem,10vw,9rem)] leading-[0.72] tracking-[-0.03em]"
+                    class="mx-auto mt-5 mb-0 max-w-[10ch] font-display text-[clamp(4.5rem,10vw,9rem)] leading-[0.72] tracking-[-0.03em]"
                 >
-                    Este caso de estudio no está aquí.
+                    Este proyecto no está disponible.
                 </h1>
                 <p class="mx-auto mt-6 max-w-md text-sm leading-6 text-muted">
                     {{
                         error
                             ? "No se ha podido conectar con la fuente de proyectos."
-                            : "Puede ser privado, estar archivado o utilizar otra dirección."
+                            : "Puede ser privado, no público o utilizar otra dirección."
                     }}
                 </p>
                 <div class="mt-6 flex justify-center gap-2">
                     <button
                         v-if="error"
                         type="button"
-                        class="rounded-sm bg-ink px-3 py-2 text-xs font-medium text-background"
+                        class="cursor-pointer rounded-sm bg-ink px-3 py-2 text-xs font-medium text-background"
                         @click="refresh()"
                     >
                         Reintentar
                     </button>
                     <NuxtLink
                         to="/projects"
-                        class="inline-flex items-center gap-2 rounded-sm border border-line bg-surface px-3 py-2 text-xs font-medium"
-                        >Volver a proyectos<ArrowLeft :size="16"
-                    /></NuxtLink>
+                        class="inline-flex cursor-pointer items-center gap-2 rounded-sm border border-line bg-surface px-3 py-2 text-xs font-medium"
+                    >
+                        Volver a proyectos
+                        <ArrowLeft :size="16" />
+                    </NuxtLink>
                 </div>
             </div>
         </section>
@@ -349,12 +459,12 @@
 </template>
 
 <script setup lang="ts">
+import DOMPurify from "isomorphic-dompurify";
 import {
     ArrowLeft,
     ArrowUpRight,
     Box,
     Building2,
-    CalendarDays,
     CircleOff,
     Code2,
     FileText,
@@ -366,6 +476,9 @@ import type { PortfolioProject } from "~/types/portfolio";
 
 const route = useRoute();
 const { projects, status, error, refresh } = useProjects();
+const { completeProjectTransition } = useProjectImageTransition();
+const heroImageElement = ref<HTMLImageElement | null>(null);
+const heroImageFailed = ref(false);
 
 const project = computed(() =>
     projects.value.find((item) => item.slug === route.params.slug),
@@ -379,20 +492,65 @@ const nextProject = computed(() => {
     return projects.value[(index + 1) % projects.value.length] || null;
 });
 
+const hasHeroImage = computed(
+    () => Boolean(project.value?.image?.trim()) && !heroImageFailed.value,
+);
+
 const sourceUrl = computed(() =>
-    project.value?.is_public &&
-    project.value.repository?.visibility === "public"
+    project.value?.repository?.visibility === "public"
         ? project.value.repository.repository_url ||
           project.value.repository_url ||
           null
         : null,
 );
 
-const yearOf = (item: PortfolioProject) =>
-    new Date(
-        item.completed_at || item.started_at || item.created_at,
-    ).getFullYear();
-const shortTitle = (name: string) => name.split(/\s+/).slice(0, 3).join(" ");
+const repositoryName = computed(
+    () =>
+        project.value?.repository?.full_name ||
+        project.value?.repository?.display_name ||
+        "Repositorio relacionado",
+);
+
+const repositoryStats = computed(() => [
+    {
+        label: "Stars",
+        value: project.value?.repository?.stars_count ?? 0,
+    },
+    {
+        label: "Forks",
+        value: project.value?.repository?.forks_count ?? 0,
+    },
+    {
+        label: "Issues",
+        value: project.value?.repository?.open_issues_count ?? 0,
+    },
+]);
+
+const sanitizedContent = computed(() => {
+    if (!project.value?.content_html?.trim()) return "";
+
+    return DOMPurify.sanitize(project.value.content_html, {
+        USE_PROFILES: { html: true },
+        FORBID_TAGS: ["style", "form", "iframe", "object", "embed"],
+        FORBID_ATTR: ["style"],
+    });
+});
+
+watch(
+    () => project.value?.image,
+    () => {
+        heroImageFailed.value = false;
+    },
+);
+
+watch(
+    [() => project.value?.slug, heroImageElement],
+    ([slug, element]) => {
+        if (!slug || !element) return;
+        void completeProjectTransition(element, slug);
+    },
+    { flush: "post" },
+);
 
 const statusLabel = (value: string) =>
     ({
@@ -410,28 +568,26 @@ const dateLabel = (value?: string | null) =>
           }).format(new Date(value))
         : null;
 
-const dateRange = (item: PortfolioProject) =>
-    [
-        dateLabel(item.started_at || item.created_at),
-        dateLabel(item.completed_at),
-    ]
-        .filter(Boolean)
-        .join(" — ") || yearOf(item).toString();
+const fullDateLabel = (value?: string | null) =>
+    value
+        ? new Intl.DateTimeFormat("es-ES", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+          }).format(new Date(value))
+        : "Sin datos";
 
-const principles = [
-    {
-        title: "Fiable por diseño",
-        copy: "Límites claros, fallos deliberados y una arquitectura comprensible mientras el proyecto crece.",
-    },
-    {
-        title: "Humano en la superficie",
-        copy: "Profundidad técnica convertida en una experiencia directa, con menos fricción y sin ruido decorativo.",
-    },
-    {
-        title: "Preparado para cambiar",
-        copy: "Decisiones orientadas al mantenimiento, la observabilidad y el siguiente requisito real.",
-    },
-];
+const dateRange = (item: PortfolioProject) => {
+    const start = dateLabel(item.started_at || item.created_at);
+    const end = item.completed_at ? dateLabel(item.completed_at) : "Ahora";
+    return [start, end].filter(Boolean).join(" — ");
+};
+
+const projectOwner = (item: PortfolioProject) =>
+    item.client?.name || "Proyecto independiente";
+
+const formatCount = (value: number) =>
+    new Intl.NumberFormat("es-ES", { notation: "compact" }).format(value);
 
 useReveal();
 
@@ -453,5 +609,142 @@ useSeoMeta({
         project.value?.description ||
         "Caso de estudio de Pablo Diez.",
     ogType: "article",
+    ogImage: () => project.value?.image || undefined,
 });
 </script>
+
+<style scoped>
+.project-rich-text {
+    max-width: 54rem;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+}
+
+.project-notes-intro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-top: 2rem;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.project-notes-intro span:first-child {
+    color: var(--color-signal);
+}
+
+.project-rich-text :deep(h2),
+.project-rich-text :deep(h3),
+.project-rich-text :deep(h4) {
+    margin: 2.5rem 0 1rem;
+    color: var(--color-ink);
+    letter-spacing: -0.025em;
+}
+
+.project-rich-text :deep(h2) {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 400;
+    line-height: 0.8;
+}
+
+.project-rich-text :deep(h3) {
+    font-size: 1.45rem;
+    font-weight: 500;
+}
+
+.project-rich-text :deep(p),
+.project-rich-text :deep(ul),
+.project-rich-text :deep(ol),
+.project-rich-text :deep(blockquote),
+.project-rich-text :deep(pre),
+.project-rich-text :deep(table) {
+    margin: 1.25rem 0;
+}
+
+.project-rich-text :deep(ul),
+.project-rich-text :deep(ol) {
+    list-style-type: disc;
+    padding-left: 1.4rem;
+}
+
+.project-rich-text :deep(li + li) {
+    margin-top: 0.45rem;
+}
+
+.project-rich-text :deep(strong) {
+    color: var(--color-ink);
+    font-weight: 500;
+}
+
+.project-rich-text :deep(a) {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-signal);
+    text-underline-offset: 0.25em;
+}
+
+.project-rich-text :deep(blockquote) {
+    border-left: 2px solid var(--color-signal);
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    color: var(--color-ink);
+    font-size: 1.1rem;
+}
+
+.project-rich-text :deep(code) {
+    border: 1px solid var(--color-line);
+    border-radius: 0.2rem;
+    background: var(--color-surface);
+    padding: 0.12rem 0.35rem;
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+}
+
+.project-rich-text :deep(pre) {
+    overflow-x: auto;
+    border: 1px solid var(--color-line);
+    border-radius: 0.2rem;
+    background: var(--color-surface);
+    padding: 1rem;
+}
+
+.project-rich-text :deep(pre code) {
+    border: 0;
+    background: transparent;
+    padding: 0;
+}
+
+.project-rich-text :deep(img) {
+    width: 100%;
+    margin: 2rem 0;
+    border: 1px solid var(--color-line);
+    border-radius: 0.2rem;
+}
+
+.project-rich-text :deep(table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+}
+
+.project-rich-text :deep(th),
+.project-rich-text :deep(td) {
+    border: 1px solid var(--color-line);
+    padding: 0.65rem 0.8rem;
+    text-align: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-rich-text :deep(*) {
+        scroll-behavior: auto;
+    }
+}
+</style>

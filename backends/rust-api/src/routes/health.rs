@@ -1,15 +1,33 @@
-use axum::{Json, Router, routing::get};
-use serde_json::{Value, json};
+use axum::Json;
+use serde::Serialize;
+use utoipa::ToSchema;
+use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::app_state::AppState;
 
-pub fn router() -> Router<AppState> {
-    Router::<AppState>::new().route("/", get(health_check))
+#[derive(Serialize, ToSchema)]
+pub struct HealthResponse {
+    /// Estado actual del servicio.
+    pub status: String,
+    /// Mensaje legible para comprobaciones manuales.
+    pub message: String,
 }
 
-pub async fn health_check() -> Json<Value> {
-    Json(json!({
-        "status": "ok",
-        "message": "Server is running correctly (rust)!"
-    }))
+pub fn router() -> OpenApiRouter<AppState> {
+    OpenApiRouter::<AppState>::new().routes(routes!(health_check))
+}
+
+#[utoipa::path(
+    get,
+    path = "/",
+    tag = "Health",
+    responses(
+        (status = 200, description = "El servicio está disponible", body = HealthResponse)
+    )
+)]
+pub async fn health_check() -> Json<HealthResponse> {
+    Json(HealthResponse {
+        status: "ok".to_string(),
+        message: "Server is running correctly (rust)!".to_string(),
+    })
 }

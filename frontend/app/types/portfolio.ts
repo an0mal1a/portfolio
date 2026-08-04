@@ -14,7 +14,10 @@ export interface Repository {
     visibility: "public" | "private" | string;
     primary_language?: string | null;
     repository_url?: string | null;
-    is_fork: boolean;
+    stars_count?: number | null;
+    forks_count?: number | null;
+    open_issues_count?: number | null;
+    is_fork: boolean;  
     is_archived: boolean;
     github_created_at?: string | null;
     github_updated_at?: string | null;
@@ -40,10 +43,12 @@ export interface Project {
     slug: string;
     tagline?: string | null;
     description: string;
+    content_html?: string | null;
     project_type: string;
     status: "draft" | "in_progress" | "published" | "archived" | string;
     repository_url?: string | null;
     live_url?: string | null;
+    image?: string | null;
     is_featured: boolean;
     is_public: boolean;
     started_at?: string | null;

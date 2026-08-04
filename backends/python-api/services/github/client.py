@@ -206,6 +206,45 @@ class GitHubClient:
         ] 
 
 
+    def _build_repository_payload(self, raw_repo: dict) -> dict:
+        mapping = {
+            "id": "id",
+            "name": "name",
+            "description": "description",
+            "repo_url": "html_url",
+            "main_language": "language",
+            "is_fork": "fork",
+            "is_private": "private",
+            "is_archived": "archived",
+            "forks": "forks_count",
+            "open_issues": "open_issues_count",
+            "star_count": "stargazers_count",
+            "created_at": "created_at",
+            "updated_at": "updated_at",
+            "pushed_at": "pushed_at",
+        }
+
+        repo = {}
+        for key, raw_key in mapping.items():
+            value = raw_repo.get(raw_key)
+
+            if key in {"is_fork", "is_private", "is_archived"}:
+                repo[key] = bool(value if value is not None else False)
+            elif key in {"forks", "open_issues", "star_count"}:
+                repo[key] = int(value or 0)
+            else:
+                repo[key] = value
+
+        owner_info = raw_repo.get("owner", {})
+        repo["owner"] = Owner(
+            name=owner_info.get("login", ""),
+            avatar_url=owner_info.get("avatar_url", ""),
+            profile_url=owner_info.get("html_url", ""),
+            type=owner_info.get("type", "User"),
+        )
+
+        return repo
+
     """
     Function oriented to return a readable/processable object of repos (private/publics) 
     returns everything needed to feed the tables of the DB.
@@ -215,38 +254,11 @@ class GitHubClient:
 
         if len(repos) == 0 or repos is None:
             return []
-        
-        # Define the list of easy values to scrap
-        map = { 
-            "id": "id",
-            "name": "name",
-            "description": "description",
-            "repo_url": "html_url",
-            "main_language": "language",
-            "is_private": "private",  
-            "forks": "forks",
-            "open_issues": "open_issues",
-            "star_count": "stargazers_count",
-            "created_at": "created_at",
-            "updated_at": "updated_at",
-            "pushed_at": "pushed_at",
-        }      
-        
+
         processed_repos: list[Repository] = []
 
         for raw_repo in repos:
-            repo = {}
-
-            # Iterate over `map` to construct `repo` dict
-            for key, raw_key in map.items():
-                repo[key] = raw_repo[raw_key]
-
-            # Get main owner
-            owner_info = raw_repo["owner"]
-            repo["owner"] = Owner(
-                name=owner_info["login"], avatar_url=owner_info["avatar_url"],
-                profile_url=owner_info["html_url"], type=owner_info["type"]
-            )
+            repo = self._build_repository_payload(raw_repo)
 
             # Get topics
             repo["topics"] = self.list_repo_topics(raw_repo["name"])
@@ -257,10 +269,8 @@ class GitHubClient:
             # Get languages
             repo["languages"] = self.list_repo_langs(raw_repo["name"])
 
-            # Append procesed repo
             processed_repos.append(Repository.model_validate(repo))
 
-        
         # Return processed data
         return processed_repos
     
@@ -443,7 +453,6 @@ class GitHubClient:
                         forks_count = EXCLUDED.forks_count,
                         open_issues_count = EXCLUDED.open_issues_count,
                         stars_count = EXCLUDED.stars_count,
-                        is_portfolio_visible = EXCLUDED.is_portfolio_visible,
                         display_name = EXCLUDED.display_name,
                         display_description = EXCLUDED.display_description,
                         github_created_at = EXCLUDED.github_created_at,
@@ -460,8 +469,8 @@ class GitHubClient:
                         repo.repo_url,
                         repo.main_language,
                         repo.is_private,
-                        False,
-                        False,
+                        repo.is_fork,
+                        repo.is_archived,
                         repo.forks,
                         repo.open_issues,
                         repo.star_count,

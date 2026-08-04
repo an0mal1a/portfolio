@@ -20,6 +20,8 @@ class Repository(BaseModel):
     repo_url: str
     main_language: Optional[str] = None
     is_private: bool
+    is_fork: Optional[bool]
+    is_archived: bool
     owner: Owner
     
     contributors: list[Owner]

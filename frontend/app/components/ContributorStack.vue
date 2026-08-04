@@ -1,18 +1,19 @@
 <template>
     <div
         v-if="contributors.length"
-        class="flex min-h-7 items-center pl-1"
+        class="flex min-h-9 items-center pl-1"
         :aria-label="`${contributors.length} colaboradores`"
     >
         <a
-            v-for="person in contributors.slice(0, limit)"
+            v-for="(person, index) in visibleContributors"
             :key="person.github_login"
             :href="person.profile_url || undefined"
             :title="person.github_login"
             :aria-label="`Perfil de ${person.github_login}`"
             target="_blank"
             rel="noopener noreferrer"
-            class="relative -ml-1 grid size-7 place-items-center overflow-hidden rounded-full border-2 border-surface bg-surface-raised text-[8px] font-medium text-white transition-transform hover:z-10 hover:-translate-y-1"
+            class="relative grid size-8 place-items-center overflow-hidden rounded-full bg-surface-raised text-[10px] font-medium text-white transition-transform duration-200 hover:z-30 hover:-translate-y-1 hover:shadow-lg focus-visible:z-30 focus-visible:-translate-y-1 focus-visible:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
+            :style="stackStyle(index)"
             @click.stop
         >
             <img
@@ -26,7 +27,8 @@
         </a>
         <b
             v-if="contributors.length > limit"
-            class="relative -ml-1 grid size-7 place-items-center rounded-full border-2 border-surface bg-surface-raised text-[8px] font-medium text-white"
+            class="relative grid size-8 place-items-center rounded-full bg-surface-raised text-[10px] font-medium text-white"
+            :style="stackStyle(visibleContributors.length)"
             >+{{ contributors.length - limit }}</b
         >
     </div>
@@ -34,8 +36,41 @@
 
 <script setup lang="ts">
 import type { Contributor } from "~/types/portfolio";
-withDefaults(defineProps<{ contributors: Contributor[]; limit?: number }>(), {
+
+const props = withDefaults(defineProps<{ contributors: Contributor[]; limit?: number }>(), {
     limit: 4,
 });
+
+// tamaño del avatar, cuánto se superponen y el hueco extra del "mordisco"
+const SIZE = 32;
+const OVERLAP = 12;
+const GAP = 3;
+
+const visibleContributors = computed(() =>
+    props.contributors.slice(0, props.limit),
+);
+
+const totalStacked = computed(() =>
+    visibleContributors.value.length + (props.contributors.length > props.limit ? 1 : 0),
+);
+
+function stackStyle(index: number) {
+    const style: Record<string, string> = {
+        zIndex: String(totalStacked.value - index),
+    };
+
+    if (index === 0) return style;
+
+    const holeCenterX = OVERLAP - SIZE / 2;
+    const holeRadius = SIZE / 2 + GAP;
+    const mask = `radial-gradient(circle at ${holeCenterX}px 50%, transparent 0 ${holeRadius}px, #000 ${holeRadius + 1}px 100%)`;
+
+    style.marginLeft = `-${OVERLAP}px`;
+    style.maskImage = mask;
+    style.WebkitMaskImage = mask;
+
+    return style;
+}
+
 const initials = (value: string) => value.slice(0, 2).toUpperCase();
 </script>

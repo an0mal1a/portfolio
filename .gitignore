@@ -24,7 +24,7 @@ logs
 .env
 .env.*
 !.env.example
-´
+
 # Python & Rust
 .venv
 __pycache__/

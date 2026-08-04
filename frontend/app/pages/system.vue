@@ -292,8 +292,22 @@
                             title="API pública"
                             description="El servicio Rust es el borde de lectura del sistema y el único backend expuesto al navegador."
                         />
+                        <div class="mt-7 flex flex-wrap items-center gap-2">
+                            <a
+                                href="https://rust-api.impablo.dev/docs"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex cursor-pointer items-center gap-2 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-background transition-transform hover:-translate-y-0.5"
+                            >
+                                Abrir documentación Swagger
+                                <ArrowUpRight :size="16" />
+                            </a>
+                            <span class="rounded-sm border border-line bg-surface px-2 py-1 text-xs text-muted"
+                                >7 rutas públicas</span
+                            >
+                        </div>
                         <div
-                            class="mt-9 overflow-hidden rounded-sm border border-line bg-surface"
+                            class="mt-5 overflow-hidden rounded-sm border border-line bg-surface"
                         >
                             <div
                                 class="grid grid-cols-[4rem_1fr] gap-3 border-b border-line px-3 py-2 text-xs text-muted sm:grid-cols-[4rem_11rem_1fr]"
@@ -342,25 +356,60 @@
                         <DocHeading
                             eyebrow="Aplicación / 03"
                             title="Python / Procesos internos"
-                            description="Python/FastAPI no sirve contenido al navegador. Sincroniza GitHub periódicamente para mantener los repositorios y proyectos actualizados."
+                            description="Python/FastAPI trabaja detrás del producto: arranca los jobs, sincroniza GitHub y mantiene actualizado el grafo de repositorios sin entrar en la ruta de lectura del navegador."
                         />
-                        <ol class="mt-9 grid gap-2 sm:grid-cols-2">
-                            <li
+                        <div class="mt-7 flex flex-wrap items-center gap-2">
+                            <a
+                                href="https://python-api.impablo.dev/docs"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex cursor-pointer items-center gap-2 rounded-sm border border-line bg-surface px-3 py-2 text-xs font-medium transition-colors hover:bg-surface-raised"
+                            >
+                                Ver documentación de jobs
+                                <ArrowUpRight :size="16" />
+                            </a>
+                            <span class="rounded-sm border border-line px-2 py-1 text-xs text-muted"
+                                >/jobs · /jobs/status</span
+                            >
+                        </div>
+                        <div class="mt-9 grid gap-2 sm:grid-cols-2">
+                            <article
                                 v-for="(step, index) in workerSteps"
-                                :key="step"
+                                :key="step.title"
                                 class="flex gap-3 rounded-sm border border-line bg-surface p-3"
                             >
                                 <span
-                                    class="grid size-7 shrink-0 place-items-center rounded-sm border border-line bg-background text-xs text-muted"
+                                    class="grid size-7 shrink-0 place-items-center rounded-sm border border-line bg-background font-mono text-xs text-muted"
                                     >{{ index + 1 }}</span
                                 >
-                                <p
-                                    class="m-0 pt-1 text-xs leading-5 text-muted"
-                                >
-                                    {{ step }}
-                                </p>
-                            </li>
-                        </ol>
+                                <div class="min-w-0">
+                                    <strong class="block text-sm font-medium">{{ step.title }}</strong>
+                                    <p class="mt-1 mb-0 text-xs leading-5 text-muted">{{ step.text }}</p>
+                                    <code class="mt-3 block w-fit rounded-sm border border-line bg-background px-1.5 py-1 font-mono text-[10px] text-muted">{{ step.signal }}</code>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="mt-2 grid gap-2 lg:grid-cols-[1.15fr_.85fr]">
+                            <div class="overflow-hidden rounded-sm border border-line bg-surface">
+                                <div class="flex h-10 items-center justify-between border-b border-line px-3 text-xs text-muted">
+                                    <span class="flex items-center gap-2"><RefreshCw :size="16" />Ciclo del worker</span>
+                                    <span>independiente de la petición</span>
+                                </div>
+                                <div class="grid gap-px bg-line p-px sm:grid-cols-2">
+                                    <div v-for="stage in workerStages" :key="stage.title" class="bg-surface p-3">
+                                        <strong class="block text-sm font-medium">{{ stage.title }}</strong>
+                                        <p class="mt-1 mb-0 text-xs leading-5 text-muted">{{ stage.text }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <Callout title="Por qué no lo hace Rust">
+                                La API pública necesita respuestas pequeñas y predecibles. La sincronización, en cambio, tiene credenciales, llamadas externas y trabajo que puede tardar. Separarlo permite que un fallo de GitHub no bloquee la navegación.
+                            </Callout>
+                        </div>
+                        <CodeBlock
+                            filename="crons/tasks/github_sync.py"
+                            :lines="workerCode"
+                        />
                     </article>
 
                     <article
@@ -437,6 +486,8 @@
                         <CodeBlock
                             filename="docker-compose.yml"
                             :lines="dockerCode"
+                            collapsible
+                            :preview-lines="15"
                         />
                     </article>
 
@@ -806,8 +857,18 @@ const endpoints = [
     },
     {
         method: "GET",
+        path: "/projects/{slug}",
+        detail: "Detalle de un proyecto publicado por su slug.",
+    },
+    {
+        method: "GET",
         path: "/repositories",
         detail: "Repositorios públicos con lenguajes y colaboradores.",
+    },
+    {
+        method: "GET",
+        path: "/repositories/{slug}",
+        detail: "Detalle de un repositorio público por su slug.",
     },
     {
         method: "GET",
@@ -819,13 +880,53 @@ const endpoints = [
         path: "/contact",
         detail: "Envío de contacto limitado mediante el pool de escritura.",
     },
+    {
+        method: "GET",
+        path: "/",
+        detail: "Health check raíz para monitores y comprobaciones manuales.",
+    },
 ];
 
 const workerSteps = [
-    "El scheduler arranca con el ciclo de vida de FastAPI.",
-    "Nuestro cliente de GitHub recoge los metadatos, lenguajes y colaboradores de los repositorios.",
-    "Los datos se normalizan y actualizan mediante un rol de escritura restringido.",
-    "Las claves foráneas conectan la información sincronizada con los proyectos.",
+    {
+        title: "Arranque controlado",
+        text: "El lifespan de FastAPI levanta APScheduler una sola vez y deja preparado el job diario, con zona horaria de Madrid.",
+        signal: "lifespan → scheduler",
+    },
+    {
+        title: "Lectura de GitHub",
+        text: "El cliente recorre los repositorios de la cuenta y obtiene metadatos, lenguajes, temas y colaboradores.",
+        signal: "GitHubClient.process_repositories()",
+    },
+    {
+        title: "Escritura acotada",
+        text: "Cada entidad se actualiza con el rol de sincronización. Si falta una pieza, ese repositorio se omite sin tumbar el resto del ciclo.",
+        signal: "sync_writer · fail soft",
+    },
+    {
+        title: "Relaciones resueltas",
+        text: "Repositorios, cuentas y proyectos quedan relacionados en PostgreSQL para que Rust pueda leerlos sin repetir trabajo.",
+        signal: "accounts → repositories → projects",
+    },
+];
+
+const workerStages = [
+    {
+        title: "Al iniciar",
+        text: "Se programa una primera ejecución breve después del arranque para no esperar al primer ciclo nocturno.",
+    },
+    {
+        title: "Cada noche",
+        text: "El job vuelve a ejecutarse a las 00:00 y refresca solo la fuente que cambia: GitHub.",
+    },
+    {
+        title: "Si falta configuración",
+        text: "Sin token o con credenciales inválidas, el proceso se detiene y deja la API pública intacta.",
+    },
+    {
+        title: "Al apagar",
+        text: "El lifespan cierra el scheduler para no dejar tareas colgando ni duplicar ejecuciones.",
+    },
 ];
 
 const services = [
@@ -895,6 +996,19 @@ const frontendCode = [
     "// Cada recurso conserva su propio estado y error.",
     "// La hidratación reintenta solo las peticiones fallidas.",
     "retryAfterHydration(repositories.error, repositories.refresh)",
+];
+
+const workerCode = [
+    "async def sync_github():",
+    "    repositories = client.process_repositories()",
+    "    for repository in repositories:",
+    "        owner_id = db.upsert_account(repository.owner)",
+    "        repo_id = db.upsert_repository(repository, owner_id)",
+    "        db.sync_languages(repo_id, repository.languages)",
+    "        db.sync_topics(repo_id, repository.topics)",
+    "        db.sync_contributors(repo_id, repository.contributors)",
+    "",
+    "# Rust solo lee el resultado ya relacionado.",
 ];
 
 const dockerCode = [
