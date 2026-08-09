@@ -732,8 +732,7 @@ onBeforeUnmount(() => {
     font-family: var(--font-display);
     font-size: clamp(3.5rem, 7vw, 8rem);
     font-weight: 600;
-    line-height: 0.7;
-    letter-spacing: -0.025em;
+    line-height: 0.7; 
 }
 
 .project-story__open-icon {
