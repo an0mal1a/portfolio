@@ -79,6 +79,30 @@ CREATE TABLE github.accounts (
         )
 );
 
+CREATE TABLE github.sync_jobs (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    completed_at TIMESTAMPTZ,
+    status TEXT NOT NULL DEFAULT 'in_progress',
+    repositories_found INTEGER NOT NULL DEFAULT 0,
+    repositories_created INTEGER NOT NULL DEFAULT 0,
+    repositories_updated INTEGER NOT NULL DEFAULT 0,
+    repositories_failed INTEGER NOT NULL DEFAULT 0,
+    duration_ms INTEGER,
+    error TEXT,
+
+    CONSTRAINT sync_jobs_status_check
+        CHECK (
+            status IN (
+                'in_progress',
+                'completed',
+                'failed'
+            )
+        )
+);
+
+CREATE INDEX sync_jobs_started_at_idx ON github.sync_jobs (started_at DESC);
 
 CREATE TABLE github.repositories (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
