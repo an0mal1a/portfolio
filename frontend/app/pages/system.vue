@@ -165,31 +165,7 @@
                             internos y PostgreSQL mantiene las relaciones.
                         </p>
 
-                        <div class="mt-10 grid gap-2 sm:grid-cols-3">
-                            <div
-                                v-for="metric in metrics"
-                                :key="metric.label"
-                                class="rounded-sm border border-line bg-surface p-3"
-                            >
-                                <div
-                                    class="flex items-center justify-between text-muted"
-                                >
-                                    <component
-                                        :is="metric.icon"
-                                        :size="16"
-                                    /><span class="text-[10px]">{{
-                                        metric.change
-                                    }}</span>
-                                </div>
-                                <strong
-                                    class="mt-7 block text-2xl font-medium tracking-[-0.04em]"
-                                    >{{ metric.value }}</strong
-                                >
-                                <span class="mt-1 block text-xs text-muted">{{
-                                    metric.label
-                                }}</span>
-                            </div>
-                        </div>
+                        <SystemStatusPanel class="mt-10" />
 
                         <section
                             class="mt-3 overflow-hidden rounded-sm border border-line bg-background-secondary"
@@ -303,7 +279,7 @@
                                 <ArrowUpRight :size="16" />
                             </a>
                             <span class="rounded-sm border border-line bg-surface px-2 py-1 text-xs text-muted"
-                                >7 rutas públicas</span
+                                >8 rutas públicas</span
                             >
                         </div>
                         <div
@@ -884,6 +860,11 @@ const endpoints = [
         method: "GET",
         path: "/",
         detail: "Health check raíz para monitores y comprobaciones manuales.",
+    },
+    {
+        method: "GET",
+        path: "/system/status",
+        detail: "Estado concurrente de base de datos, worker, GitHub y SMTP.",
     },
 ];
 
