@@ -4,6 +4,7 @@ mod core;
 mod routes;
 mod services;
 
+use std::time::Instant;
 use std::{net::SocketAddr, sync::Arc};
 
 use crate::{
@@ -37,6 +38,7 @@ async fn main() {
     let state = AppState {
         reader_db,
         writer_db,
+        started_at: Instant::now(),
     };
 
     // Rate limit state

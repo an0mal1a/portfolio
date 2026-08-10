@@ -22,6 +22,7 @@ pub struct Config {
     pub smtp_host: String,
     pub from_name: String,
     pub from_email: String,
+    pub python_api_url: String,
 }
 
 impl Config {
@@ -49,6 +50,8 @@ impl Config {
             smtp_host: env::var("SMTP_HOST").unwrap_or_default(),
             from_name: env::var("FROM_NAME").unwrap_or_default(),
             from_email: env::var("FROM_EMAIL").unwrap_or_default(),
+            python_api_url: env::var("PYTHON_API_URL")
+                .unwrap_or_else(|_| "http://python-api:8001".to_string()),
         })
     }
 }

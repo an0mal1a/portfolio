@@ -11,6 +11,7 @@ pub mod health;
 pub mod openapi;
 pub mod projects;
 pub mod repositories;
+pub mod system;
 
 #[derive(OpenApi)]
 #[openapi(
@@ -24,7 +25,8 @@ pub mod repositories;
         (name = "Repositories", description = "Repositorios públicos"),
         (name = "Projects", description = "Proyectos publicados"),
         (name = "Clients", description = "Clientes del portfolio"),
-        (name = "Contact", description = "Envío de mensajes de contacto")
+        (name = "Contact", description = "Envío de mensajes de contacto"),
+        (name = "System", description = "Estado operativo de la plataforma")
     )
 )]
 struct ApiDoc;
@@ -36,4 +38,5 @@ pub fn router(contact_limiter: Arc<RateLimitState>) -> OpenApiRouter<AppState> {
         .nest("/clients", clients::router())
         .nest("/contact", contact::router(contact_limiter))
         .merge(health::router())
+        .merge(system::router())
 }
