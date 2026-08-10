@@ -23,6 +23,7 @@ class DBClient:
 
     """
     This function returns only 1 connection to postgresql (no pool)
+    as a context manager to use `with` statement
     """
     @contextmanager
     def get_db_connection(self): 
@@ -35,5 +36,19 @@ class DBClient:
             row_factory=dict_row
         ) as conn:
             yield conn
+
+    """
+    This function returns only 1 connection to postgresql (no pool)
+    to store as a variable
+    """
+    def connection(self):
+        return connect(
+            dbname=self.database,
+            user=self.username,
+            password=self.__password,
+            host=self.host,
+            port=self.port,
+            row_factory=dict_row
+        )
 
 

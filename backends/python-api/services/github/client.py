@@ -1,5 +1,5 @@
 # DB Client
-from services.database.client import DBClient
+from services.database import DBClient
 
 # Internal modules
 from .models import Repository, Owner, Lang

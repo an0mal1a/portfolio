@@ -1,4 +1,4 @@
-from services.database.client import DBClient
+from services.database import DBClient
 
 from datetime import datetime
 
@@ -37,6 +37,8 @@ class JobberLog:
                     """, (datetime.now().isoformat(),) 
                 )
 
+                conn.commit()
+
                 gh_id = cur.fetchone()["id"]
                 if gh_id is not None:
                     self.job_id = gh_id
@@ -62,6 +64,7 @@ class JobberLog:
             with conn.cursor() as cur:
                 cur.execute(query, (v, self.job_id))
                 return cur.rowcount > 0
+            conn.commit()
 
     def increase_field(self, field, n = 1) -> bool:
         """
@@ -81,3 +84,5 @@ class JobberLog:
             with conn.cursor() as cur:
                 cur.execute(query, (n, self.job_id))
                 return cur.rowcount > 0
+
+            conn.commit()

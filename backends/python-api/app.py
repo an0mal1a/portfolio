@@ -19,12 +19,3 @@ app.add_middleware(
 
 # Router construct
 app.include_router(api_router)
-
-# Health path
-@app.get("/")
-@app.get("/health")
-def health():
-    return {
-        "status": "ok",
-        "message": "Server is running correctly (python)!"
-    }
