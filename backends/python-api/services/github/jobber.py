@@ -31,7 +31,7 @@ class JobberLog:
                     """
                     INSERT INTO github.sync_jobs (
                         started_at,
-                        status,
+                        status
                     ) VALUES (%s, 'in_progress')
                     RETURNING id
                     """, (datetime.now().isoformat(), ) 
