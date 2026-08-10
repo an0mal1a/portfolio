@@ -54,7 +54,7 @@ class JobberLog:
             raise ValueError("Field not allowed")
 
         query = f"""
-            UPDATE github_sync_jobs
+            UPDATE github.sync_jobs
             SET {field} = %s
             WHERE id = %s
             RETURNING id
@@ -74,7 +74,7 @@ class JobberLog:
             raise ValueError("Field not allowed")
 
         query = f"""
-            UPDATE github_sync_jobs
+            UPDATE github.sync_jobs
             SET {field} = {field} + %s
             WHERE id = %s
             RETURNING id
