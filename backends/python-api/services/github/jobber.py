@@ -32,9 +32,9 @@ class JobberLog:
                     INSERT INTO github.sync_jobs (
                         started_at,
                         status,
-                    ) VALUES (%s, %s)
+                    ) VALUES (%s, 'in_progress)
                     RETURNING id
-                    """, (datetime.now().isoformat(),) 
+                    """, (datetime.now().isoformat(), ) 
                 )
 
                 conn.commit()
@@ -62,7 +62,7 @@ class JobberLog:
 
         with self._db_client.get_db_connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(query, (v, self.job_id))
+                cur.execute(query, (v, selzf.job_id))
                 return cur.rowcount > 0
             conn.commit()
 
