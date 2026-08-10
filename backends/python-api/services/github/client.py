@@ -486,7 +486,8 @@ class GitHubClient:
                         datetime.now(ZoneInfo(TIMEZONE)).isoformat() # SyncedAt
                     )
                 )
-                repo_id = cur.fetchone()["id"]
-                inserted = cur.fetchone()["inserted"]
+                row = cur.fetchone()
+                repo_id = row["id"]
+                inserted = row["inserted"]
 
         return repo_id, inserted
