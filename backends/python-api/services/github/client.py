@@ -397,7 +397,7 @@ class GitHubClient:
     """
     function to add a repo to the database
     """
-    def add_repo(self, repo: Repository, owner_id: int):
+    def add_repo(self, repo: Repository, owner_id: int) -> int:
         if not self._db_client:
             self._db_client = DBClient()
         
@@ -459,7 +459,7 @@ class GitHubClient:
                         github_updated_at = EXCLUDED.github_updated_at,
                         github_pushed_at = EXCLUDED.github_pushed_at,
                         synced_at = EXCLUDED.synced_at
-                    RETURNING id
+                    RETURNING id, (xmax = 0) as inserted
                     """,
                     (
                         repo.id,
@@ -487,5 +487,6 @@ class GitHubClient:
                     )
                 )
                 repo_id = cur.fetchone()["id"]
+                inserted = cur.fetchone()["inserted"]
 
-        return repo_id
+        return repo_id, inserted
