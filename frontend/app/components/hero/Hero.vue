@@ -97,7 +97,7 @@
                             width="600"
                             height="480"
                             fetchpriority="high"
-                            class="absolute right-[-7%] bottom-0 w-[86%] max-w-none saturate-50"
+                            class="absolute right-[-7%] bottom-0 w-[98%] max-w-none"
                         />
                         <div
                             class="absolute right-3 bottom-3 flex items-center gap-2 rounded-sm border border-white/10 bg-background/75 px-2 py-1 text-xs text-white/70 backdrop-blur-md"
