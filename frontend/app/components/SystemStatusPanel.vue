@@ -74,7 +74,7 @@
                     <ServiceRow label="PostgreSQL" :service="current.services.database" :detail="`${current.services.database.reader_pool.status} / ${current.services.database.writer_pool.status}`" />
                     <ServiceRow label="Python worker" :service="current.services.python_worker" detail="FastAPI · jobs" />
                     <ServiceRow label="GitHub sync" :service="current.github" :detail="`${current.github.repositories} repos · ${current.github.languages} lenguajes`" />
-                    <ServiceRow label="SMTP" :service="current.services.smtp" detail="opcional" />
+                    <ServiceRow label="SMTP" :service="current.services.smtp" detail="mail" />
                 </div>
             </div>
         </div>
