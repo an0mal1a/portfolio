@@ -18,12 +18,13 @@ def setup_scheduler():
         return
 
     # ── task imports ───────────────────────
-    from .tasks.github_sync import sync_gihub
+    from .tasks.gh_profile_sync import sync_profile
+    from .tasks.gh_repo_sync import sync_repos
 
     # ── Github Sync - every day at 00:00 ───────────────────────
     next_run_time = datetime.now(TIMEZONE_FRM) + timedelta(seconds=10)
-    scheduler.add_job(sync_gihub, CronTrigger(hour=0, minute=0, timezone=TIMEZONE_FRM),kwargs={"gh_token": GH_TOKEN, "gh_user": GH_USERNAME}, next_run_time=next_run_time, misfire_grace_time=60)
-    # scheduler.add_job(sync_gihub, CronTrigger(hour=0, minute=0, timezone=TIMEZONE_FRM),kwargs={"gh_token": GH_TOKEN, "gh_user": GH_USERNAME}, misfire_grace_time=60)
+    scheduler.add_job(sync_repos, CronTrigger(hour=0, minute=0, timezone=TIMEZONE_FRM),kwargs={"gh_token": GH_TOKEN, "gh_user": GH_USERNAME}, next_run_time=next_run_time, misfire_grace_time=60)
+    scheduler.add_job(sync_profile, CronTrigger(hour=0, minute=0, timezone=TIMEZONE_FRM),kwargs={"gh_token": GH_TOKEN, "gh_user": GH_USERNAME}, next_run_time=next_run_time, misfire_grace_time=60)
 
     scheduler.start()
     print(f"Scheduler started with {len(scheduler.get_jobs())} jobs")

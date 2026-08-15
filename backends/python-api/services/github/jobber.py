@@ -1,12 +1,20 @@
 from services.database import DBClient
-
 from datetime import datetime
+from enum import Enum
+
+class TaskType(Enum):
+    REPO_SYNC = "repo_sync"
+    PROFILE = "profile"
 
 class JobberLog:
     """
     This service has been created as a "beautiful" way to provide the db
     connection to the cronjobs tasks, allowing (for github) to set the job started
     change the status, save details, etc. 
+
+    - Possible task `type` field values:
+        - REPO_SYNC
+        - PROFILE
 
     - Possible `status` field values:
         - `in_progress`
@@ -15,9 +23,10 @@ class JobberLog:
 
     The name jobber is just for pure fun :)
     """
-    def __init__(self):
+    def __init__(self, task_type: TaskType = TaskType.REPO_SYNC):
         self.job_id = None
         self._db_client = DBClient()
+        self.task_type = task_type
 
         # Define the valid fields used by `update_field` && `increase_field`
         self.VALID_FIELDS = ["started_at", "completed_at", "status", "repositories_found", "repositories_created", "repositories_updated", "repositories_failed", "duration_ms", "error", ]
@@ -31,10 +40,11 @@ class JobberLog:
                     """
                     INSERT INTO github.sync_jobs (
                         started_at,
-                        status
-                    ) VALUES (%s, 'in_progress')
+                        status,
+                        type
+                    ) VALUES (%s, 'in_progress', %s)
                     RETURNING id
-                    """, (datetime.now().isoformat(), ) 
+                    """, (datetime.now().isoformat(), self.task_type) 
                 )
 
                 conn.commit()

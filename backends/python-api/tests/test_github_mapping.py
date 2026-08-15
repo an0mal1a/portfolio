@@ -1,6 +1,6 @@
 import unittest
 
-from services.github.client import GitHubClient
+from services.github.repo_client import GitHubClient
 
 
 class GitHubMappingTests(unittest.TestCase):

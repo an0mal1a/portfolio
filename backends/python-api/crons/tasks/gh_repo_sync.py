@@ -1,24 +1,23 @@
 # GitHub service
-from services.github.errors import GitHubInvalidAuth
-from services.github.client import GitHubClient
 from services.github.models import Repository
-
-# Jobber (log) service
+from services.github.errors import GitHubInvalidAuth
+from services.github.repo_client import RepoClient
 from services.github.jobber import JobberLog
 
-# Shared errors
+# common error
 from services.errors import MissingData
 
+# Other
 from datetime import datetime
 
-def sync_gihub(gh_token, gh_user) -> bool: 
+def sync_repos(gh_token, gh_user) -> bool: 
     start_time = datetime.now()
     if not gh_token:
         print("No github token, stopping task")
         return False
     
     try:
-        gh_client = GitHubClient(gh_token=gh_token, gh_user=gh_user)
+        gh_client = RepoClient(gh_token=gh_token, gh_user=gh_user)
     except (GitHubInvalidAuth, MissingData, Exception) as e:
         print(f"[CRONJOB.GH_SYNC_TASK] !> Invalid auth token, details={e}")
         return False
