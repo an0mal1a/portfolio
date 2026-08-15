@@ -121,37 +121,23 @@ class ProfileClient(GitHubClient):
                         bio, avatar, description, followers,
                         following, links, contributions
                     ) VALUES (
-                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                        
-                        %s, %s, %s, %s, %s, %s, %s, %s
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                     ) 
                     ON CONFLICT (github_id, username) 
                     DO UPDATE SET
-                        name = EXCLUDED.name
-                        blog = EXCLUDED.blog
-                        bio = EXCLUDED.bio
-                        avatar = EXCLUDED.avatar
-                        description = EXCLUDED.description
-                        follower = EXCLUDED.follower
-                        following = EXCLUDED.following
-                        links = EXCLUDED.links
+                        name = EXCLUDED.name,
+                        blog = EXCLUDED.blog,
+                        bio = EXCLUDED.bio,
+                        avatar = EXCLUDED.avatar,
+                        description = EXCLUDED.description,
+                        follower = EXCLUDED.follower,
+                        following = EXCLUDED.following,
+                        links = EXCLUDED.links,
                         contributions = EXCLUDED.contributions
                     """,
                     (
-                        # Insert set 
                         profile_info.id,
                         profile_info.username,
-                        profile_info.name,
-                        profile_info.blog,
-                        profile_info.bio,
-                        profile_info.avatar,
-                        profile_info.description,
-                        profile_info.followers,
-                        profile_info.following,
-                        Jsonb([link.model_dump() for link in profile_info.links]),
-                        Jsonb([contrib.model_dump() for contrib in profile_info.contributions]),
-
-                        # Update set
                         profile_info.name,
                         profile_info.blog,
                         profile_info.bio,
