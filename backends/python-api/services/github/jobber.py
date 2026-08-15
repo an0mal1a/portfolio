@@ -44,7 +44,7 @@ class JobberLog:
                         type
                     ) VALUES (%s, 'in_progress', %s)
                     RETURNING id
-                    """, (datetime.now().isoformat(), self.task_type) 
+                    """, (datetime.now().isoformat(), self.task_type.value) 
                 )
 
                 conn.commit()

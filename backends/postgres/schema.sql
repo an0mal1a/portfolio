@@ -118,7 +118,7 @@ CREATE TABLE github.sync_jobs (
                 'repo_sync', 
                 'profile',
             )
-        )
+        ),
         
     CONSTRAINT sync_jobs_status_check
         CHECK (
