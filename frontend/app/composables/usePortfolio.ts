@@ -2,6 +2,8 @@ import type { AsyncDataRequestStatus } from "#app";
 import type {
     Client,
     ContactPayload,
+    GitHubProfile,
+    GitHubProfileResponse,
     PortfolioProject,
     Project,
     Repository,
@@ -86,6 +88,45 @@ export const useRepositories = () => {
 
     return {
         repositories,
+        status: state.status,
+        error: state.error,
+        refresh: state.refresh,
+    };
+};
+
+export const useGithubProfile = () => {
+    const emptyProfile: GitHubProfile = {
+        id: null,
+        name: null,
+        username: null,
+        bio: null,
+        avatar: null,
+        followers: 0,
+        following: 0,
+        links: [],
+        contributions: [],
+    };
+
+    const state = useAsyncData(
+        "portfolio-github-profile",
+        () =>
+            $fetch<GitHubProfileResponse>(buildApiUrl("/github/me"), {
+                retry: 0,
+                timeout: 8_000,
+            }).then((response) => response.profile),
+        {
+            default: () => emptyProfile,
+            deep: false,
+            dedupe: "defer",
+        },
+    );
+
+    retryAfterHydration(state.error, state.refresh);
+
+    const profile = computed(() => state.data.value ?? emptyProfile);
+
+    return {
+        profile,
         status: state.status,
         error: state.error,
         refresh: state.refresh,

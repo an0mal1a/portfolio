@@ -62,6 +62,37 @@ export interface PortfolioProject extends Project {
     repository?: Repository;
 }
 
+export interface GitHubProfileLink {
+    provider: string;
+    url: string;
+}
+
+export interface GitHubContribution {
+    date: string;
+    commits: number;
+    contrib_level?: string | null;
+}
+
+export interface GitHubProfile {
+    id?: number | null;
+    name?: string | null;
+    account_id?: number | null;
+    username?: string | null;
+    blog?: string | null;
+    bio?: string | null;
+    avatar?: string | null;
+    followers?: number | null;
+    following?: number | null;
+    links?: GitHubProfileLink[] | null;
+    description?: string | null; 
+    contributions?: GitHubContribution[] | null;
+}
+
+export interface GitHubProfileResponse {
+    status: string;
+    profile: GitHubProfile;
+}
+
 export interface ContactPayload {
     name: string;
     email: string;
