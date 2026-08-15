@@ -6,7 +6,7 @@ from services.github.client import GitHubClient
 
 # Service/s data
 from services.github.models import Repository, Owner, Lang
-from services.github import MissingData
+from services.errors import MissingData
 
 # Internal modules
 from config import TIMEZONE
