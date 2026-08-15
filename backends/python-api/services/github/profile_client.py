@@ -123,14 +123,14 @@ class ProfileClient(GitHubClient):
                     ) VALUES (
                         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
                     ) 
-                    ON CONFLICT (github_id, username) 
+                    ON CONFLICT (github_id) 
                     DO UPDATE SET
                         name = EXCLUDED.name,
                         blog = EXCLUDED.blog,
                         bio = EXCLUDED.bio,
                         avatar = EXCLUDED.avatar,
                         description = EXCLUDED.description,
-                        follower = EXCLUDED.follower,
+                        followers = EXCLUDED.followers,
                         following = EXCLUDED.following,
                         links = EXCLUDED.links,
                         contributions = EXCLUDED.contributions

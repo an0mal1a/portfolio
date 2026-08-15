@@ -84,6 +84,7 @@ def sync_repos(gh_token, gh_user) -> bool:
     db_jobber.update_field("duration_ms", elapsed)
 
     db_jobber.update_field("status", "completed")
+    print(f"[CRONJOB.GH_SYNC_TASK] *> Task={db_jobber.job_id} ended successfully")
 
 
 

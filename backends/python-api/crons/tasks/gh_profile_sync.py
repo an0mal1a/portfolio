@@ -48,3 +48,4 @@ def sync_profile(gh_token, gh_user) -> bool:
     db_jobber.update_field("duration_ms", elapsed)
 
     db_jobber.update_field("status", "completed")
+    print(f"[CRONJOB.GH_PROFILE_TASK] *> Task={db_jobber.job_id} ended successfully")
