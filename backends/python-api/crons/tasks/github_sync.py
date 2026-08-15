@@ -33,39 +33,46 @@ def sync_gihub(gh_token, gh_user) -> bool:
     # Set repos_found in db
     db_jobber.update_field("repositories_found", len(gh_repos_info))
     
-    for repo in gh_repos_info:
-        # Account info
-        owner_id = gh_client.add_owner(repo.owner)
-        
-        if not owner_id:
-            db_jobber.increase_field('repositories_failed')
-            print(f"[CRONJOB.GH_SYNC_TASK] !> Missing owner_id, ignoring repo={repo.name}, owner_id={owner_id}")
-            continue
-
-        repo_id, inserted = gh_client.add_repo(repo, owner_id)
-
-        if not repo_id:
-            db_jobber.increase_field('repositories_failed')
-            print(f"[CRONJOB.GH_SYNC_TASK] !> Missing repo_id, ignoring repo={repo.name}, repo_id={repo_id}")
-            continue
-
-        if inserted:
-            db_jobber.increase_field('repositories_created')
-        else: 
-            db_jobber.increase_field('repositories_updated')
+    try:
+        for repo in gh_repos_info:
+            # Account info
+            owner_id = gh_client.add_owner(repo.owner)
             
-        # contributors         
-        for contributors in repo.contributors:
-            contributor_id = gh_client.add_owner(contributors)
-            gh_client.add_contributor(repo_id, contributor_id)
+            if not owner_id:
+                db_jobber.increase_field('repositories_failed')
+                print(f"[CRONJOB.GH_SYNC_TASK] !> Missing owner_id, ignoring repo={repo.name}, owner_id={owner_id}")
+                continue
+
+            repo_id, inserted = gh_client.add_repo(repo, owner_id)
+
+            if not repo_id:
+                db_jobber.increase_field('repositories_failed')
+                print(f"[CRONJOB.GH_SYNC_TASK] !> Missing repo_id, ignoring repo={repo.name}, repo_id={repo_id}")
+                continue
+
+            if inserted:
+                db_jobber.increase_field('repositories_created')
+            else: 
+                db_jobber.increase_field('repositories_updated')
+                
+            # contributors         
+            for contributors in repo.contributors:
+                contributor_id = gh_client.add_owner(contributors)
+                gh_client.add_contributor(repo_id, contributor_id)
 
 
-        # Topics info -> Depends on repo info
-        gh_client.add_topics(repo_id, repo.topics)
+            # Topics info -> Depends on repo info
+            gh_client.add_topics(repo_id, repo.topics)
 
-        # Repo lang -> Depends on repo info
-        for lang in repo.languages:
-            gh_client.add_lang(repo_id, lang)
+            # Repo lang -> Depends on repo info
+            for lang in repo.languages:
+                gh_client.add_lang(repo_id, lang)
+
+    except Exception as e:
+        print(f"[CRONJOB.GH_SYNC_TASK] !> error={e}")
+        db_jobber.update_field("status", "failed")
+        db_jobber.update_field("error", str(e))
+
 
     # Calculate & push elapsed time
     end_time = datetime.now()
