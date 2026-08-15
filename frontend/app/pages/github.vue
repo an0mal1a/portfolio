@@ -135,13 +135,7 @@
                     <a href="#repositories-title" class="flex shrink-0 items-center gap-2 px-1 pb-3 text-sm text-[#8b949e] hover:text-[#f0f6fc]"><GitFork :size="16" />Repositorios <span class="rounded-full bg-[#30363d] px-1.5 py-px text-[11px] text-[#c9d1d9]">{{ repositories.length }}</span></a>
                 </nav>
 
-                <section class="mb-8 grid gap-3 sm:grid-cols-3" data-reveal>
-                    <div class="rounded-md border border-[#30363d] bg-[#161b22] p-4"><p class="m-0 text-xs uppercase tracking-[0.12em] text-[#8b949e]">Contribuciones</p><p class="mt-2 mb-0 text-2xl font-semibold text-[#f0f6fc]">{{ totalContributions.toLocaleString() }}</p><p class="mt-1 mb-0 text-xs text-[#8b949e]">en el último año</p></div>
-                    <div class="rounded-md border border-[#30363d] bg-[#161b22] p-4"><p class="m-0 text-xs uppercase tracking-[0.12em] text-[#8b949e]">Repositorios</p><p class="mt-2 mb-0 text-2xl font-semibold text-[#f0f6fc]">{{ repositories.length.toString().padStart(2, '0') }}</p><p class="mt-1 mb-0 text-xs text-[#8b949e]">proyectos públicos</p></div>
-                    <div class="rounded-md border border-[#30363d] bg-[#161b22] p-4"><p class="m-0 text-xs uppercase tracking-[0.12em] text-[#8b949e]">Tecnologías</p><p class="mt-2 mb-0 text-2xl font-semibold text-[#f0f6fc]">{{ languages.length.toString().padStart(2, '0') }}</p><p class="mt-1 mb-0 text-xs text-[#8b949e]">lenguajes principales</p></div>
-                </section>
-
-                <div class="markdown-body p-6 rounded-md shadow-md my-5" v-html="renderedBio" /> 
+                <div class="markdown-body p-6 rounded-md shadow-md my-5" v-html="renderedBio" data-reveal/> 
 
                 <section
                     v-if="profile.contributions?.length"
