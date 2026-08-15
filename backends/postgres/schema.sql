@@ -58,6 +58,25 @@ ALTER ROLE sync_writer
     NOREPLICATION;
 
 -- Github repositories tables
+CREATE TABLE github.profile (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    account_id BIGINT
+        REFERENCES github.accounts(id)
+        ON DELETE CASCADE,
+    username TEXT NOT NULL UNIQUE,
+    name TEXT,
+    blog TEXT,
+    bio TEXT,
+    avatar TEXT,
+    description TEXT,
+    followers INTEGER NOT NULL DEFAULT 0,
+    following INTEGER NOT NULL DEFAULT 0,
+    links JSONB,
+    contributions JSONB,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE github.accounts (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
@@ -269,6 +288,55 @@ CREATE INDEX projects_github_repository_id_idx ON portfolio.projects (github_rep
 CREATE INDEX projects_featured_idx ON portfolio.projects (is_featured) WHERE is_featured = TRUE;
 CREATE INDEX projects_github_repository_github_id_idx ON portfolio.projects (github_repository_github_id);
 
+
+-- profile.username -> resolve account_id
+CREATE OR REPLACE FUNCTION github.resolve_account_id()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    SELECT id
+    INTO NEW.account_id
+    FROM github.accounts
+    WHERE github_login = NEW.username;
+
+    IF NEW.account_id IS NULL THEN
+        RAISE EXCEPTION
+            'GitHub account not found for username: %',
+            NEW.username;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER resolve_account_id_before_save
+BEFORE INSERT OR UPDATE OF username
+ON github.profile
+FOR EACH ROW
+EXECUTE FUNCTION github.resolve_account_id();
+
+-- accounts.github_login -> profile.username
+CREATE OR REPLACE FUNCTION github.sync_profile_username()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE github.profile
+    SET username = NEW.github_login
+    WHERE account_id = NEW.id
+      AND username IS DISTINCT FROM NEW.github_login;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER sync_profile_username_after_update
+AFTER UPDATE OF github_login
+ON github.accounts
+FOR EACH ROW
+WHEN (OLD.github_login IS DISTINCT FROM NEW.github_login)
+EXECUTE FUNCTION github.sync_profile_username();
 
 -- Function to resolve internal github.repos (id) to portfolio.projects (github_id)
 CREATE OR REPLACE FUNCTION portfolio.resolve_project_repository()
