@@ -19,12 +19,12 @@ def sync_profile(gh_token, gh_user) -> bool:
     try:
         gh_client = ProfileClient(gh_token=gh_token, gh_user=gh_user)
     except (GitHubInvalidAuth, MissingData, Exception) as e:
-        print(f"[CRONJOB.GH_SYNC_TASK] !> Invalid auth token, details={e}")
+        print(f"[CRONJOB.GH_PROFILE_TASK] !> Invalid auth token, details={e}")
         return False
 
     db_jobber = JobberLog(task_type=TaskType.PROFILE)
     db_jobber.job_started()
-    print(f"[CRONJOB.GH_SYNC_TASK] > Starting GHProfile sync task [JOB_ID: {db_jobber.job_id}]")
+    print(f"[CRONJOB.GH_PROFILE_TASK] > Starting GHProfile sync task [JOB_ID: {db_jobber.job_id}]")
     
     # Get profile information
     gh_profile_info: Profile = gh_client.process_profile()
@@ -32,7 +32,7 @@ def sync_profile(gh_token, gh_user) -> bool:
     try:
         gh_client.add_profile(gh_profile_info)
     except Exception as e:
-        print(f"[CRONJOB.GH_SYNC_TASK] !> error={e}")
+        print(f"[CRONJOB.GH_PROFILE_TASK] !> error={e}")
         db_jobber.update_field("status", "failed")
         db_jobber.update_field("error", str(e))
 
