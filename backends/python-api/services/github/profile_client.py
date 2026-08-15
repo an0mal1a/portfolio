@@ -107,7 +107,7 @@ class ProfileClient(GitHubClient):
     """
     SQL Function to insert the Profile into DB
     """
-    def add_profile(profile_info: Profile):
+    def add_profile(self, profile_info: Profile):
         db_client = DBClient()
 
         with db_client.get_db_connection() as conn:
