@@ -6,9 +6,11 @@ from services.database import DBClient
 
 # Other
 from binascii import Error as BinasciiError
+from psycopg.types.json import Jsonb
 from json import JSONDecodeError
 from base64 import b64decode
 import requests
+
 
 class ProfileClient(GitHubClient):
     def __init__(self, gh_token, gh_user):
@@ -115,14 +117,29 @@ class ProfileClient(GitHubClient):
                 cur.execute(
                     """
                     INSERT INTO github.profile (
-                        username, name, blog, bio, 
-                        avatar, description, followers,
+                        github_id, username, name, blog, 
+                        bio, avatar, description, followers,
                         following, links, contributions
                     ) VALUES (
-                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
-                    )
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                        
+                        %s, %s, %s, %s, %s, %s, %s, %s
+                    ) 
+                    ON CONFLICT (github_id, username) 
+                    DO UPDATE SET
+                        name = EXCLUDED.name
+                        blog = EXCLUDED.blog
+                        bio = EXCLUDED.bio
+                        avatar = EXCLUDED.avatar
+                        description = EXCLUDED.description
+                        follower = EXCLUDED.follower
+                        following = EXCLUDED.following
+                        links = EXCLUDED.links
+                        contributions = EXCLUDED.contributions
                     """,
                     (
+                        # Insert set 
+                        profile_info.id,
                         profile_info.username,
                         profile_info.name,
                         profile_info.blog,
@@ -131,8 +148,19 @@ class ProfileClient(GitHubClient):
                         profile_info.description,
                         profile_info.followers,
                         profile_info.following,
-                        profile_info.links,
-                        profile_info.contributions,
+                        Jsonb([link.model_dump() for link in profile_info.links]),
+                        Jsonb([contrib.model_dump() for contrib in profile_info.contributions]),
+
+                        # Update set
+                        profile_info.name,
+                        profile_info.blog,
+                        profile_info.bio,
+                        profile_info.avatar,
+                        profile_info.description,
+                        profile_info.followers,
+                        profile_info.following,
+                        Jsonb([link.model_dump() for link in profile_info.links]),
+                        Jsonb([contrib.model_dump() for contrib in profile_info.contributions]),
                     )
                 )
 

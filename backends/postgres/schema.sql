@@ -60,9 +60,10 @@ ALTER ROLE sync_writer
 -- Github repositories tables
 CREATE TABLE github.profile (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    account_id BIGINT
+    account_id BIGINT 
         REFERENCES github.accounts(id)
         ON DELETE CASCADE,
+    github_id BIGINT NOT NULL UNIQUE,
     username TEXT NOT NULL UNIQUE,
     name TEXT,
     blog TEXT,

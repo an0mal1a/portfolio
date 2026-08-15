@@ -19,6 +19,8 @@ def sync_profile(gh_token, gh_user) -> bool:
     try:
         gh_client = ProfileClient(gh_token=gh_token, gh_user=gh_user)
     except (GitHubInvalidAuth, MissingData, Exception) as e:
+        db_jobber.update_field("status", "failed")
+        db_jobber.update_field("error", str(e))
         print(f"[CRONJOB.GH_PROFILE_TASK] !> Invalid auth token, details={e}")
         return False
 
@@ -31,10 +33,11 @@ def sync_profile(gh_token, gh_user) -> bool:
     
     try:
         gh_client.add_profile(gh_profile_info)
-    except Exception as e:
+    except Exception as e: 
         print(f"[CRONJOB.GH_PROFILE_TASK] !> error={e}")
         db_jobber.update_field("status", "failed")
         db_jobber.update_field("error", str(e))
+        return False
 
 
     # Calculate & push elapsed time

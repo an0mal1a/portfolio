@@ -19,6 +19,8 @@ def sync_repos(gh_token, gh_user) -> bool:
     try:
         gh_client = RepoClient(gh_token=gh_token, gh_user=gh_user)
     except (GitHubInvalidAuth, MissingData, Exception) as e:
+        db_jobber.update_field("status", "failed")
+        db_jobber.update_field("error", str(e))
         print(f"[CRONJOB.GH_SYNC_TASK] !> Invalid auth token, details={e}")
         return False
 
@@ -71,6 +73,7 @@ def sync_repos(gh_token, gh_user) -> bool:
         print(f"[CRONJOB.GH_SYNC_TASK] !> error={e}")
         db_jobber.update_field("status", "failed")
         db_jobber.update_field("error", str(e))
+        return False
 
 
     # Calculate & push elapsed time
