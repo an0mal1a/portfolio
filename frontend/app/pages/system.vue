@@ -838,12 +838,17 @@ const endpoints = [
     },
     {
         method: "GET",
-        path: "/repositories",
+        path: "/github/me",
+        detail: "Perfil público de gihub y contribuciones.",
+    },
+    {
+        method: "GET",
+        path: "/github/repositories",
         detail: "Repositorios públicos con lenguajes y colaboradores.",
     },
     {
         method: "GET",
-        path: "/repositories/{slug}",
+        path: "/github/repositories/{slug}",
         detail: "Detalle de un repositorio público por su slug.",
     },
     {
@@ -971,7 +976,7 @@ const safeguards = [
 const frontendCode = [
     "const repositories = useAsyncData(",
     "    'portfolio-repositories',",
-    "    () => $fetch('/repositories'),",
+    "    () => $fetch('/github/repositories'),",
     ")",
     "",
     "// Cada recurso conserva su propio estado y error.",

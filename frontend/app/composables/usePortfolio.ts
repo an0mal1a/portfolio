@@ -68,7 +68,7 @@ export const useRepositories = () => {
         "portfolio-repositories",
         () =>
             fetchCollection<RepositoriesResponse, Repository>(
-                "/repositories",
+                "/github/repositories",
                 (response) => response.repos,
             ),
         {

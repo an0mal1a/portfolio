@@ -121,7 +121,7 @@ class ProfileClient(GitHubClient):
                         bio, avatar, description, followers,
                         following, links, contributions
                     ) VALUES (
-                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
                     ) 
                     ON CONFLICT (github_id, username) 
                     DO UPDATE SET
