@@ -1,5 +1,5 @@
 use crate::core::{DBClient, defs::errors::DbConnectionError};
-use crate::services::repositories::modules::{Contributor, Repo};
+use crate::repositories::modules::{Contributor, Repo};
 
 async fn list_contributors(
     conn: &deadpool_postgres::Client,

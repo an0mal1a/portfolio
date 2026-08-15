@@ -7,8 +7,8 @@ use serde_json::{Value, json};
 use utoipa::ToSchema;
 use utoipa_axum::{router::OpenApiRouter, routes};
 
-use crate::services::repositories::modules::Project;
-use crate::services::repositories::read::projects;
+use crate::repositories::modules::Project;
+use crate::repositories::read::projects;
 use crate::{app_state::AppState, routes::openapi::ApiErrorResponse};
 
 #[derive(ToSchema)]

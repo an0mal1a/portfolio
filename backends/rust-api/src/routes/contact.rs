@@ -11,8 +11,8 @@ use crate::{
     services::{
         email::client::EmailClient,
         rate_limiter::limiter::{RateLimitState, rate_limit_middleware},
-        repositories::write,
     },
+    repositories::write,
 };
 
 // Contact model

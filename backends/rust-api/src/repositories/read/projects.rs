@@ -1,5 +1,5 @@
 use crate::core::{DBClient, defs::errors::DbConnectionError};
-use crate::services::repositories::modules::Project;
+use crate::repositories::modules::Project;
 
 pub async fn list_projects(db: &DBClient) -> Result<Vec<Project>, DbConnectionError> {
     let conn = db.get_db_connection().await?;

@@ -1,5 +1,5 @@
 use chrono::{DateTime, NaiveDate, Utc};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 #[derive(Serialize, ToSchema)]
@@ -75,4 +75,49 @@ pub struct Client {
     pub logo_url: Option<String>,
 
     pub created_at: Option<DateTime<Utc>>,
+}
+
+
+
+#[derive(Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ContribLevel {
+    None,
+    FirstQuartile,
+    SecondQuartile,
+    ThirdQuartile,
+    FourthQuartile
+}
+
+#[derive(Serialize, Deserialize, ToSchema)]
+pub struct GHLink {
+    provider: String,
+    url: String
+}
+
+#[derive(Serialize, Deserialize, ToSchema)]
+pub struct GHContributions {
+    date: String,
+    commits: i32,
+    contrib_level: ContribLevel
+}
+
+#[derive(Serialize, ToSchema)]
+pub struct GHProfile {
+    pub id: i64,
+    pub account_id: Option<i64>,
+    pub github_id: Option<i64>,
+
+    pub name: String,
+    pub avatar: Option<String>,
+    pub username: String,
+    pub blog: Option<String>,
+    pub bio: Option<String>,
+    pub description: Option<String>,
+    
+    pub followers: Option<i32>,
+    pub following: Option<i32>,
+
+    pub links: Option<Vec<GHLink>>,
+    pub contributions: Option<Vec<GHContributions>>,
 }

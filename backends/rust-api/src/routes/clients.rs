@@ -7,7 +7,7 @@ use utoipa_axum::{router::OpenApiRouter, routes};
 use crate::{
     app_state::AppState,
     routes::openapi::ApiErrorResponse,
-    services::repositories::{modules::Client, read::clients},
+    repositories::{modules::Client, read::clients},
 };
 
 #[derive(ToSchema)]

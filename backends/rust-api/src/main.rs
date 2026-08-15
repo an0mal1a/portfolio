@@ -3,6 +3,7 @@ mod config;
 mod core;
 mod routes;
 mod services;
+mod repositories;
 
 use std::time::Instant;
 use std::{net::SocketAddr, sync::Arc};

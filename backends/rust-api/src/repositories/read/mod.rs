@@ -1,3 +1,3 @@
+pub mod github;
 pub mod clients;
 pub mod projects;
-pub mod repos;
