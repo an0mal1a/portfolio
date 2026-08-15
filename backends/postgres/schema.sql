@@ -101,6 +101,7 @@ CREATE TABLE github.accounts (
 CREATE TABLE github.sync_jobs (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
+    type TEXT NOT NULL,
     started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     completed_at TIMESTAMPTZ,
     status TEXT NOT NULL DEFAULT 'in_progress',
@@ -111,6 +112,14 @@ CREATE TABLE github.sync_jobs (
     duration_ms INTEGER,
     error TEXT,
 
+    CONSTRAINT sync_jobs_task_type_check
+        CHECK (
+            type IN (
+                'repo_sync', 
+                'profile',
+            )
+        )
+        
     CONSTRAINT sync_jobs_status_check
         CHECK (
             status IN (
