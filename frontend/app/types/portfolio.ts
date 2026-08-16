@@ -75,8 +75,7 @@ export interface GitHubContribution {
 
 export interface GitHubProfile {
     id?: number | null;
-    name?: string | null;
-    account_id?: number | null;
+    name?: string | null; 
     username?: string | null;
     blog?: string | null;
     bio?: string | null;

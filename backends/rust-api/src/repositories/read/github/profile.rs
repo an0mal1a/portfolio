@@ -18,8 +18,7 @@ pub async fn get_profile(db: &DBClient) -> Result<Option<GHProfile>, DbConnectio
     };
 
     let profile: GHProfile = GHProfile {
-        id: r.get("id"),
-        account_id: r.get("account_id"),
+        id: r.get("id"), 
         github_id: r.get("github_id"),
 
         name: r.get("name"),

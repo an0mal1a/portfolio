@@ -105,7 +105,6 @@ pub struct GHContributions {
 #[derive(Serialize, ToSchema)]
 pub struct GHProfile {
     pub id: i64,
-    pub account_id: Option<i64>,
     pub github_id: Option<i64>,
 
     pub name: String,
