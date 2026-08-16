@@ -80,8 +80,14 @@ pub async fn contact(
     );
 
     // Send & Store message (or message try to db)
-    match email.send_mail(contact_data.subject.clone(), multipart) {
-        Ok(()) => match write::register_request(&state.writer_db, &contact_data).await {
+    // lettre performs blocking DNS/TCP/TLS/SMTP I/O. Keep it off Tokio's
+    // async worker threads so a slow SMTP server cannot stall other requests.
+    let subject = contact_data.subject.clone();
+    let send_result =
+        tokio::task::spawn_blocking(move || email.send_mail(subject, multipart)).await;
+
+    match send_result {
+        Ok(Ok(())) => match write::register_request(&state.writer_db, &contact_data).await {
             Ok(()) => Json(json!({
                 "status": "ok",
             })),
@@ -94,8 +100,17 @@ pub async fn contact(
                 }))
             }
         },
-        Err(error) => {
+        Ok(Err(error)) => {
             eprintln!("[Routes.Contact.contact] Error sending email: {error:?}");
+            let _ = write::register_request(&state.writer_db, &contact_data).await;
+
+            Json(json!({
+                "status": "ko",
+                "error": "email_error",
+            }))
+        }
+        Err(error) => {
+            eprintln!("[Routes.Contact.contact] SMTP worker failed: {error:?}");
             let _ = write::register_request(&state.writer_db, &contact_data).await;
 
             Json(json!({

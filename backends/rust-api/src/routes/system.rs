@@ -70,16 +70,18 @@ pub async fn system_status(
     let cfg = CONFIG.get().expect("Config not initialized");
 
     let timeout_window = Duration::from_secs(2);
+    let smtp_timeout_window = Duration::from_secs(5);
     let reader = state.reader_db.clone();
     let writer = state.writer_db.clone();
     let python_url = cfg.python_api_url.clone();
     let smtp_host = cfg.smtp_host.clone();
+    let smtp_port = cfg.smtp_port;
 
     let (database, github, python_worker, smtp) = tokio::join!(
         probe_database(reader, writer, timeout_window),
         probe_github(state.writer_db.clone(), timeout_window),
         probe_python(python_url, timeout_window),
-        probe_smtp(smtp_host, timeout_window),
+        probe_smtp(smtp_host, smtp_port, smtp_timeout_window),
     );
 
     let required_ok = database.status == "healthy" && python_worker.status == "healthy";
@@ -252,7 +254,7 @@ struct PythonHealth {
     status: String,
 }
 
-async fn probe_smtp(host: String, window: Duration) -> ServiceStatus {
+async fn probe_smtp(host: String, port: u16, window: Duration) -> ServiceStatus {
     if host.trim().is_empty() {
         return ServiceStatus {
             status: "disabled".to_string(),
@@ -261,11 +263,7 @@ async fn probe_smtp(host: String, window: Duration) -> ServiceStatus {
         };
     }
     let started = Instant::now();
-    let endpoint = if host.contains(':') {
-        host
-    } else {
-        format!("{}:25", host)
-    };
+    let endpoint = format!("{}:{}", host, port);
     match timeout(window, TcpStream::connect(endpoint)).await {
         Ok(Ok(_)) => ServiceStatus {
             status: "healthy".to_string(),
@@ -280,7 +278,7 @@ async fn probe_smtp(host: String, window: Duration) -> ServiceStatus {
         Err(_) => ServiceStatus {
             status: "timeout".to_string(),
             latency_ms: None,
-            detail: Some("SMTP probe exceeded 2s".to_string()),
+            detail: Some(format!("SMTP probe exceeded {}s", window.as_secs())),
         },
     }
 }
