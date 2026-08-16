@@ -40,6 +40,7 @@ services:
       context: ./frontend  
     environment:
       NUXT_PUBLIC_API_BASE: https://rust-api.impablo.dev 
+      NUXT_PUBLIC_PYTHON_API_BASE: https://python-api.impablo.dev
     volumes:
       - ./frontend:/code/frontend
       - frontend-node-modules:/code/frontend/node_modules

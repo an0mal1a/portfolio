@@ -20,9 +20,17 @@
                 <div class="flex items-start gap-4 lg:block">
                     <img v-if="profile.avatar" :src="profile.avatar" :alt="profile.name || profile.username || 'Perfil de GitHub'" class="size-20 rounded-full border-2 border-[#30363d] bg-[#161b22] object-cover sm:size-24 lg:size-full" />
                     <div v-else class="flex size-20 items-center justify-center rounded-full border-2 border-line bg-surface text-xl font-medium text-white sm:size-24 lg:size-full lg:aspect-square lg:text-4xl">{{ initials(profile.name || profile.username || 'GH') }}</div>
-                    <div class="min-w-0 pt-1 lg:pt-4">
-                        <h1 class="m-0 truncate text-2xl font-semibold tracking-[-0.03em] text-[#f0f6fc]">{{ profile.name || 'Name' }}</h1>
-                        <p class="m-0 text-xl font-light text-muted">{{ profile.username || 'Username' }}</p>
+                    <div class="flex justify-between gap-4 items-end">
+                        <div class="min-w-0 pt-1 lg:pt-4">
+                            <h1 class="m-0 truncate text-2xl font-semibold tracking-[-0.03em] text-[#f0f6fc]">{{ profile.name || 'Name' }}</h1>
+                            <p class="m-0 text-xl font-light text-muted">{{ profile.username || 'Username' }}</p>
+                        </div>
+                        <div class="mt-5 space-y-3">
+                            <button type="button" class="group gap-2 flex w-full text-xs items-center rounded-sm border border-line pl-3 px-4 py-1 transition-color duration-200 ease-in-out active:scale-95 hover:text-white" @click="openSyncModal">
+                                <DatabaseBackup :size="14" />
+                                Sync Github
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -127,7 +135,7 @@
                         Sin enlaces públicos.
                     </p>
                 </div>
-                <NuxtLink to="/system#source-code" class="mt-4 inline-flex items-center gap-2 text-sm text-[#8b949e] hover:text-[#58a6ff]">Cómo se sincroniza <Network :size="15" /></NuxtLink>
+                <NuxtLink to="/system#source-code" class="inline-flex items-center gap-2 text-sm text-[#8b949e] hover:text-[#58a6ff]">Cómo se sincroniza <Network :size="15" /></NuxtLink>
             </aside>
 
             <div class="min-w-0">
@@ -326,10 +334,106 @@
                 </div>
             </div>
         </main>
+
+        <Teleport to="body">
+            <Transition name="sync-modal">
+                <div v-if="isSyncModalOpen" class="fixed inset-0 z-50 grid place-items-center p-4 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="sync-title" @keydown.esc="closeSyncModal">
+                    <button class="absolute inset-0 cursor-default bg-background/85 backdrop-blur-sm" aria-label="Cerrar sincronización" @click="closeSyncModal" />
+
+                    <section class="relative w-full max-w-xl overflow-hidden rounded-sm border border-line bg-surface shadow-[0_30px_100px_rgba(0,0,0,.42)]">
+                        <header class="flex items-start justify-between gap-4 border-b border-line px-4 py-4 sm:px-5">
+                            <div class="flex items-center gap-3">
+                                <span class="grid size-8 place-items-center rounded-sm border border-line bg-background-secondary text-muted"><RefreshCw :size="15" /></span>
+                                <div>
+                                    <p class="m-0 text-[10px] uppercase tracking-[0.12em] text-muted">Datos públicos</p>
+                                    <h2 id="sync-title" class="m-0 mt-0.5 text-base font-medium tracking-[-0.025em] text-ink">Sincronizar GitHub</h2>
+                                </div>
+                            </div>
+                            <button type="button" class="grid size-8 place-items-center rounded-sm border border-transparent text-muted transition-colors hover:border-line hover:bg-surface-raised hover:text-ink" aria-label="Cerrar" @click="closeSyncModal"><X :size="16" /></button>
+                        </header>
+
+                        <div class="p-4 sm:p-5">
+                            <template v-if="!syncRun">
+                                <p class="m-0 max-w-md text-xs leading-5 text-muted">Elige los datos que quieres actualizar. La tarea seguirá en el worker aunque cierres este panel.</p>
+                                <div class="mt-5 grid gap-2 sm:grid-cols-2">
+                                    <button v-for="option in syncOptions" :key="option.type" type="button" :disabled="isStarting" class="group rounded-sm border border-line bg-background-secondary p-4 text-left transition-colors hover:bg-surface-raised disabled:cursor-wait disabled:opacity-60" @click="startPublicSync(option.type)">
+                                        <span class="flex items-center justify-between">
+                                            <span class="grid size-8 place-items-center rounded-sm border border-line bg-surface text-muted transition-colors group-hover:text-ink"><component :is="option.icon" :size="16" /></span>
+                                            <LoaderCircle v-if="isStarting && pendingTask === option.type" :size="16" class="animate-spin text-muted" />
+                                            <ArrowUpRight v-else :size="15" class="text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink" />
+                                        </span>
+                                        <span class="mt-8 block text-sm font-medium text-ink">{{ option.title }}</span>
+                                        <span class="mt-1 block text-xs leading-5 text-muted">{{ option.description }}</span>
+                                    </button>
+                                </div>
+                                <p v-if="syncError" class="mt-4 border-l-2 border-signal bg-signal/10 px-3 py-2.5 text-xs leading-5 text-ink">{{ syncError }}</p>
+                            </template>
+
+                            <template v-else>
+                                <div class="flex items-center justify-between gap-4">
+                                    <div class="flex min-w-0 items-center gap-3">
+                                        <span class="grid size-9 place-items-center rounded-sm border border-line bg-background-secondary" :class="syncRun.status === 'failed' ? 'text-signal' : 'text-ink'">
+                                            <CheckCircle2 v-if="syncRun.status === 'completed'" :size="17" />
+                                            <CircleAlert v-else-if="syncRun.status === 'failed'" :size="17" />
+                                            <LoaderCircle v-else :size="17" class="animate-spin" />
+                                        </span>
+                                        <div class="min-w-0">
+                                            <p class="m-0 text-sm font-medium text-ink">{{ syncRun.job_type === 'profile' ? 'Perfil de GitHub' : 'Repositorios de GitHub' }}</p>
+                                            <p class="m-0 mt-0.5 truncate text-xs text-muted">{{ syncRun.message || 'Preparando la sincronización…' }}</p>
+                                        </div>
+                                    </div>
+                                    <span class="shrink-0 border border-line px-2 py-1 text-[10px] uppercase tracking-[0.08em]" :class="syncRun.status === 'failed' ? 'text-signal' : 'text-muted'">{{ syncStatusLabel }}</span>
+                                </div>
+
+                                <div class="mt-6 border-y border-line py-3">
+                                    <div class="mb-2 flex justify-between text-[10px] uppercase tracking-[0.1em] text-muted"><span>Progreso</span><span class="font-mono text-ink">{{ syncRun.progress }}%</span></div>
+                                    <div class="h-1 overflow-hidden bg-line"><div class="h-full bg-ink transition-all duration-500" :style="{ width: `${syncRun.progress}%` }" /></div>
+                                </div>
+
+                                <div class="mt-4 border border-line bg-background-secondary p-3 font-mono text-xs leading-5">
+                                    <div class="flex items-center gap-2 text-muted"><Terminal :size="13" /><span>worker / output</span><span class="ml-auto size-1.5 rounded-full" :class="syncRun.status === 'running' ? 'animate-pulse bg-ink' : 'bg-line-strong'" /></div>
+                                    <p class="m-0 mt-2 break-words text-ink">{{ syncRun.error || syncRun.message || 'Esperando al worker…' }}</p>
+                                </div>
+
+                                <div v-if="syncRun.status === 'completed' && syncRun.result" class="mt-4 grid grid-cols-2 gap-px bg-line text-xs">
+                                    <span v-for="(value, key) in syncRun.result" :key="key" class="bg-surface px-3 py-2 text-muted"><b class="mr-1 font-medium text-ink">{{ value }}</b>{{ formatResultKey(String(key)) }}</span>
+                                </div>
+
+                                <div class="mt-5 flex justify-end gap-2">
+                                    <button type="button" class="border border-line px-3 py-2 text-xs text-muted transition-colors hover:bg-surface-raised hover:text-ink" @click="resetSync">Elegir otra tarea</button>
+                                    <button type="button" class="bg-ink px-3 py-2 text-xs font-medium text-background transition-opacity hover:opacity-85" @click="closeSyncModal">Cerrar</button>
+                                </div>
+                            </template>
+                        </div>
+                    </section>
+                </div>
+            </Transition>
+        </Teleport>
     </div>
 </template>
 
 <style scoped>
+.sync-modal-enter-active,
+.sync-modal-leave-active {
+    transition: opacity 180ms ease;
+}
+
+.sync-modal-enter-active section,
+.sync-modal-leave-active section {
+    transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.sync-modal-enter-from,
+.sync-modal-leave-to {
+    opacity: 0;
+}
+
+.sync-modal-enter-from section,
+.sync-modal-leave-to section {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+}
+
 .markdown-body {
     color: var(--color-base);
     border: solid var(--color-line) 1px; 
@@ -399,7 +503,19 @@
 .markdown-body :deep(a) {
     color: #58a6ff;
     text-decoration: underline;
-    text-underline-offset: 0.15em;
+    text-underline-offset: 0.15em; 
+}
+
+.markdown-body :deep(p[align="center"] > a) {
+  display: inline-block;
+}
+
+.markdown-body :deep(p[align="center"] > a img) {
+  display: inline-block;
+}
+
+.markdown-body :deep(p[align="center"] > img) {
+  display: inline-block;
 }
 
 .markdown-body :deep(code) {
@@ -480,6 +596,8 @@ import { marked } from "marked";
 import {
     ArrowUpRight,
     BookMarked,
+    CheckCircle2,
+    CircleAlert,
     CircleOff,
     Code2,
     GitCommit,
@@ -487,10 +605,15 @@ import {
     Globe,
     Languages,
     Link,
+    LoaderCircle,
     Network,
     RefreshCw,
     Star,
+    Terminal,
     Users,
+    UserRound,
+    X, 
+    DatabaseBackup, 
 } from "@lucide/vue";
 import type { GitHubProfile, Repository } from "~/types/portfolio";
 
@@ -519,6 +642,160 @@ const {
 } = useGithubProfile();
 const activeLanguage = ref("Todos");
 const sorting = ref("push");
+type PublicTaskType = "profile" | "repo_sync";
+type PublicJobRun = {
+    id: string;
+    job_type: PublicTaskType;
+    status: "pending" | "running" | "completed" | "failed";
+    progress: number;
+    message?: string | null;
+    result?: Record<string, string | number | boolean> | null;
+    error?: string | null;
+};
+
+const config = useRuntimeConfig();
+const pythonApiBase = String(config.public.pythonApiBase || "").replace(/\/$/, "");
+const isSyncModalOpen = ref(false);
+const isStarting = ref(false);
+const pendingTask = ref<PublicTaskType | null>(null);
+const syncRun = ref<PublicJobRun | null>(null);
+const syncError = ref("");
+let syncEvents: EventSource | null = null;
+let pollTimer: ReturnType<typeof setInterval> | null = null;
+
+const syncOptions = [
+    {
+        type: "profile" as const,
+        title: "Perfil",
+        description: "Avatar, bio, enlaces y contribuciones.",
+        icon: UserRound,
+    },
+    {
+        type: "repo_sync" as const,
+        title: "Repositorios",
+        description: "Repos, lenguajes, topics y colaboradores.",
+        icon: GitFork,
+    },
+];
+
+const syncStatusLabel = computed(() => {
+    const labels: Record<PublicJobRun["status"], string> = {
+        pending: "En cola",
+        running: "En curso",
+        completed: "Completado",
+        failed: "Fallido",
+    };
+    return syncRun.value ? labels[syncRun.value.status] : "";
+});
+
+const isTerminalRun = (run?: PublicJobRun | null) =>
+    run?.status === "completed" || run?.status === "failed";
+
+const stopRunUpdates = () => {
+    syncEvents?.close();
+    syncEvents = null;
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = null;
+};
+
+const applyRunUpdate = (run: PublicJobRun) => {
+    syncRun.value = run;
+    if (isTerminalRun(run)) {
+        stopRunUpdates();
+        if (run.status === "completed") handleRefresh();
+    }
+};
+
+const fetchRun = async () => {
+    if (!syncRun.value || !pythonApiBase) return;
+    const run = await $fetch<PublicJobRun>(
+        `${pythonApiBase}/public/jobs/${syncRun.value.id}`,
+    );
+    applyRunUpdate(run);
+};
+
+const startPolling = () => {
+    if (pollTimer || isTerminalRun(syncRun.value)) return;
+    void fetchRun().catch(() => undefined);
+    pollTimer = setInterval(() => void fetchRun().catch(() => undefined), 1500);
+};
+
+const subscribeToRun = () => {
+    if (!import.meta.client || !syncRun.value || !pythonApiBase) return;
+    stopRunUpdates();
+    syncEvents = new EventSource(`${pythonApiBase}/public/jobs/${syncRun.value.id}/events`);
+    syncEvents.addEventListener("progress", (event) => {
+        try {
+            applyRunUpdate(JSON.parse((event as MessageEvent).data) as PublicJobRun);
+        } catch {
+            startPolling();
+        }
+    });
+    syncEvents.onerror = () => {
+        syncEvents?.close();
+        syncEvents = null;
+        startPolling();
+    };
+};
+
+const startPublicSync = async (taskType: PublicTaskType) => {
+    if (!pythonApiBase) {
+        syncError.value = "La URL pública del worker Python no está configurada.";
+        return;
+    }
+
+    isStarting.value = true;
+    pendingTask.value = taskType;
+    syncError.value = "";
+
+    try {
+        const created = await $fetch<{
+            run_id: string;
+            job_type: PublicTaskType;
+            status: PublicJobRun["status"];
+        }>(`${pythonApiBase}/public/jobs/${taskType}/run`, { method: "POST" });
+        syncRun.value = {
+            id: created.run_id,
+            job_type: created.job_type,
+            status: created.status,
+            progress: 0,
+            message: "La tarea ha entrado en la cola.",
+        };
+        subscribeToRun();
+    } catch (error: any) {
+        const code = error?.data?.detail?.code;
+        syncError.value = code === "job_already_running"
+            ? "Ya hay una sincronización de este tipo en curso. Vuelve a intentarlo cuando termine."
+            : code === "visitor_daily_limit"
+                ? "Ya has ejecutado esta sincronización hoy."
+                : code === "public_daily_limit"
+                    ? "Se ha alcanzado el límite diario de sincronizaciones públicas."
+                    : "No se ha podido iniciar la sincronización. Inténtalo de nuevo en unos segundos.";
+    } finally {
+        isStarting.value = false;
+        pendingTask.value = null;
+    }
+};
+
+const resetSync = () => {
+    stopRunUpdates();
+    syncRun.value = null;
+    syncError.value = "";
+};
+
+const openSyncModal = () => {
+    resetSync();
+    isSyncModalOpen.value = true;
+};
+
+const closeSyncModal = () => {
+    resetSync();
+    isSyncModalOpen.value = false;
+};
+
+const formatResultKey = (key: string) => key.replaceAll("_", " ");
+
+onBeforeUnmount(stopRunUpdates);
 
 const profile = computed<GitHubProfile>(() => githubProfile.value ?? {});
 
@@ -534,7 +811,6 @@ const profileBio = computed(
     () =>
         profile.value.bio ||
         profile.value.description ||
-        profile.value.desciption ||
         "Sin bio pública disponible en GitHub por el momento.",
 );
 
@@ -651,9 +927,8 @@ const contributionWeeks = computed(() => {
     return weeks;
 });
 
-const getLanguageIcon = (lang) => {
-    return languageIcons[lang] ?? null
-}
+const getLanguageIcon = (lang: string) =>
+    languageIcons[lang as keyof typeof languageIcons] ?? null;
 
 const contributionMonths = computed(() => {
     const labels: Array<{ label: string; offset: number }> = [];

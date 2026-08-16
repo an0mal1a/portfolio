@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiBase: "",
+            pythonApiBase: process.env.NUXT_PUBLIC_PYTHON_API_BASE || "",
             umamiScriptUrl: process.env.PUBLIC_UMAMI_SCRIPT_URL || "",
             umamiWebsiteId: process.env.PUBLIC_UMAMI_WEBSITE_ID || "",
         },
