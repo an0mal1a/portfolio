@@ -77,6 +77,22 @@ siguen en `github.sync_jobs`. En una base de datos ya creada hay que aplicar
 una vez `backends/postgres/migrations/001_public_job_runs.sql` antes de desplegar
 la API pública.
 
+## Sincronización pública en tiempo real
+
+El portfolio permite a los visitantes sincronizar manualmente el perfil y los
+repositorios desde `/github`. Las ejecuciones son independientes de los jobs
+interiores y quedan registradas en `github.job_runs`.
+
+El progreso de la sincronización se transmite en tiempo real mediante SSE,
+sin esperas silenciosas. El frontend recibe actualizaciones de cada fase:
+validación de acceso, consulta del perfil, carga de repositorios, topics,
+contributors, lenguajes, persistencia en PostgreSQL y finalización.
+
+El modal de sincronización mantiene la coherencia visual del portfolio. El flujo
+es intuitivo: el usuario elige la tarea (perfil, repositorios o ambos), ve el
+progreso en vivo y puede regresar a la elección inicial al cerrar sin perder
+el estado del job activo en el servidor.
+
 ## Configuración local
 
 Copia los valores necesarios a `backends/.env`. Para ejecutar el worker fuera de
@@ -141,3 +157,6 @@ Los SQL situados en `backends/postgres/hardcoded_data` se cargan una vez creada
 la estructura. Los proyectos deben referenciar `github_repository_github_id`:
 un trigger resuelve el id interno de PostgreSQL cuando el repositorio ya está
 sincronizado.
+
+
+
