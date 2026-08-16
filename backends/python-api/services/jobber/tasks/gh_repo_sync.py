@@ -16,13 +16,33 @@ def sync_repos(gh_token: str, gh_user: str, on_progress: ProgressCallback | None
     if not gh_token:
         raise MissingData("Missing GitHub token")
 
-    progress(5, "Initializing GitHub client")
+    progress(5, "Validating GitHub access")
 
     gh_client = RepoClient(gh_token=gh_token, gh_user=gh_user)
 
-    progress(10, "Fetching repositories")
+    progress(12, "GitHub · fetching repository list")
 
-    gh_repos_info: list[Repository] = (gh_client.process_repositories())
+    stages = {
+        "fetching topics": 0,
+        "fetching contributors": 1,
+        "fetching languages": 2,
+    }
+
+    def github_progress(index: int, total: int, repository: str, stage: str):
+        if total == 0:
+            progress(55, "GitHub returned no repositories")
+            return
+
+        completed_steps = ((index - 1) * 3) + stages.get(stage, 0)
+        progress_value = 15 + int((completed_steps / (total * 3)) * 40)
+        progress(
+            min(progress_value, 55),
+            f"GitHub · {repository} · {stage} ({index}/{total})",
+        )
+
+    gh_repos_info: list[Repository] = gh_client.process_repositories(
+        on_progress=github_progress,
+    )
 
     total = len(gh_repos_info)
 
@@ -33,13 +53,13 @@ def sync_repos(gh_token: str, gh_user: str, on_progress: ProgressCallback | None
         "repositories_failed": 0,
     }
 
-    progress(20, f"Found {total} repositories")
+    progress(60, f"Saving {total} repositories to database")
 
     for index, repo in enumerate(gh_repos_info, start=1):
-        progress_value = (20 + int((index / max(total, 1)) * 70)
+        progress_value = (60 + int((index / max(total, 1)) * 35)
         )
 
-        progress(min(progress_value, 90), f"Syncing {repo.name}",)
+        progress(min(progress_value, 95), f"Database · saving {repo.name} ({index}/{total})")
 
         # Owner
         owner_id = gh_client.add_owner(repo.owner)
@@ -76,5 +96,5 @@ def sync_repos(gh_token: str, gh_user: str, on_progress: ProgressCallback | None
         for lang in repo.languages:
             gh_client.add_lang(repo_id, lang)
 
-    progress(95, "Finishing repository sync")
+    progress(96, "Finalizing repository sync")
     return result

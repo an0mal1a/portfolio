@@ -9,7 +9,10 @@ from binascii import Error as BinasciiError
 from psycopg.types.json import Jsonb
 from json import JSONDecodeError
 from base64 import b64decode
+from collections.abc import Callable
 import requests
+
+ProgressCallback = Callable[[int, str], None]
 
 
 class ProfileClient(GitHubClient):
@@ -94,13 +97,21 @@ class ProfileClient(GitHubClient):
     main function to process and parse all the extracted
     information from the API.
     """
-    def process_profile(self) -> Profile:
+    def process_profile(self, on_progress: ProgressCallback | None = None) -> Profile:
+        def progress(value: int, message: str):
+            if on_progress:
+                on_progress(value, message)
+
         profile = Profile()
 
         # Profile main information
+        progress(20, "GitHub · fetching profile details")
         profile = self.parse_main_information(profile)
+        progress(38, "GitHub · fetching public links")
         profile = self.parse_links(profile)
+        progress(54, "GitHub · fetching profile README")
         profile = self.parse_description(profile)
+        progress(66, "GitHub · fetching contribution calendar")
         profile = self.parse_contributions(profile)
 
         return profile

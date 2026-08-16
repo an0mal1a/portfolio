@@ -17,20 +17,18 @@ def sync_profile(gh_token, gh_user, on_progress: ProgressCallback | None = None)
     if not gh_token:
         raise MissingData("Missing GitHub token")
 
-    progress(5, "Initializing GitHub client")
+    progress(5, "Validating GitHub access")
 
     gh_client = ProfileClient(gh_token=gh_token, gh_user=gh_user)
 
-    progress(20, "Fetching GitHub profile")
-
     # Get profile information
-    gh_profile_info: Profile = gh_client.process_profile()
+    gh_profile_info: Profile = gh_client.process_profile(on_progress=progress)
 
-    progress(70, "Saving profile")
+    progress(78, "Saving profile to database")
     
     gh_client.add_profile(gh_profile_info)
 
-    progress(95, "Finishing profile sync")
+    progress(96, "Finalizing profile sync")
 
     return {
         "user": gh_user,

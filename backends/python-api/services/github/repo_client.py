@@ -15,7 +15,10 @@ from config import TIMEZONE
 from json.decoder import JSONDecodeError
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from collections.abc import Callable
 import requests
+
+RepositoryProgressCallback = Callable[[int, int, str, str], None]
 
 class RepoClient(GitHubClient):
     def __init__(self, gh_token, gh_user):
@@ -178,25 +181,38 @@ class RepoClient(GitHubClient):
     Function oriented to return a readable/processable object of repos (private/publics) 
     returns everything needed to feed the tables of the DB.
     """
-    def process_repositories(self) -> list[Repository]:
+    def process_repositories(
+        self,
+        on_progress: RepositoryProgressCallback | None = None,
+    ) -> list[Repository]:
         repos = self.list_repositories()
 
         if len(repos) == 0 or repos is None:
+            if on_progress:
+                on_progress(0, 0, "", "No repositories returned by GitHub")
             return []
 
         processed_repos: list[Repository] = []
+        total = len(repos)
 
-        for raw_repo in repos:
+        for index, raw_repo in enumerate(repos, start=1):
             repo = self._build_repository_payload(raw_repo)
+            repo_name = raw_repo["name"]
 
             # Get topics
-            repo["topics"] = self.list_repo_topics(raw_repo["name"])
+            if on_progress:
+                on_progress(index, total, repo_name, "fetching topics")
+            repo["topics"] = self.list_repo_topics(repo_name)
 
             # Get contributors
-            repo["contributors"] = self.list_repo_contributors(raw_repo["name"])
+            if on_progress:
+                on_progress(index, total, repo_name, "fetching contributors")
+            repo["contributors"] = self.list_repo_contributors(repo_name)
 
             # Get languages
-            repo["languages"] = self.list_repo_langs(raw_repo["name"])
+            if on_progress:
+                on_progress(index, total, repo_name, "fetching languages")
+            repo["languages"] = self.list_repo_langs(repo_name)
 
             processed_repos.append(Repository.model_validate(repo))
 

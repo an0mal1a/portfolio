@@ -13,8 +13,7 @@ app.add_middleware(
         "https://www.impablo.dev",
 
         # Local development
-        "http://localhost:3000",
-        "http://localhost:4001",
+        "http://localhost:3001", 
     ],
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],

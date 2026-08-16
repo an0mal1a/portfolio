@@ -102,12 +102,28 @@ def get_public_job(run_id: UUID):
 async def stream_public_job(run_id: UUID):
     """Server-sent progress events for the GitHub sync popup."""
     async def events():
+        last_payload = None
+        last_keepalive = 0.0
+
         while True:
             run = get_run_or_404(run_id)
-            yield f"event: progress\\ndata: {json.dumps(run, default=str)}\\n\\n"
+            payload = json.dumps(run, default=str, sort_keys=True)
+
+            # Only send actual DB state transitions. A short check interval makes
+            # job progress feel immediate without flooding EventSource clients.
+            if payload != last_payload:
+                yield f"event: progress\ndata: {payload}\n\n"
+                last_payload = payload
+
             if run["status"] in {"completed", "failed"}:
                 return
-            await asyncio.sleep(1)
+
+            now = asyncio.get_running_loop().time()
+            if now - last_keepalive >= 15:
+                yield ": keep-alive\n\n"
+                last_keepalive = now
+
+            await asyncio.sleep(0.2)
 
     return StreamingResponse(
         events(),
