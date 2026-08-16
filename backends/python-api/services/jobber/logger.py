@@ -1,10 +1,11 @@
+# Services related
 from services.database import DBClient
-from datetime import datetime
-from enum import Enum
 
-class TaskType(Enum):
-    REPO_SYNC = "repo_sync"
-    PROFILE = "profile"
+# Own imports
+from .defs import TaskType
+
+# Other
+from datetime import datetime
 
 class JobberLog:
     """
@@ -17,6 +18,7 @@ class JobberLog:
         - PROFILE
 
     - Possible `status` field values:
+        - `pending`
         - `in_progress`
         - `completed`
         - `failed`

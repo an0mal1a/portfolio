@@ -79,7 +79,7 @@
                                 >
                                     <i
                                         v-if="getLanguageIcon(lang)"
-                                        :class="[getLanguageIcon(lang), 'text-sm', 'colored']"
+                                        :class="[getLanguageIcon(lang), 'text-sm']"
                                     />
 
                                     <Code2

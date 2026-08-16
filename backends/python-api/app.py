@@ -10,11 +10,14 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://impablo.dev",
+        "https://www.impablo.dev",
 
         # Local development
         "http://localhost:3000",
         "http://localhost:4001",
-    ]
+    ],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 # Router construct

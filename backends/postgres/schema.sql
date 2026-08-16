@@ -96,6 +96,40 @@ CREATE TABLE github.profile (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS github.job_runs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    job_type TEXT NOT NULL CHECK (job_type IN ('repo_sync', 'profile')),
+    trigger TEXT NOT NULL CHECK (trigger IN ('public', 'scheduled', 'internal')),
+    status TEXT NOT NULL CHECK (status IN ('pending', 'running', 'completed', 'failed')),
+    requester_hash TEXT,
+    quota_date DATE,
+    progress SMALLINT NOT NULL DEFAULT 0 CHECK (progress BETWEEN 0 AND 100),
+    message TEXT,
+    result JSONB,
+    error TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    started_at TIMESTAMPTZ,
+    finished_at TIMESTAMPTZ,
+    CONSTRAINT public_run_has_requester CHECK (
+        trigger <> 'public' OR (requester_hash IS NOT NULL AND quota_date IS NOT NULL)
+    )
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS one_active_run_per_job
+    ON github.job_runs (job_type)
+    WHERE status IN ('pending', 'running');
+
+CREATE UNIQUE INDEX IF NOT EXISTS one_public_run_per_visitor_per_day
+    ON github.job_runs (job_type, requester_hash, quota_date)
+    WHERE trigger = 'public'
+      AND requester_hash IS NOT NULL
+      AND quota_date IS NOT NULL
+      AND status <> 'failed';
+
+CREATE INDEX IF NOT EXISTS public_job_daily_quota_lookup
+    ON github.job_runs (job_type, quota_date)
+    WHERE trigger = 'public' AND status <> 'failed';
+
 CREATE TABLE github.sync_jobs (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
@@ -120,7 +154,7 @@ CREATE TABLE github.sync_jobs (
         
     CONSTRAINT sync_jobs_status_check
         CHECK (
-            status IN (
+            status IN ( 
                 'in_progress',
                 'completed',
                 'failed'
@@ -393,7 +427,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA portfolio GRANT SELECT ON TABLES TO api_reade
 GRANT USAGE ON SCHEMA portfolio, github, contact TO sync_writer;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA portfolio TO sync_writer;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA github TO sync_writer;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA github TO sync_writer; 
 GRANT INSERT ON ALL TABLES IN SCHEMA contact TO sync_writer;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA github, contact TO sync_writer;
 

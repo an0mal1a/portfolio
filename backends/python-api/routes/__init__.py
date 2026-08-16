@@ -5,10 +5,10 @@ from fastapi import APIRouter
 
 api_router = APIRouter()
 
-api_router.include_router(jobs_router)
 api_router.include_router(health_router)
+api_router.include_router(jobs_router)
 
 __all__ = [
     "jobs_router",
-    health_router
+    "health_router"
 ]

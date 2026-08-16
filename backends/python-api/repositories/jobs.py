@@ -10,7 +10,7 @@ class JobsRepository:
                 cur.execute(
                     """
                     SELECT 
-                        started_at, completed_at, status, duration_ms, error 
+                        id, started_at, completed_at, status, duration_ms, error 
                     FROM github.sync_jobs 
                     ORDER BY started_at DESC
                     LIMIT %s
@@ -23,7 +23,7 @@ class JobsRepository:
                 rows = cur.fetchall()
 
         # Close conn & return valuer
-        self.conn.close()
+        conn.close()
         return rows
 
     
@@ -45,7 +45,7 @@ class JobsRepository:
                 job = cur.fetchone()
 
         # Close conn & return valuer
-        self.conn.close()
+        conn.close()
         return job
 
             

@@ -71,6 +71,12 @@ no se ha podido completar. No implica necesariamente que GitHub esté caído. Un
 estado `unknown` o `degraded` con cero jobs suele indicar que todavía no existe
 una ejecución registrada.
 
+Las ejecuciones iniciadas por un visitante desde `/github` son independientes:
+Python las registra en `github.job_runs`; las ejecuciones diarias internas
+siguen en `github.sync_jobs`. En una base de datos ya creada hay que aplicar
+una vez `backends/postgres/migrations/001_public_job_runs.sql` antes de desplegar
+la API pública.
+
 ## Configuración local
 
 Copia los valores necesarios a `backends/.env`. Para ejecutar el worker fuera de
