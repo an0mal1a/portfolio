@@ -117,7 +117,7 @@ CREATE TABLE github.sync_jobs (
         CHECK (
             type IN (
                 'repo_sync', 
-                'profile',
+                'profile'
             )
         ),
         
