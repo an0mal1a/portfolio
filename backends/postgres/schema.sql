@@ -58,26 +58,6 @@ ALTER ROLE sync_writer
     NOREPLICATION;
 
 -- Github repositories tables
-CREATE TABLE github.profile (
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    account_id BIGINT 
-        REFERENCES github.accounts(id)
-        ON DELETE CASCADE,
-    github_id BIGINT NOT NULL UNIQUE,
-    username TEXT NOT NULL UNIQUE,
-    name TEXT,
-    blog TEXT,
-    bio TEXT,
-    avatar TEXT,
-    description TEXT,
-    followers INTEGER NOT NULL DEFAULT 0,
-    following INTEGER NOT NULL DEFAULT 0,
-    links JSONB,
-    contributions JSONB,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
 CREATE TABLE github.accounts (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
@@ -97,6 +77,26 @@ CREATE TABLE github.accounts (
                 'Bot'
             )
         )
+);
+
+CREATE TABLE github.profile (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    account_id BIGINT 
+        REFERENCES github.accounts(id)
+        ON DELETE CASCADE,
+    github_id BIGINT NOT NULL UNIQUE,
+    username TEXT NOT NULL UNIQUE,
+    name TEXT,
+    blog TEXT,
+    bio TEXT,
+    avatar TEXT,
+    description TEXT,
+    followers INTEGER NOT NULL DEFAULT 0,
+    following INTEGER NOT NULL DEFAULT 0,
+    links JSONB,
+    contributions JSONB,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE github.sync_jobs (

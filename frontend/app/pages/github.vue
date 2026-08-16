@@ -10,8 +10,9 @@
         </div> -->
 
         <!-- 
-            - mirar de meter los logos de las tecnologias principales (y como)
+            - instlar iconify devicon local
             - no usar el provider como nomreb, usarlo como icono
+            - mejorar header de pestañas
          -->
 
         <main class="mx-auto grid max-w-[80rem] gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-10 lg:py-10">
