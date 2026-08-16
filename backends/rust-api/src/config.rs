@@ -20,6 +20,7 @@ pub struct Config {
     pub smtp_user: String,
     pub smtp_pass: String,
     pub smtp_host: String,
+    pub smtp_port: u16,
     pub from_name: String,
     pub from_email: String,
     pub python_api_url: String,
@@ -48,6 +49,10 @@ impl Config {
             smtp_user: env::var("SMTP_USER").unwrap_or_default(),
             smtp_pass: env::var("SMTP_PASS").unwrap_or_default(),
             smtp_host: env::var("SMTP_HOST").unwrap_or_default(),
+            smtp_port: env::var("SMTP_PORT")
+                .ok()
+                .and_then(|v| v.parse::<u16>().ok())
+                .unwrap_or(25),
             from_name: env::var("FROM_NAME").unwrap_or_default(),
             from_email: env::var("FROM_EMAIL").unwrap_or_default(),
             python_api_url: env::var("PYTHON_API_URL")

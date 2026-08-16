@@ -1,6 +1,7 @@
 // Config
 use crate::config::CONFIG;
 use crate::services::email::errors::SMTPError;
+use std::time::Duration;
 
 // SMTP Imports
 use lettre::message::{Mailbox, MultiPart};
@@ -12,6 +13,7 @@ pub struct SMTPClient {
     pub host: String,
     pub username: String,
     pub password: String,
+    pub port: u16,
     pub from_email: String,
     pub from_name: String,
     pub recipient_email: String,
@@ -43,6 +45,7 @@ impl SMTPClient {
             host: cfg.smtp_host.clone(),
             username: cfg.smtp_user.clone(),
             password: cfg.smtp_pass.clone(),
+            port: cfg.smtp_port,
             from_email: cfg.from_email.clone(),
             from_name: cfg.from_name.clone(),
             recipient_email: cfg.recipient_email.clone(),
@@ -57,7 +60,7 @@ impl SMTPClient {
         let creds = Credentials::new(self.username.clone(), self.password.clone());
 
         // return the connection made
-        let transport = match SmtpTransport::relay(&&self.host.to_string()) {
+        let transport = match SmtpTransport::relay(&self.host) {
             Ok(t) => t,
             Err(e) => {
                 println!(
@@ -69,7 +72,11 @@ impl SMTPClient {
             }
         };
 
-        Ok(transport.credentials(creds).build())
+        Ok(transport
+            .port(self.port)
+            .credentials(creds)
+            .timeout(Some(Duration::from_secs(15)))
+            .build())
     }
 
     /// Function used to send a specific email, the body of
