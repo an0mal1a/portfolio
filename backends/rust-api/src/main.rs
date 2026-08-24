@@ -1,11 +1,10 @@
 mod app_state;
 mod config;
 mod core;
+mod repositories;
 mod routes;
 mod services;
-mod repositories;
 
-use std::time::Instant;
 use std::{net::SocketAddr, sync::Arc};
 
 use crate::{
@@ -36,11 +35,7 @@ async fn main() {
     let writer_db =
         DBClient::new(Permission::WRITER).expect("Could not initialize writer database pool");
 
-    let state = AppState {
-        reader_db,
-        writer_db,
-        started_at: Instant::now(),
-    };
+    let state = AppState::new(reader_db, writer_db);
 
     // Rate limit state
     let general_limiter = Arc::new(RateLimitState::per_minute(120));
@@ -64,6 +59,7 @@ async fn main() {
 
     let (api_router, openapi) = routes::router(contact_limiter).split_for_parts();
 
+    let shutdown_state = state.clone();
     let app = api_router
         .merge(SwaggerUi::new("/docs").url("/api-docs/openapi.json", openapi))
         .layer(middleware::from_fn_with_state(
@@ -79,6 +75,31 @@ async fn main() {
         listener,
         app.into_make_service_with_connect_info::<SocketAddr>(),
     )
+    .with_graceful_shutdown(shutdown_signal(shutdown_state))
     .await
     .unwrap();
+
+    println!("Rust API stopped cleanly");
+}
+
+async fn shutdown_signal(state: AppState) {
+    #[cfg(unix)]
+    {
+        use tokio::signal::unix::{SignalKind, signal};
+
+        let mut terminate =
+            signal(SignalKind::terminate()).expect("Could not install SIGTERM signal handler");
+        tokio::select! {
+            result = tokio::signal::ctrl_c() => result.expect("Could not install Ctrl+C signal handler"),
+            _ = terminate.recv() => {},
+        }
+    }
+
+    #[cfg(not(unix))]
+    tokio::signal::ctrl_c()
+        .await
+        .expect("Could not install Ctrl+C signal handler");
+
+    println!("Shutdown signal received; draining in-flight requests");
+    state.begin_shutdown();
 }

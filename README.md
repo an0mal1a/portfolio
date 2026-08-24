@@ -141,6 +141,21 @@ El estado agregado se puede comprobar con:
 curl http://127.0.0.1:8000/system/status
 ```
 
+## Health checks y despliegue
+
+La API Rust expone dos probes distintos:
+
+- `GET /health`: *liveness*. Solo confirma que el proceso HTTP está vivo.
+- `GET /health/ready`: *readiness*. Devuelve `200` únicamente cuando los pools
+  reader y writer de PostgreSQL responden; devuelve `503` al comenzar el
+  apagado ordenado o si la base de datos no está disponible.
+
+El `Dockerfile` comprueba `/health/ready` automáticamente. En Coolify, si has
+configurado un health check HTTP manual, usa la ruta `/health/ready` y el puerto
+`8000`. La aplicación atiende `SIGTERM` (Coolify/Docker) y `SIGINT`: primero se
+marca como no preparada para recibir tráfico y después Axum deja terminar las
+peticiones que ya están en curso.
+
 ## Verificación
 
 ```bash
