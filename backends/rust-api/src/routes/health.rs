@@ -21,11 +21,10 @@ pub struct HealthResponse {
 }
 
 pub fn router() -> OpenApiRouter<AppState> {
-    OpenApiRouter::<AppState>::new().routes(routes!(
-        root_health_check,
-        health_check,
-        readiness_check
-    ))
+    OpenApiRouter::<AppState>::new()
+        .routes(routes!(root_health_check))
+        .routes(routes!(health_check))
+        .routes(routes!(readiness_check))
 }
 
 #[utoipa::path(
