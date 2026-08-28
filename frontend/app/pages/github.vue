@@ -75,13 +75,13 @@
 
                         <div class="min-w-0">
                             <div>
-                                <strong>{{ languages.length }}</strong>
+                                <strong>3</strong>
                                 <span class="text-muted"> lenguajes principales</span>
                             </div>
 
                             <ul class="mt-1.5 border-t border-line pt-1.5 flex flex-wrap gap-x-3 gap-y-1">
                                 <li
-                                    v-for="lang in languages"
+                                    v-for="lang in languages.slice(0, 3)"
                                     :key="lang"
                                     class="flex items-center gap-1.5 text-xs text-ink"
                                 >
