@@ -29,14 +29,14 @@
                 />
                 <span v-else>{{ initials(person.github_login) }}</span>
             </a>
-            <span
+            <!-- <span
                 v-if="isOwner(person)"
                 class="pointer-events-none absolute -top-1 -right-1 grid size-4 place-items-center rounded-full bg-amber-400 text-amber-950 ring-2 ring-surface"
                 :title="`${person.github_login} · propietario`"
                 aria-hidden="true"
             >
                 <Crown :size="10" :stroke-width="2.5" />
-            </span>
+            </span> -->
         </span>
         <b
             v-if="contributors.length > limit"
