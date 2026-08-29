@@ -64,6 +64,7 @@ pub struct Contributor {
     pub github_login: String,
     pub avatar_url: Option<String>,
     pub profile_url: Option<String>,
+    pub contributions: i32,
 }
 
 #[derive(Serialize, ToSchema)]

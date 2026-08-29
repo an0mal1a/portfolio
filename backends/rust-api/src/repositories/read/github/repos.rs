@@ -7,11 +7,11 @@ async fn list_contributors(
 ) -> Result<Vec<Contributor>, tokio_postgres::Error> {
     let rows = conn
         .query(
-            "SELECT a.github_login, a.avatar_url, a.profile_url
+            "SELECT a.github_login, a.avatar_url, a.profile_url, rc.contributions
              FROM github.repository_contributors rc
              JOIN github.accounts a ON a.id = rc.account_id
              WHERE rc.repository_id = $1
-             ORDER BY a.github_login",
+             ORDER BY rc.contributions DESC, a.github_login",
             &[&repository_id],
         )
         .await?;
@@ -22,6 +22,7 @@ async fn list_contributors(
             github_login: row.get("github_login"),
             avatar_url: row.get("avatar_url"),
             profile_url: row.get("profile_url"),
+            contributions: row.get("contributions"),
         })
         .collect())
 }

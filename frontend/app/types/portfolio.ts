@@ -2,6 +2,7 @@ export interface Contributor {
     github_login: string;
     avatar_url?: string | null;
     profile_url?: string | null;
+    contributions: number;
 }
 
 export interface Repository {

@@ -93,6 +93,7 @@
                 <ContributorStack
                     v-if="repository.contributors?.length"
                     :contributors="repository.contributors"
+                    :owner="repository.owner"
                     :limit="5"
                 />
             </div>

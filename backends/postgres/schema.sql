@@ -246,7 +246,12 @@ CREATE TABLE github.repository_contributors (
         REFERENCES github.accounts(id)
         ON DELETE CASCADE,
 
-    PRIMARY KEY (repository_id, account_id)
+    contributions INTEGER NOT NULL DEFAULT 0,
+
+    PRIMARY KEY (repository_id, account_id),
+
+    CONSTRAINT repository_contributors_contributions_check
+        CHECK (contributions >= 0)
 );
 CREATE INDEX repositories_owner_id_idx ON github.repositories (owner_id);
 CREATE INDEX repositories_pushed_at_idx ON github.repositories (github_pushed_at DESC);

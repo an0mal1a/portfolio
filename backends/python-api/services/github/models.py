@@ -2,12 +2,14 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
-class Owner(BaseModel):
+class Contributor(BaseModel):
     name: str
     avatar_url: str
     profile_url: str
     type: str
-    
+    contributions: int = 0
+
+
 class Lang(BaseModel):
     name: str
     percentage: int
@@ -22,9 +24,9 @@ class Repository(BaseModel):
     is_private: bool
     is_fork: Optional[bool]
     is_archived: bool
-    owner: Owner
-    
-    contributors: list[Owner]
+    owner: Contributor
+
+    contributors: list[Contributor]
     languages: list[Lang]
     topics: list
      

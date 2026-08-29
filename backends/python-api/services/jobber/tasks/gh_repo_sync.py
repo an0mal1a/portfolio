@@ -62,7 +62,7 @@ def sync_repos(gh_token: str, gh_user: str, on_progress: ProgressCallback | None
         progress(min(progress_value, 95), f"Database · saving {repo.name} ({index}/{total})")
 
         # Owner
-        owner_id = gh_client.add_owner(repo.owner)
+        owner_id = gh_client.add_account(repo.owner)
 
         if not owner_id:
             result["repositories_failed"] += 1
@@ -83,11 +83,15 @@ def sync_repos(gh_token: str, gh_user: str, on_progress: ProgressCallback | None
             result["repositories_updated"] += 1
 
         # Contributors
+        contributor_ids = []
         for contributor in repo.contributors:
-            contributor_id = gh_client.add_owner(contributor)
+            contributor_id = gh_client.add_account(contributor)
 
             if contributor_id:
-                gh_client.add_contributor(repo_id, contributor_id)
+                gh_client.add_contributor(repo_id, contributor_id, contributor.contributions)
+                contributor_ids.append(contributor_id)
+
+        gh_client.remove_stale_contributors(repo_id, contributor_ids)
 
         # Topics
         gh_client.add_topics(repo_id, repo.topics)

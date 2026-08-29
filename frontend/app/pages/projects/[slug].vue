@@ -344,6 +344,7 @@
                                         :contributors="
                                             project.repository.contributors
                                         "
+                                        :owner="project.repository.owner"
                                         :limit="6"
                                     />
                                 </dd>

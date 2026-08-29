@@ -5,7 +5,7 @@ from services.database import DBClient
 from services.github.client import GitHubClient
 
 # Service/s data
-from services.github.models import Repository, Owner, Lang
+from services.github.models import Repository, Contributor, Lang
 from services.errors import MissingData
 
 # Internal modules
@@ -75,13 +75,17 @@ class RepoClient(GitHubClient):
     the function used to list all the contributors on the repository.
     this function dont extract permissions of contributors.
     """
-    def list_repo_contributors(self, repo_name) -> list[Owner]:
+    def list_repo_contributors(self, repo_name) -> list[Contributor]:
         # Check required vaulues
         if not repo_name or not self.username:
             raise MissingData(f"No repo or username found. username={self.username}, repo_name={repo_name}")
-        
-        # make req 
-        self._current_request = requests.get(f"{self.base_path}/repos/{self.username}/{repo_name}/contributors", headers=self.headers)
+
+        # make req
+        self._current_request = requests.get(
+            f"{self.base_path}/repos/{self.username}/{repo_name}/contributors",
+            params={"per_page": 100},
+            headers=self.headers,
+        )
 
         # check valid auth
         self.check_response()
@@ -91,13 +95,14 @@ class RepoClient(GitHubClient):
             raw = self._current_request.json()
         except JSONDecodeError:
             return []
- 
+
         return [
-            Owner(
+            Contributor(
                 name=raw_user["login"],
                 avatar_url=raw_user["avatar_url"],
                 profile_url=raw_user["html_url"],
                 type=raw_user["type"],
+                contributions=raw_user.get("contributions", 0),
             )
             for raw_user in raw
         ]
@@ -168,7 +173,7 @@ class RepoClient(GitHubClient):
                 repo[key] = value
 
         owner_info = raw_repo.get("owner", {})
-        repo["owner"] = Owner(
+        repo["owner"] = Contributor(
             name=owner_info.get("login", ""),
             avatar_url=owner_info.get("avatar_url", ""),
             profile_url=owner_info.get("html_url", ""),
@@ -221,12 +226,12 @@ class RepoClient(GitHubClient):
     
 
     """
-    function to add a owner to the database
+    function to add a github account (owner or contributor) to the database
     """
-    def add_owner(self, owner: Owner):
+    def add_account(self, account: Contributor):
         if not self._db_client:
             self._db_client = DBClient()
-        
+
 
         with self._db_client.get_db_connection() as conn:
             with conn.cursor() as cur:
@@ -247,23 +252,24 @@ class RepoClient(GitHubClient):
                     RETURNING id
                     """,
                     (
-                        owner.name,
-                        owner.avatar_url,
-                        owner.profile_url,
-                        owner.type,
+                        account.name,
+                        account.avatar_url,
+                        account.profile_url,
+                        account.type,
                     ),
                 )
-                owner_id = cur.fetchone()["id"]
+                account_id = cur.fetchone()["id"]
 
-        return owner_id
-    
+        return account_id
+
     """
-    function to add contributors to the database
+    function to add contributors to the database, tracking how many
+    commits each one has on the repo so we can derive a % share.
     """
-    def add_contributor(self, repo_id: int, collab_id: int):
+    def add_contributor(self, repo_id: int, collab_id: int, contributions: int = 0):
         if not self._db_client:
             self._db_client = DBClient()
-        
+
 
         with self._db_client.get_db_connection() as conn:
             with conn.cursor() as cur:
@@ -271,15 +277,39 @@ class RepoClient(GitHubClient):
                         """
                         INSERT INTO github.repository_contributors (
                             repository_id,
-                            account_id
+                            account_id,
+                            contributions
                         )
                         VALUES (
-                            %s, %s
-                        ) ON CONFLICT (repository_id, account_id) DO NOTHING
+                            %s, %s, %s
+                        ) ON CONFLICT (repository_id, account_id) DO UPDATE SET
+                            contributions = EXCLUDED.contributions
                         """,
-                        (repo_id, collab_id)
+                        (repo_id, collab_id, contributions)
                     )
-                
+
+        return True
+
+    """
+    function to drop contributors that no longer show up on GitHub's
+    contributors list for the repo (left, or GitHub stopped counting them)
+    so stale rows don't skew the % share.
+    """
+    def remove_stale_contributors(self, repo_id: int, keep_account_ids: list[int]):
+        if not self._db_client:
+            self._db_client = DBClient()
+
+        with self._db_client.get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    DELETE FROM github.repository_contributors
+                    WHERE repository_id = %s
+                      AND account_id <> ALL(%s)
+                    """,
+                    (repo_id, keep_account_ids or []),
+                )
+
         return True
     
 

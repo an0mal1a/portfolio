@@ -641,6 +641,7 @@
                                                 :contributors="
                                                     portfolioRepository.contributors
                                                 "
+                                                :owner="portfolioRepository.owner"
                                                 :limit="6"
                                             />
                                             <span class="text-xs text-muted">
