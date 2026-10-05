@@ -32,9 +32,12 @@ const clearPendingTransition = () => {
 export const useProjectImageTransition = () => {
     const router = useRouter();
 
+    // `sourceOverride` permite animar desde una imagen que no vive dentro del
+    // enlace pulsado, como la vista previa flotante de la home.
     const openProject = async (
         event: MouseEvent,
         project: PortfolioProject,
+        sourceOverride?: HTMLImageElement | null,
     ) => {
         if (
             event.defaultPrevented ||
@@ -55,14 +58,19 @@ export const useProjectImageTransition = () => {
                 "[data-project-transition-scope]",
             ) || trigger;
         const source =
+            sourceOverride ||
             scope?.querySelector<HTMLImageElement>("[data-project-cover]");
 
         if (!source?.complete || !source.naturalWidth) return;
 
+        // Una portada oculta (por ejemplo, la miniatura móvil en escritorio)
+        // no tiene caja desde la que animar: navegación normal.
+        const rect = source.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
         event.preventDefault();
         clearPendingTransition();
 
-        const rect = source.getBoundingClientRect();
         const sourceStyles = getComputedStyle(source);
         const overlay = document.createElement("img");
 

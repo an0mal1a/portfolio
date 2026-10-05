@@ -23,12 +23,49 @@
                     El contexto vale más que un pitch. Cuéntame qué estás
                     construyendo y dónde empieza a doler el sistema.
                 </p>
+
+                <ol class="mt-10 mb-0 grid max-w-sm list-none gap-0 p-0">
+                    <li
+                        v-for="(step, index) in nextSteps"
+                        :key="step"
+                        class="flex gap-3 border-t border-line py-3 text-xs leading-5 text-muted"
+                    >
+                        <span class="text-ink tabular-nums">{{
+                            padNumber(index + 1)
+                        }}</span>
+                        {{ step }}
+                    </li>
+                </ol>
             </header>
 
             <form
-                class="grid gap-2 sm:grid-cols-2"
+                class="grid content-start gap-2 sm:grid-cols-2"
                 @submit.prevent="submitForm"
             >
+                <fieldset
+                    class="m-0 mb-2 min-w-0 border-0 p-0 sm:col-span-2"
+                >
+                    <legend class="mb-3 p-0 text-xs text-muted">
+                        ¿Qué necesitas?
+                    </legend>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button
+                            v-for="topic in topics"
+                            :key="topic"
+                            type="button"
+                            class="cursor-pointer rounded-sm border px-2.5 py-1.5 text-xs transition-colors"
+                            :class="
+                                form.subject === topic
+                                    ? 'border-ink bg-ink text-background'
+                                    : 'border-line bg-surface text-muted hover:border-line-strong hover:text-ink'
+                            "
+                            :aria-pressed="form.subject === topic"
+                            @click="selectTopic(topic)"
+                        >
+                            {{ topic }}
+                        </button>
+                    </div>
+                </fieldset>
                 <label
                     class="rounded-sm border border-line bg-surface p-3 transition-colors focus-within:border-line-strong focus-within:bg-surface-raised"
                 >
@@ -38,7 +75,7 @@
                         name="name"
                         autocomplete="name"
                         required
-                        placeholder="Pablo"
+                        placeholder="Tu nombre"
                         class="w-full border-0 bg-transparent p-0 text-sm outline-none placeholder:text-white/20"
                     />
                 </label>
@@ -139,6 +176,30 @@ const form = reactive({
     message: "",
     phone: "",
 });
+const topics = [
+    "Producto SaaS",
+    "Web corporativa",
+    "Automatización / IA",
+    "Backend o APIs",
+    "Revisión o rescate",
+];
+
+const nextSteps = [
+    "Leo cada mensaje personalmente.",
+    "Te respondo con preguntas concretas o una propuesta de llamada.",
+    "Si encajamos, recibes alcance, plazos y presupuesto por escrito.",
+];
+
+// Rellena el asunto con el tema elegido sin pisar un asunto escrito a mano.
+const selectTopic = (topic: string) => {
+    const isTopic = !form.subject || topics.includes(form.subject);
+    if (form.subject === topic) {
+        form.subject = "";
+    } else if (isTopic) {
+        form.subject = topic;
+    }
+};
+
 const sending = ref(false);
 const feedback = ref("");
 const feedbackError = ref(false);

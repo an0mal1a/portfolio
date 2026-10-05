@@ -16,13 +16,13 @@
                         class="flex items-center gap-2 rounded-sm border border-line bg-surface px-2 py-1 text-xs text-muted"
                     >
                         <Terminal :size="16" />
-                        Backend y producto
+                        Freelance · Backend y producto
                     </span>
                     <span
-                        class="flex items-center gap-2 px-2 py-1 text-xs text-muted"
+                        class="flex items-center gap-2 px-2 py-1 text-xs text-ink"
                     >
-                        <i class="size-1.5 rounded-full bg-signal" />
-                        Disponible de forma selectiva
+                        <i class="signal-pulse size-1.5 rounded-full bg-signal" />
+                        Aceptando proyectos nuevos
                     </span>
                 </div>
 
@@ -36,23 +36,24 @@
                     class="mt-9 grid max-w-3xl gap-7 border-t border-line pt-6 sm:grid-cols-[1fr_auto] sm:items-end"
                 >
                     <p class="m-0 max-w-xl text-base leading-7 text-muted">
-                        APIs, infraestructura e interfaces diseñadas para seguir
-                        siendo claras cuando la complejidad deja de serlo.
+                        Desarrollador freelance en Ibiza. Diseño y construyo
+                        SaaS, webs y automatizaciones para empresas que
+                        necesitan que la tecnología trabaje a su favor.
                     </p>
-                    <div class="flex gap-2">
+                    <div class="flex flex-wrap gap-2">
                         <NuxtLink
-                            to="/projects"
+                            to="/#contact"
                             class="flex items-center gap-2 rounded-sm bg-ink px-3 py-2 text-xs font-medium text-background transition-transform hover:-translate-y-0.5"
                         >
-                            Ver proyectos
+                            Cuéntame tu proyecto
                             <ArrowUpRight :size="16" />
                         </NuxtLink>
                         <NuxtLink
-                            to="/system"
+                            to="/projects"
                             class="flex items-center gap-2 rounded-sm border border-line bg-surface px-3 py-2 text-xs font-medium transition-colors hover:bg-surface-raised"
                         >
-                            Explorar sistema
-                            <Network :size="16" />
+                            Ver proyectos
+                            <Layers3 :size="16" />
                         </NuxtLink>
                     </div>
                 </div>
@@ -146,8 +147,8 @@ import {
     ArrowUpRight,
     Boxes,
     Database,
+    Layers3,
     MapPin,
-    Network,
     ScanFace,
     Server,
     Terminal,

@@ -25,6 +25,14 @@ export default defineNuxtConfig({
                 { name: "theme-color", content: "#080809" },
             ],
             link: [{ rel: "icon", href: "/favicon.ico" }],
+            // Marca el documento antes del primer pintado para que los
+            // efectos de reveal no oculten contenido sin JavaScript.
+            script: [
+                {
+                    innerHTML: "document.documentElement.classList.add('js')",
+                    tagPosition: "head",
+                },
+            ],
         },
     },
 
