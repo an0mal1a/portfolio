@@ -92,7 +92,7 @@
                             ambiciosas.</span
                         >
                         <img
-                            src="/images/me.png"
+                            src="/images/portfolio-color.png"
                             alt="Pablo Diez"
                             width="600"
                             height="480"
