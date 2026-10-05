@@ -1,40 +1,116 @@
 <template>
-    <div class="bg-background px-4 pt-28 pb-24 sm:px-6 sm:pt-36 sm:pb-32">
+    <div class="bg-background pt-28 sm:pt-36">
         <header
-            class="mx-auto grid max-w-[92rem] gap-10 border-b border-line pb-12 lg:grid-cols-[1fr_24rem] lg:items-end lg:pb-16"
+            class="mx-auto grid max-w-[92rem] gap-10 px-4 pb-12 sm:px-6 lg:grid-cols-[1fr_24rem] lg:items-end lg:pb-16"
             data-reveal
         >
             <div>
                 <p class="mb-6 flex items-center gap-2 text-xs text-muted">
                     <Archive :size="16" />
-                    Archivo de proyectos /
-                    {{ projects.length.toString().padStart(2, "0") }}
+                    Archivo de proyectos
+                    <span aria-hidden="true">·</span>
+                    <span class="tabular-nums">{{
+                        padNumber(projects.length)
+                    }}</span>
                 </p>
                 <h1
-                    class="m-0 font-display text-[clamp(4.8rem,10vw,10rem)] leading-[0.72] tracking-[-0.03em]"
+                    class="m-0 font-display text-[clamp(4.6rem,9.5vw,9.5rem)] leading-[0.72] tracking-[-0.03em]"
                 >
                     Trabajo real, sin teatro.
                 </h1>
             </div>
             <div>
                 <p class="m-0 max-w-md text-sm leading-6 text-muted">
-                    Productos, infraestructura y experimentos contados desde las
+                    Productos, webs y automatizaciones contados desde las
                     decisiones, los sistemas y las personas que hay detrás.
                 </p>
-                <NuxtLink
-                    to="/system"
-                    class="mt-5 inline-flex items-center gap-2 text-xs font-medium transition-colors hover:text-white/70"
+                <dl
+                    class="mt-6 grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-line bg-line"
                 >
-                    Cómo funciona este portfolio
-                    <Network :size="16" />
-                </NuxtLink>
+                    <div
+                        v-for="stat in stats"
+                        :key="stat.label"
+                        class="bg-background-secondary px-3 py-2.5"
+                    >
+                        <dt class="text-[11px] text-muted">{{ stat.label }}</dt>
+                        <dd
+                            class="m-0 mt-1 text-lg font-medium tracking-[-0.03em] tabular-nums"
+                        >
+                            {{ padNumber(stat.value) }}
+                        </dd>
+                    </div>
+                </dl>
             </div>
         </header>
 
-        <div class="mx-auto max-w-[92rem] pt-8 sm:pt-12">
+        <div
+            class="sticky top-14 z-30 border-y border-line bg-background/90 backdrop-blur-xl"
+        >
+            <div
+                class="mx-auto flex max-w-[92rem] flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:py-0"
+            >
+                <nav
+                    class="-mb-px flex gap-5 overflow-x-auto [scrollbar-width:none] lg:self-stretch [&::-webkit-scrollbar]:hidden"
+                    aria-label="Filtrar por tipo de proyecto"
+                >
+                    <button
+                        v-for="tab in typeTabs"
+                        :key="tab.value"
+                        type="button"
+                        class="flex shrink-0 cursor-pointer items-center gap-2 border-b-2 px-0.5 pb-2.5 text-sm transition-colors lg:pt-4 lg:pb-3.5"
+                        :class="
+                            activeType === tab.value
+                                ? 'border-signal font-medium text-ink'
+                                : 'border-transparent text-muted hover:text-ink'
+                        "
+                        :aria-pressed="activeType === tab.value"
+                        @click="activeType = tab.value"
+                    >
+                        {{ tab.label }}
+                        <span
+                            class="rounded-full px-1.5 py-px text-[11px] tabular-nums transition-colors"
+                            :class="
+                                activeType === tab.value
+                                    ? 'bg-signal/15 text-signal'
+                                    : 'bg-surface-raised text-ink'
+                            "
+                            >{{ tab.count }}</span
+                        >
+                    </button>
+                </nav>
+
+                <div class="flex items-center gap-2">
+                    <label
+                        class="flex min-w-0 flex-1 items-center gap-2 rounded-sm border border-line bg-surface px-2 py-1.5 text-xs text-muted transition-colors focus-within:border-line-strong lg:w-64 lg:flex-none"
+                    >
+                        <Search :size="15" class="shrink-0" />
+                        <span class="sr-only">Buscar proyectos</span>
+                        <input
+                            v-model.trim="query"
+                            type="search"
+                            placeholder="Buscar por nombre, cliente o tecnología"
+                            class="min-w-0 flex-1 border-0 bg-transparent p-0 text-xs text-ink outline-none placeholder:text-muted"
+                            @keydown.esc="query = ''"
+                        />
+                    </label>
+                    <div
+                        class="shrink-0 rounded-sm border border-line bg-surface p-1"
+                    >
+                        <CustomSelect
+                            v-model="sorting"
+                            class="w-32"
+                            label="Ordenar proyectos"
+                            :options="sortOptions"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mx-auto max-w-[92rem] px-4 pt-4 pb-24 sm:px-6 sm:pb-32">
             <div
                 v-if="error && projects.length"
-                class="mb-8 flex flex-col gap-3 rounded-sm border border-signal/30 bg-surface px-3 py-3 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"
+                class="mt-4 flex flex-col gap-3 rounded-sm border border-signal/30 bg-surface px-3 py-3 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"
                 role="status"
             >
                 <span>
@@ -51,295 +127,186 @@
             </div>
 
             <div
-                v-if="status === 'pending'"
-                class="space-y-20"
+                v-if="status === 'pending' && !projects.length"
                 aria-live="polite"
             >
                 <span class="sr-only">Cargando proyectos</span>
-                <div class="grid gap-5 lg:grid-cols-[1.18fr_0.82fr]">
+                <div
+                    v-for="n in 4"
+                    :key="n"
+                    class="grid gap-6 border-b border-line py-6 md:grid-cols-[17rem_1fr] lg:grid-cols-[19rem_1fr]"
+                >
                     <div
-                        class="min-h-[26rem] animate-pulse rounded-sm bg-surface sm:min-h-[32rem]"
+                        class="aspect-[16/10] animate-pulse rounded-sm bg-surface"
                     />
-                    <div
-                        class="min-h-[26rem] animate-pulse rounded-sm bg-surface sm:min-h-[32rem]"
-                    />
-                </div>
-                <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                    <div
-                        v-for="n in 3"
-                        :key="n"
-                        class="aspect-[4/3] animate-pulse rounded-sm bg-surface"
-                    />
+                    <div class="space-y-4 pt-2">
+                        <div class="h-3 w-32 animate-pulse rounded-sm bg-surface" />
+                        <div class="h-12 w-2/3 animate-pulse rounded-sm bg-surface" />
+                        <div class="h-3 w-1/2 animate-pulse rounded-sm bg-surface" />
+                    </div>
                 </div>
             </div>
 
-            <template v-else-if="featuredProject">
-                <section aria-labelledby="featured-title" data-reveal>
-                    <article
-                        class="grid overflow-hidden rounded-sm border border-line bg-surface shadow-[0_28px_90px_rgba(0,0,0,.24)] lg:grid-cols-[1.16fr_0.84fr]"
-                        data-project-transition-scope
+            <template v-else-if="projects.length">
+                <p
+                    class="mt-4 mb-0 text-xs text-muted"
+                    aria-live="polite"
+                >
+                    {{ resultLabel }}
+                </p>
+
+                <ol
+                    v-if="visibleProjects.length"
+                    class="m-0 list-none p-0"
+                >
+                    <li
+                        v-for="(project, index) in visibleProjects"
+                        :key="project.id"
+                        data-reveal
+                        :style="{ '--reveal-delay': `${Math.min(index, 4) * 50}ms` }"
                     >
                         <NuxtLink
-                            :to="`/projects/${featuredProject.slug}`"
-                            :aria-label="`Ver proyecto destacado ${featuredProject.name}`"
-                            class="group/preview relative block min-h-[25rem] cursor-pointer overflow-hidden border-b border-line bg-background-secondary sm:min-h-[32rem] lg:min-h-[36rem] lg:border-r lg:border-b-0"
-                            @click="handleFeaturedProjectOpen"
+                            :to="`/projects/${project.slug}`"
+                            class="archive-row group grid gap-5 border-b border-line py-6 sm:py-8 md:grid-cols-[17rem_minmax(0,1fr)] md:gap-7 lg:grid-cols-[19rem_minmax(0,1fr)_14rem] lg:gap-10"
+                            data-project-transition-scope
+                            @click.capture="handleOpen($event, project)"
                         >
-                            <img
-                                v-if="hasFeaturedImage"
-                                data-project-cover
-                                :src="featuredProject.image || undefined"
-                                :alt="`Vista previa del proyecto ${featuredProject.name}`"
-                                class="absolute inset-0 size-full object-contain transition-transform duration-700 group-hover/preview:scale-[1.02]"
-                                fetchpriority="high"
-                                @error="featuredImageFailed = true"
-                            />
                             <div
-                                v-else
-                                class="absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(255,255,255,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.045)_1px,transparent_1px)] [background-size:4.5rem_4.5rem]"
-                            />
-                            <div
-                                v-if="hasFeaturedImage"
-                                class="absolute inset-0 bg-background/20"
-                                aria-hidden="true"
-                            />
-                            <div
-                                class="absolute inset-x-0 top-0 z-10 flex h-11 items-center justify-between border-b border-line bg-background/75 px-3 text-xs text-muted backdrop-blur-sm"
+                                class="relative aspect-[16/10] overflow-hidden rounded-sm border border-line bg-surface transition-colors duration-300 group-hover:border-line-strong"
                             >
-                                <span class="flex items-center gap-2">
-                                    <i class="size-1.5 rounded-full bg-signal" />
-                                    {{ liveHost(featuredProject) }}
-                                </span>
-                                <span>{{ featuredProject.project_type }}</span>
+                                <ProjectCover
+                                    :project="project"
+                                    compact
+                                    :eager="index < 2"
+                                    image-class="transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                                />
+                            </div>
+
+                            <div class="flex min-w-0 flex-col">
+                                <p
+                                    class="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted"
+                                >
+                                    <span>{{
+                                        projectTypeLabel(project.project_type)
+                                    }}</span>
+                                    <span aria-hidden="true">·</span>
+                                    <span class="tabular-nums">{{
+                                        projectYear(project)
+                                    }}</span>
+                                    <template v-if="project.is_featured">
+                                        <span aria-hidden="true">·</span>
+                                        <span
+                                            class="inline-flex items-center gap-1.5 text-signal"
+                                            ><Sparkles :size="13" />Destacado</span
+                                        >
+                                    </template>
+                                </p>
+                                <h2
+                                    class="m-0 font-display text-[clamp(3rem,5vw,4.6rem)] leading-[0.8] font-normal tracking-[-0.02em] transition-colors duration-200 group-hover:text-white/75"
+                                >
+                                    {{ project.name }}
+                                </h2>
+                                <p
+                                    class="mt-4 mb-0 line-clamp-3 max-w-2xl text-sm leading-6 text-muted"
+                                >
+                                    {{ project.tagline || project.description }}
+                                </p>
+
+                                <div
+                                    class="mt-auto flex flex-wrap items-center gap-2 pt-5 text-xs lg:hidden"
+                                >
+                                    <span
+                                        class="inline-flex items-center gap-1.5 rounded-sm border border-line px-2 py-1 text-muted"
+                                    >
+                                        <i
+                                            class="size-1.5 rounded-full"
+                                            :class="projectStatusTone(project.status)"
+                                        />
+                                        {{ projectStatusLabel(project.status) }}
+                                    </span>
+                                    <span
+                                        class="rounded-sm border border-line px-2 py-1 text-muted"
+                                        >{{ projectOwner(project) }}</span
+                                    >
+                                    <span
+                                        v-if="project.repository?.primary_language"
+                                        class="rounded-sm border border-line px-2 py-1 text-muted"
+                                        >{{ project.repository.primary_language }}</span
+                                    >
+                                </div>
                             </div>
 
                             <div
-                                class="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-background via-background/85 to-transparent px-5 pt-24 pb-5 sm:px-7 sm:pb-7"
+                                class="hidden min-w-0 flex-col border-l border-line pl-6 text-xs lg:flex"
                             >
-                                <p
-                                    class="mb-3 flex items-center gap-2 text-xs text-muted"
-                                >
-                                    <Box :size="16" />
-                                    {{
-                                        featuredProject.id
-                                            .toString()
-                                            .padStart(3, "0")
-                                    }}
-                                    / {{ statusLabel(featuredProject.status) }}
-                                </p>
-                                <strong
-                                    class="block max-w-[9ch] font-display text-[clamp(4.2rem,8vw,8rem)] leading-[0.72] font-normal tracking-[-0.03em]"
-                                >
-                                    {{ featuredProject.name }}
-                                </strong>
+                                <dl class="m-0 grid gap-4">
+                                    <div>
+                                        <dt class="mb-1 text-muted">Estado</dt>
+                                        <dd
+                                            class="m-0 flex items-center gap-2 text-ink"
+                                        >
+                                            <i
+                                                class="size-1.5 rounded-full"
+                                                :class="
+                                                    projectStatusTone(project.status)
+                                                "
+                                            />
+                                            {{ projectStatusLabel(project.status) }}
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt class="mb-1 text-muted">Para</dt>
+                                        <dd class="m-0 truncate text-ink">
+                                            {{ projectOwner(project) }}
+                                        </dd>
+                                    </div>
+                                    <div v-if="projectHost(project)">
+                                        <dt class="mb-1 text-muted">Online</dt>
+                                        <dd class="m-0 truncate text-ink">
+                                            {{ projectHost(project) }}
+                                        </dd>
+                                    </div>
+                                </dl>
                                 <span
-                                    class="absolute right-5 bottom-5 grid size-9 place-items-center rounded-sm border border-line bg-surface/80 text-muted transition-colors group-hover/preview:text-ink sm:right-7 sm:bottom-7"
+                                    class="mt-auto inline-flex items-center gap-2 pt-6 font-medium text-ink"
                                 >
-                                    <ArrowUpRight :size="17" />
+                                    Ver caso
+                                    <span
+                                        class="grid size-7 place-items-center rounded-sm border border-line transition-colors duration-200 group-hover:border-ink group-hover:bg-ink group-hover:text-background"
+                                    >
+                                        <ArrowUpRight :size="15" />
+                                    </span>
                                 </span>
                             </div>
                         </NuxtLink>
+                    </li>
+                </ol>
 
-                        <div class="flex flex-col p-5 sm:p-7 lg:p-8">
-                            <div class="flex items-start justify-between gap-5">
-                                <p
-                                    class="m-0 flex items-center gap-2 text-xs text-signal"
-                                >
-                                    <Sparkles :size="16" />
-                                    Destacado
-                                </p>
-                                <span
-                                    class="rounded-sm border border-line px-2 py-1 text-xs text-muted"
-                                >
-                                    {{ yearOf(featuredProject) }}
-                                </span>
-                            </div>
-
-                            <div class="my-10 lg:my-auto">
-                                <p
-                                    class="mb-4 text-xs font-medium tracking-[0.12em] text-muted uppercase"
-                                >
-                                    {{ projectOwner(featuredProject) }} ·
-                                    {{ featuredProject.project_type }}
-                                </p>
-                                <h2
-                                    id="featured-title"
-                                    class="m-0 max-w-[10ch] font-display text-[clamp(4.1rem,7vw,7.5rem)] leading-[0.72] tracking-[-0.03em]"
-                                >
-                                    {{ featuredProject.name }}
-                                </h2>
-                                <p
-                                    class="mt-6 mb-0 max-w-xl text-[15px] leading-7 text-ink"
-                                >
-                                    {{
-                                        featuredProject.tagline ||
-                                        featuredProject.description
-                                    }}
-                                </p>
-                                <p
-                                    v-if="
-                                        featuredProject.tagline &&
-                                        featuredProject.description !==
-                                            featuredProject.tagline
-                                    "
-                                    class="mt-4 mb-0 max-w-xl text-sm leading-6 text-muted"
-                                >
-                                    {{ featuredProject.description }}
-                                </p>
-                            </div>
-
-                            <div
-                                class="flex flex-col gap-4 border-t border-line pt-4 sm:flex-row sm:items-center sm:justify-between"
-                            >
-                                <div class="flex flex-wrap gap-2 text-xs">
-                                    <span
-                                        v-if="
-                                            featuredProject.repository
-                                                ?.primary_language
-                                        "
-                                        class="rounded-sm border border-line px-2 py-1 text-muted"
-                                    >
-                                        {{
-                                            featuredProject.repository
-                                                .primary_language
-                                        }}
-                                    </span>
-                                    <span
-                                        class="rounded-sm border border-line px-2 py-1 text-muted"
-                                    >
-                                        {{ statusLabel(featuredProject.status) }}
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-4 text-xs">
-                                    <a
-                                        v-if="featuredProject.live_url"
-                                        :href="featuredProject.live_url"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="inline-flex cursor-pointer items-center gap-2 text-muted transition-colors hover:text-ink"
-                                    >
-                                        Ver online
-                                        <ExternalLink :size="15" />
-                                    </a>
-                                    <NuxtLink
-                                        :to="`/projects/${featuredProject.slug}`"
-                                        class="inline-flex cursor-pointer items-center gap-2 font-medium transition-colors hover:text-white/70"
-                                        @click="handleFeaturedProjectOpen"
-                                    >
-                                        Ver proyecto
-                                        <ArrowUpRight :size="16" />
-                                    </NuxtLink>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                </section>
-
-                <section
-                    class="mt-20 border-t border-line pt-8 sm:mt-28 sm:pt-10"
-                    aria-labelledby="archive-title"
+                <div
+                    v-else
+                    class="mt-6 grid min-h-64 place-items-center rounded-sm border border-line bg-surface p-8 text-center"
                 >
-                    <div
-                        class="mb-10 flex flex-col gap-5 sm:mb-14 lg:flex-row lg:items-center lg:justify-between"
-                        data-reveal
-                    >
-                        <div class="flex items-baseline gap-3">
-                            <h2
-                                id="archive-title"
-                                class="m-0 text-2xl font-medium tracking-[-0.04em]"
-                            >
-                                Más proyectos
-                            </h2>
-                            <span class="text-xs text-muted">
-                                {{
-                                    filteredProjects.length
-                                        .toString()
-                                        .padStart(2, "0")
-                                }}
-                                visibles
-                            </span>
-                        </div>
-                        <div
-                            v-if="projectTypes.length > 1"
-                            class="flex max-w-full gap-1 overflow-x-auto rounded-sm border border-line bg-surface p-1"
-                            aria-label="Filtrar proyectos"
+                    <div>
+                        <CircleOff :size="20" class="mx-auto text-signal" />
+                        <p
+                            class="mx-auto mt-4 mb-0 max-w-md text-sm leading-6 text-muted"
                         >
-                            <button
-                                type="button"
-                                class="shrink-0 cursor-pointer rounded-sm px-2 py-1 text-xs transition-colors"
-                                :class="
-                                    activeFilter === 'Todos'
-                                        ? 'bg-ink text-background'
-                                        : 'text-muted hover:bg-surface-raised hover:text-ink'
-                                "
-                                @click="activeFilter = 'Todos'"
-                            >
-                                Todos
-                                <span class="ml-1 opacity-55">
-                                    {{ archiveProjects.length }}
-                                </span>
-                            </button>
-                            <button
-                                v-for="type in projectTypes"
-                                :key="type"
-                                type="button"
-                                class="shrink-0 cursor-pointer rounded-sm px-2 py-1 text-xs transition-colors"
-                                :class="
-                                    activeFilter === type
-                                        ? 'bg-ink text-background'
-                                        : 'text-muted hover:bg-surface-raised hover:text-ink'
-                                "
-                                @click="activeFilter = type"
-                            >
-                                {{ type }}
-                                <span class="ml-1 opacity-55">
-                                    {{ countByType(type) }}
-                                </span>
-                            </button>
-                        </div>
+                            Ningún proyecto coincide con estos filtros.
+                        </p>
+                        <button
+                            type="button"
+                            class="mt-5 cursor-pointer rounded-sm border border-line px-3 py-2 text-xs font-medium transition-colors hover:bg-surface-raised"
+                            @click="resetFilters"
+                        >
+                            Limpiar filtros
+                        </button>
                     </div>
-
-                    <div
-                        v-if="filteredProjects.length"
-                        class="grid gap-x-5 gap-y-14 md:grid-cols-2 xl:grid-cols-3 xl:gap-y-20"
-                    >
-                        <ProjectCard
-                            v-for="(project, index) in filteredProjects"
-                            :key="project.id"
-                            :project="project"
-                            :index="index + 2"
-                            compact
-                        />
-                    </div>
-                    <div
-                        v-else
-                        class="grid min-h-64 place-items-center rounded-sm border border-line bg-surface p-8 text-center"
-                        data-reveal
-                    >
-                        <div>
-                            <CircleOff :size="20" class="mx-auto text-signal" />
-                            <p
-                                class="mx-auto mt-4 mb-0 max-w-md text-sm leading-6 text-muted"
-                            >
-                                No hay más proyectos públicos para este filtro.
-                            </p>
-                            <button
-                                v-if="activeFilter !== 'Todos'"
-                                type="button"
-                                class="mt-5 cursor-pointer rounded-sm border border-line px-3 py-2 text-xs font-medium transition-colors hover:bg-surface-raised"
-                                @click="activeFilter = 'Todos'"
-                            >
-                                Ver todos
-                            </button>
-                        </div>
-                    </div>
-                </section>
+                </div>
             </template>
 
             <section
                 v-else
-                class="grid min-h-72 place-items-center rounded-sm border border-line bg-surface p-8 text-center"
-                data-reveal
+                class="mt-6 grid min-h-72 place-items-center rounded-sm border border-line bg-surface p-8 text-center"
             >
                 <div>
                     <CircleOff :size="20" class="mx-auto text-signal" />
@@ -363,6 +330,12 @@
                 </div>
             </section>
         </div>
+
+        <CtaBand
+            title="¿Tienes algo parecido en mente?"
+            text="Cuéntame qué quieres construir o qué está fallando. Te respondo con preguntas concretas y, si encajamos, una propuesta clara."
+            :secondary="{ label: 'Ver servicios', to: '/#services' }"
+        />
     </div>
 </template>
 
@@ -370,94 +343,108 @@
 import {
     Archive,
     ArrowUpRight,
-    Box,
+    CalendarClock,
     CircleOff,
-    ExternalLink,
-    Network,
+    Search,
     Sparkles,
 } from "@lucide/vue";
 import type { PortfolioProject } from "~/types/portfolio";
 
-const { projects, status, error, refresh } = useProjects();
+const { projects, clients, status, error, refresh } = useProjects();
 const { openProject } = useProjectImageTransition();
-const activeFilter = ref("Todos");
-const featuredImageFailed = ref(false);
 
-const featuredProject = computed(
-    () =>
-        projects.value.find((project) => project.is_featured) ||
-        projects.value[0] ||
-        null,
-);
+const ALL = "all";
+const activeType = ref(ALL);
+const query = ref("");
+const sorting = ref("featured");
 
-const hasFeaturedImage = computed(
-    () =>
-        Boolean(featuredProject.value?.image?.trim()) &&
-        !featuredImageFailed.value,
-);
-
-watch(
-    () => featuredProject.value?.image,
-    () => {
-        featuredImageFailed.value = false;
-    },
-);
-
-const archiveProjects = computed(() =>
-    projects.value.filter(
-        (project) => project.id !== featuredProject.value?.id,
-    ),
-);
-
-const projectTypes = computed(() =>
-    [
-        ...new Set(
-            archiveProjects.value.map((project) => project.project_type),
-        ),
-    ].sort(),
-);
-
-const filteredProjects = computed(() =>
-    activeFilter.value === "Todos"
-        ? archiveProjects.value
-        : archiveProjects.value.filter(
-              (project) => project.project_type === activeFilter.value,
-          ),
-);
-
-const countByType = (type: string) =>
-    archiveProjects.value.filter((project) => project.project_type === type)
-        .length;
-
-const yearOf = (project: PortfolioProject) =>
-    new Date(
-        project.completed_at || project.started_at || project.created_at,
-    ).getFullYear();
-
-const statusLabel = (status: string) =>
-    ({
-        published: "Publicado",
-        in_progress: "En curso",
-        archived: "Archivado",
-        draft: "Borrador",
-    })[status] || status;
-
-const projectOwner = (project: PortfolioProject) =>
-    project.client?.name || "Proyecto independiente";
-
-const liveHost = (project: PortfolioProject) => {
-    if (!project.live_url) return project.slug;
-
-    try {
-        return new URL(project.live_url).hostname.replace(/^www\./, "");
-    } catch {
-        return project.slug;
-    }
+const sortOptions = {
+    featured: { label: "Destacados", icon: Sparkles },
+    recent: { label: "Más recientes", icon: CalendarClock },
 };
 
-const handleFeaturedProjectOpen = (event: MouseEvent) => {
-    if (!featuredProject.value) return;
-    void openProject(event, featuredProject.value);
+const stats = computed(() => [
+    {
+        label: "En curso",
+        value: projects.value.filter((p) => p.status === "in_progress").length,
+    },
+    {
+        label: "Entregados",
+        value: projects.value.filter((p) => p.status === "published").length,
+    },
+    { label: "Clientes", value: clients.value.length },
+]);
+
+const typeTabs = computed(() => {
+    const types = [...new Set(projects.value.map((p) => p.project_type))].sort(
+        (a, b) => projectTypeLabel(a).localeCompare(projectTypeLabel(b)),
+    );
+
+    return [
+        { value: ALL, label: "Todos", count: projects.value.length },
+        ...types.map((type) => ({
+            value: type,
+            label: projectTypeLabel(type),
+            count: projects.value.filter((p) => p.project_type === type)
+                .length,
+        })),
+    ];
+});
+
+const normalize = (value: string) =>
+    value
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .toLowerCase();
+
+const searchableText = (project: PortfolioProject) =>
+    normalize(
+        [
+            project.name,
+            project.tagline,
+            project.description,
+            project.client?.name,
+            project.repository?.primary_language,
+            projectTypeLabel(project.project_type),
+        ]
+            .filter(Boolean)
+            .join(" "),
+    );
+
+const projectTime = (project: PortfolioProject) =>
+    new Date(
+        project.completed_at || project.started_at || project.created_at,
+    ).getTime();
+
+const visibleProjects = computed(() => {
+    const needle = normalize(query.value);
+    const filtered = projects.value.filter(
+        (project) =>
+            (activeType.value === ALL ||
+                project.project_type === activeType.value) &&
+            (!needle || searchableText(project).includes(needle)),
+    );
+
+    return sorting.value === "recent"
+        ? [...filtered].sort((a, b) => projectTime(b) - projectTime(a))
+        : filtered;
+});
+
+const resultLabel = computed(() => {
+    const total = projects.value.length;
+    const shown = visibleProjects.value.length;
+    return shown === total
+        ? `${total} proyectos`
+        : `${shown} de ${total} proyectos`;
+});
+
+const resetFilters = () => {
+    activeType.value = ALL;
+    query.value = "";
+};
+
+const handleOpen = (event: MouseEvent, project: PortfolioProject) => {
+    void openProject(event, project);
 };
 
 useReveal();
@@ -465,10 +452,10 @@ useReveal();
 useSeoMeta({
     title: "Proyectos · Pablo Diez",
     description:
-        "Proyectos seleccionados de backend, APIs, infraestructura y producto digital de Pablo Diez.",
+        "SaaS, webs, automatizaciones e infraestructura desarrollados por Pablo Diez, desarrollador freelance en Ibiza.",
     ogTitle: "Proyectos · Pablo Diez",
     ogDescription:
-        "Un archivo conectado de productos digitales, infraestructura y experimentos.",
+        "Un archivo de productos digitales, webs y automatizaciones contados desde sus decisiones técnicas.",
     ogType: "website",
 });
 </script>

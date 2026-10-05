@@ -2,6 +2,7 @@
     <div>
         <Hero :project-count="projects.length" :client-count="clients.length" />
         <ClientSection :clients="clients" />
+        <ServicesSection :projects="projects" />
         <ProjectGallery :projects="projects" :status="status" />
         <SystemPreview />
         <ContactSection :send-contact="sendContact" />
@@ -29,12 +30,12 @@ const { projects, clients, status, error, refresh, sendContact } =
 useReveal();
 
 useSeoMeta({
-    title: "Pablo Diez — Backend y producto",
+    title: "Pablo Diez — Desarrollador freelance de backend y producto",
     description:
-        "Ingeniero backend especializado en APIs, infraestructura y productos digitales mantenibles.",
-    ogTitle: "Pablo Diez — Los sistemas detrás del producto",
+        "Desarrollador freelance en Ibiza. SaaS a medida, webs que generan negocio, automatizaciones con IA y backend mantenible.",
+    ogTitle: "Pablo Diez — Construyo sistemas que sostienen el producto",
     ogDescription:
-        "Proyectos, arquitectura y decisiones de ingeniería detrás de este portfolio.",
+        "SaaS, webs, automatizaciones e infraestructura para empresas que necesitan que la tecnología trabaje a su favor.",
     ogType: "website",
     twitterCard: "summary_large_image",
 });

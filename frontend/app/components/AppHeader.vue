@@ -28,7 +28,8 @@
                     :key="item.to"
                     :to="item.to"
                     class="rounded-sm px-2 py-1 text-xs text-muted transition-colors hover:bg-surface hover:text-ink"
-                    active-class="!bg-surface !text-ink"
+                    :class="isActive(item) ? '!bg-surface !text-ink' : ''"
+                    :aria-current="isActive(item) ? 'page' : undefined"
                 >
                     {{ item.label }}
                 </NuxtLink>
@@ -38,7 +39,7 @@
                 <span
                     class="hidden items-center gap-2 px-2 py-1 text-xs text-muted lg:flex"
                 >
-                    <i class="size-1.5 rounded-full bg-signal" />
+                    <i class="signal-pulse size-1.5 rounded-full bg-signal" />
                     Disponible para proyectos
                 </span>
                 <NuxtLink
@@ -71,6 +72,7 @@
                 :key="item.to"
                 :to="item.to"
                 class="flex items-center justify-between rounded-sm px-2 py-2 text-xs text-muted hover:bg-surface hover:text-ink"
+                :class="isActive(item) ? '!bg-surface !text-ink' : ''"
                 @click="open = false"
             >
                 {{ item.label }}
@@ -92,12 +94,22 @@
 import { ArrowUpRight, Braces, ChevronRight, Menu, X } from "@lucide/vue";
 
 const open = ref(false);
+const route = useRoute();
 
 const items = [
     { label: "Inicio", to: "/" },
+    { label: "Servicios", to: "/#services" },
     { label: "Proyectos", to: "/projects" },
     { label: "GitHub", to: "/github" },
     // { label: "Mi entorno", to: "/workspace" },
     { label: "Sistema", to: "/system" },
 ];
+
+// RouterLink marca como activo cualquier enlace a "/", incluidos los anclados.
+const isActive = (item: { to: string }) => {
+    const [path = "/", hash] = item.to.split("#");
+    if (hash) return route.path === path && route.hash === `#${hash}`;
+    if (path === "/") return route.path === "/" && route.hash !== "#services";
+    return route.path.startsWith(path);
+};
 </script>

@@ -1,6 +1,7 @@
 <template>
     <div
-        class="repository-fallback-cover absolute inset-x-0 top-9 bottom-0 isolate overflow-hidden bg-background-secondary"
+        class="repository-fallback-cover absolute inset-0 isolate overflow-hidden bg-background-secondary"
+        :class="{ 'is-compact': compact }"
         :style="{ '--repository-accent': accentColor }"
     >
         <div class="repository-grid absolute inset-0" aria-hidden="true" />
@@ -65,7 +66,10 @@
             </g>
         </svg>
 
-        <div class="absolute right-14 bottom-2 left-4 z-10 min-w-0">
+        <div
+            v-if="!compact"
+            class="absolute right-14 bottom-4 left-4 z-10 min-w-0 sm:left-6 sm:bottom-6"
+        >
             <p class="m-0 font-display text-[clamp(1.8rem,4.2vw,4.6rem)] leading-[0.72] font-semibold text-ink">
                 <span class="block">{{ displayLabel }}</span>
             </p>
@@ -89,6 +93,8 @@ const props = defineProps<{
     language?: Repository["primary_language"] | null;
     projectType: Project["project_type"];
     archived: boolean;
+    // Miniaturas: solo diagrama y monograma, sin rótulos.
+    compact?: boolean;
 }>();
 
 const stableHash = (value: string) => {
@@ -186,6 +192,14 @@ const accentColor = computed(() => {
     pointer-events: none;
     -webkit-text-stroke: 1px rgba(255, 255, 255, 0.25);
     text-stroke: 1px rgba(255, 255, 255, 0.25);
+}
+
+.is-compact .repository-monogram {
+    top: 50%;
+    right: 50%;
+    font-size: clamp(4rem, 9vw, 7rem);
+    opacity: 0.32;
+    translate: 50% -50%;
 }
 
 .repository-diagram {
