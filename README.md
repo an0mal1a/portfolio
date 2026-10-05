@@ -168,10 +168,50 @@ cd ../../frontend
 npm run build
 ```
 
-Los SQL situados en `backends/postgres/hardcoded_data` se cargan una vez creada
-la estructura. Los proyectos deben referenciar `github_repository_github_id`:
-un trigger resuelve el id interno de PostgreSQL cuando el repositorio ya está
-sincronizado.
+## Carga de datos del portfolio
+
+`01-init.sh` crea el esquema e importa los archivos `/opt/postgres/data/*.sql`
+solo durante la primera inicialización de PostgreSQL, cuando el volumen de datos
+está vacío. Reiniciar o reconstruir el contenedor con una base de datos existente
+no vuelve a ejecutar esta carga.
+
+El `docker-compose.yml` monta `/data/portfolio/postgres-hardcoded` del host en
+`/opt/postgres/data`. Por tanto, para la carga inicial los SQL deben estar en esa
+carpeta del host. Los archivos de `backends/postgres/hardcoded_data` no se copian
+actualmente a la imagen: la instrucción `COPY` está comentada en el Dockerfile.
+
+Para importar manualmente el SQL local en una base de datos ya inicializada,
+ejecuta desde la raíz del repositorio:
+
+```bash
+docker compose exec -T db sh -c '
+  exec psql --username="$POSTGRES_USER" --dbname="$POSTGRES_DB" \
+    --set=ON_ERROR_STOP=1 --single-transaction --file=-
+' < backends/postgres/hardcoded_data/portfolio.sql
+```
+
+Para importar el archivo que ya está montado dentro del contenedor:
+
+```bash
+docker compose exec -T db sh -c '
+  exec psql --username="$POSTGRES_USER" --dbname="$POSTGRES_DB" \
+    --set=ON_ERROR_STOP=1 --single-transaction \
+    --file=/opt/postgres/data/portfolio.sql
+'
+```
+
+Ambos comandos usan las credenciales del contenedor y una transacción: si una
+sentencia falla, se revierte la importación completa. No requieren recrear la
+base de datos ni ejecutar otra vez `01-init.sh`.
+
+El SQL decide qué se actualiza al repetir la carga. Los clientes usan
+`WHERE NOT EXISTS`; los proyectos usan `ON CONFLICT (slug) DO UPDATE`, pero
+varios de esos bloques solo actualizan `content_html` y `updated_at`. Cambiar
+otros campos en el `INSERT` no actualiza por sí solo un proyecto existente:
+añádelos al `DO UPDATE` correspondiente si también deben cambiar.
+
+Los proyectos deben referenciar `github_repository_github_id`: un trigger
+resuelve el id interno de PostgreSQL cuando el repositorio ya está sincronizado.
 
 
 

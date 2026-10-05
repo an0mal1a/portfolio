@@ -59,11 +59,11 @@
             </div>
 
             <div
-                class="relative mx-auto w-full max-w-[31rem] lg:mx-0"
+                class="relative mx-auto w-full max-w-[26rem] lg:mx-0 lg:justify-self-end"
                 data-reveal
             >
                 <div
-                    class="soft-noise relative overflow-hidden rounded-sm border border-line bg-surface shadow-[0_32px_100px_rgba(0,0,0,.4)] transition-transform duration-300 ease-out"
+                    class="relative overflow-hidden rounded-sm border border-line bg-surface shadow-[0_32px_100px_rgba(0,0,0,.4)] transition-transform duration-300 ease-out"
                     :style="cardTransform"
                     @pointermove="tilt"
                     @pointerleave="resetTilt"
@@ -80,40 +80,44 @@
                             En línea
                         </span>
                     </div>
-                    <div
-                        class="relative aspect-[1/1.03] overflow-hidden bg-background-secondary"
-                    >
+                    <figure class="m-0">
                         <div
-                            class="absolute inset-0 opacity-50 [background-image:linear-gradient(rgba(255,255,255,.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.04)_1px,transparent_1px)] [background-size:4rem_4rem]"
-                        />
-                        <span
-                            class="absolute top-5 left-5 z-10 max-w-[15rem] text-2xl leading-6 font-medium tracking-[-0.04em]"
-                            >Infraestructura silenciosa para ideas
-                            ambiciosas.</span
+                            class="aspect-[4/5] overflow-hidden bg-background-secondary"
                         >
-                        <img
-                            src="/images/portfolio-color.png"
-                            alt="Pablo Diez"
-                            width="600"
-                            height="480"
-                            fetchpriority="high"
-                            class="absolute right-[-7%] bottom-0 w-[98%] max-w-none"
-                        />
-                        <div
-                            class="absolute right-3 bottom-3 flex items-center gap-2 rounded-sm border border-white/10 bg-background/75 px-2 py-1 text-xs text-white/70 backdrop-blur-md"
-                        >
-                            <MapPin :size="16" />
-                            Ibiza · {{ localTime }}
+                            <img
+                                src="/images/portfolio-color.png"
+                                alt="Pablo Diez"
+                                width="1122"
+                                height="1402"
+                                fetchpriority="high"
+                                class="h-full w-full object-cover object-center"
+                            />
                         </div>
-                    </div>
+                        <figcaption
+                            class="flex items-end justify-between gap-4 border-t border-line px-4 py-4"
+                        >
+                            <p
+                                class="m-0 max-w-[14rem] text-lg leading-6 font-medium tracking-[-0.03em]"
+                            >
+                                Infraestructura silenciosa para ideas ambiciosas.
+                            </p>
+                            <div
+                                class="flex shrink-0 items-start gap-1.5 text-xs leading-5 text-muted"
+                            >
+                                <MapPin :size="14" class="mt-0.5" />
+                                <span>
+                                    Ibiza
+                                    <span class="block tabular-nums">{{ localTime }}</span>
+                                </span>
+                            </div>
+                        </figcaption>
+                    </figure>
                 </div>
 
-                <!-- class="absolute -right-2 -bottom-5 flex items-center gap-2 rounded-sm border border-line bg-surface-raised px-2 py-1.5 text-xs text-muted shadow-xl sm:right-3" -->
                 <div
-                    class="absolute -right-2 -bottom-5 flex items-center gap-2 rounded-sm border border-line bg-surface-raised px-2 py-1.5 text-xs text-muted shadow-xl sm:-right-6"
+                    class="absolute right-3 -bottom-4 flex items-center gap-2 rounded-sm border border-line bg-surface-raised px-2 py-1.5 text-xs text-muted shadow-xl"
                 >
                     <Activity :size="16" class="text-signal" />
-                    <!-- Portfolio desplegado y operativo -->
                     Desarrollando<a href="https://www.vestta.app" class="hover-underline -ml-1">Vestta CRM</a>
                 </div>
             </div>
