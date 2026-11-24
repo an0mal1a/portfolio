@@ -4,7 +4,7 @@ const SITE_URL = 'https://impablo.dev'
 const CDN_BASE = process.env.NODE_ENV === 'development' ? '' : 'https://cdn.impablo.dev'
 
 // Bump when the icons change and update the icon URLs in public/site.webmanifest.
-const ICON_VERSION = 4
+const ICON_VERSION = 5
 
 const poll = process.env.WATCH_POLLING === '1'
 
@@ -121,6 +121,8 @@ export default defineNuxtConfig({
 
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
+    // Same reason as the route rules below: the module would keep a sitemap without projects.
+    cacheMaxAgeSeconds: 0,
   },
 
   schemaOrg: {
@@ -135,9 +137,10 @@ export default defineNuxtConfig({
   $production: {
     routeRules: {
       '/**': { swr: 300 },
-      '/api/status': { swr: false, cache: false },
-      // Already cached per source (server/utils/data.ts), and a sync has to show at once.
-      '/api/github/**': { swr: false, cache: false },
+      // Already cached per source (server/utils/data.ts). A second cache on top keeps the
+      // empty answers of a deploy, when the site is up a minute before the API.
+      '/api/**': { swr: false, cache: false },
+      '/__sitemap__/**': { swr: false, cache: false },
       // The route cache stores binary bodies as "{}": never put IPX images through it.
       '/_ipx/**': { swr: false, cache: false },
     },

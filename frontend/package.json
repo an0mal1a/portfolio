@@ -10,6 +10,7 @@
     "typecheck": "nuxt typecheck",
     "plates": "node scripts/build-plates.mjs",
     "cdn": "node --env-file=.env scripts/upload-cdn.mjs",
+    "sync": "node --env-file-if-exists=../backends/.env --env-file-if-exists=.env scripts/sync-github.mjs",
     "postinstall": "nuxt prepare"
   },
   "overrides": {
