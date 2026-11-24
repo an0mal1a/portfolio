@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ArrowUpRight, ChevronRight, FileText } from '@lucide/vue'
+import { ChevronRight, FileText } from '@lucide/vue'
 import type { Client } from '#shared/types/api'
 import { CERTIFICATES, CV_URL, STUDIES } from '~/content/credentials'
 
 const { t, tm, rt } = useI18n()
 const localePath = useLocalePath()
-const { number, date } = useFormat()
 const { public: { siteUrl } } = useRuntimeConfig()
 const { data: clients } = await useFetch<Client[]>('/api/clients', { key: 'clients', default: () => [] })
 
@@ -83,41 +82,9 @@ useSchemaOrg([
       </div>
     </section>
 
-    <section class="part container-x" aria-labelledby="credentials-title">
-      <div class="grid gap-x-[var(--gutter)] gap-y-10 lg:grid-cols-12">
-        <div class="lg:col-span-4">
-          <h2 id="credentials-title" class="h-sub max-w-[12ch]">{{ t('about.credentials.title') }}</h2>
-          <p class="mt-5 max-w-[36ch] text-ink-2">{{ t('about.credentials.lead') }}</p>
-        </div>
-        <ul class="credentials lg:col-span-8">
-          <li v-for="c in [...STUDIES, ...CERTIFICATES]" :key="c.id" class="credential">
-            <div>
-              <h3 class="credential-name" lang="es">{{ c.name }}</h3>
-              <p class="credential-meta tabular">
-                {{ c.issuer }} · {{ c.date.length === 10 ? date(c.date, { month: 'long', year: 'numeric' }) : c.date }}<template v-if="c.hours"> · {{ t('about.credentials.hours', { n: number(c.hours) }) }}</template>
-              </p>
-            </div>
-            <a v-if="c.verify" :href="c.verify" target="_blank" rel="noopener" class="link-more" :aria-label="t('about.credentials.verifyOf', { name: c.name })">
-              {{ t('about.credentials.verify') }} <ArrowUpRight aria-hidden="true" />
-            </a>
-          </li>
-        </ul>
-      </div>
-    </section>
+    <CredentialsSection />
 
-    <section v-if="clients?.length" class="part container-x" aria-labelledby="clients-title">
-      <div class="grid gap-x-[var(--gutter)] gap-y-10 lg:grid-cols-12">
-        <h2 id="clients-title" class="h-sub max-w-[12ch] lg:col-span-4">{{ t('about.clients') }}</h2>
-        <ul class="border-t border-line lg:col-span-8">
-          <li v-for="c in clients" :key="c.id" class="border-b border-line">
-            <component :is="c.website ? 'a' : 'span'" :href="c.website ?? undefined" :target="c.website ? '_blank' : undefined" :rel="c.website ? 'noopener' : undefined" class="group flex items-center justify-between gap-6 py-5 text-[clamp(1.375rem,1rem+1vw,2rem)] font-bold tracking-[-0.025em]">
-              {{ c.name }}
-              <ArrowUpRight v-if="c.website" class="size-5 flex-none text-mute transition-[transform,color] duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink" aria-hidden="true" />
-            </component>
-          </li>
-        </ul>
-      </div>
-    </section>
+    <ClientsSection v-if="clients?.length" :clients="clients" />
 
     <ContactSection />
   </div>
@@ -138,10 +105,6 @@ useSchemaOrg([
 @media (min-width: 48rem) { .rows > div { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: baseline; } }
 .rows dt { font-size: clamp(1.1875rem, 1rem + 0.5vw, 1.4375rem); font-weight: 700; letter-spacing: -0.015em; }
 .rows dd { color: var(--color-ink-2); max-width: 56ch; }
-.credentials { border-top: 1px solid var(--color-line); }
-.credential { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--color-line); }
-.credential-name { font-size: clamp(1.1875rem, 1rem + 0.5vw, 1.4375rem); font-weight: 700; line-height: 1.25; letter-spacing: -0.015em; }
-.credential-meta { margin-top: 0.25rem; font-size: 0.9375rem; color: var(--color-mute); }
 .stack { display: grid; gap: 2.5rem var(--gutter); padding: clamp(2rem, 5vw, 4rem); }
 @media (min-width: 64rem) { .stack { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }
 .stack-list { border-top: 1px solid var(--color-line); }

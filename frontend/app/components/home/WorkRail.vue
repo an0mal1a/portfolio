@@ -8,6 +8,7 @@ import { getShowcase } from '~/content/showcase'
  * scrollable, with arrows on wide screens.
  */
 const { t, locale } = useI18n()
+const cdn = useCdn()
 const localePath = useLocalePath()
 const items = computed(() => getShowcase(locale.value))
 
@@ -45,10 +46,10 @@ onMounted(sync)
           <ScreenVideo :name="item.media" :label="t('home.work.video', { name: item.name })" />
         </div>
         <div class="reflect" aria-hidden="true">
-          <img :src="`/media/${item.media}.jpg`" alt="" loading="lazy" decoding="async" width="1280" height="800">
+          <img :src="cdn(`/media/${item.media}.jpg`)" alt="" loading="lazy" decoding="async" width="1280" height="800">
         </div>
         <div class="id">
-          <img v-if="item.logo" :src="item.logo.src" alt="" :width="item.logo.width" :height="item.logo.height" class="logo" loading="lazy" decoding="async">
+          <img v-if="item.logo" :src="cdn(item.logo.src)" alt="" :width="item.logo.width" :height="item.logo.height" class="logo" loading="lazy" decoding="async">
           <div>
             <h3 class="name">{{ item.name }}</h3>
             <p class="meta tabular">{{ item.meta }}</p>

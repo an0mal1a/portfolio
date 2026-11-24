@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { PROFILES } from '~/content/profiles'
+
 const { t } = useI18n()
 const head = useLocaleHead({ seo: true })
 const { public: { siteUrl } } = useRuntimeConfig()
@@ -16,7 +18,7 @@ useSchemaOrg([
     'url': siteUrl,
     'image': `${siteUrl}/images/pablo-color.jpg`,
     'jobTitle': t('schema.jobTitle'),
-    'sameAs': ['https://github.com/an0mal1a'],
+    'sameAs': PROFILES.map(p => p.url),
     'knowsAbout': ['Web design', 'Web development', 'Custom software', 'CRM', 'AI automation', 'Offensive security', 'Nuxt', 'Vue', 'Rust', 'Python', 'PostgreSQL'],
     'address': { '@type': 'PostalAddress', 'addressLocality': 'Ibiza', 'addressRegion': 'Illes Balears', 'addressCountry': 'ES' },
   }),

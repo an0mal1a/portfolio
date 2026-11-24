@@ -8,7 +8,7 @@ type Locale = 'es' | 'en'
 export interface ClientLogo { src: string, width: number, height: number }
 
 /** Client marks in one ink tone (public/logos, transparent). Shown next to the client's work. */
-const LOGO_BY_SLUG: Record<string, ClientLogo> = {
+export const LOGO_BY_SLUG: Record<string, ClientLogo> = {
   'postproducciones-web': { src: '/logos/post-producciones.webp', width: 531, height: 192 },
   'tierradeibiza-web': { src: '/logos/tierras-de-ibiza.webp', width: 192, height: 192 },
   'lacasadesusana-web': { src: '/logos/la-casa-de-susana.webp', width: 117, height: 192 },
@@ -34,8 +34,8 @@ const items: (Omit<ShowcaseItem, 'meta' | 'tagline'> & { meta: Record<Locale, st
     url: 'https://www.postproducciones.com',
     meta: { es: 'Web · 2026 · Ibiza', en: 'Website · 2026 · Ibiza' },
     tagline: {
-      es: 'Web editorial para una productora audiovisual de Ibiza, pensada para presentar trabajos, servicios y equipo con carácter.',
-      en: 'Editorial website for an Ibiza video production company, built to show its work, services and team with character.',
+      es: 'Web de una productora de Ibiza que abre como una película y separa dos caminos: las marcas que buscan producción y los actores que buscan su videobook.',
+      en: 'Website for an Ibiza production company that opens like a film and gives brands and actors each their own path.',
     },
   },
   {

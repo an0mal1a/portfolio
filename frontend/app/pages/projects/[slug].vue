@@ -5,6 +5,7 @@ import type { ProjectDetail } from '#shared/types/api'
 
 const route = useRoute()
 const { t, locale } = useI18n()
+const cdn = useCdn()
 const localePath = useLocalePath()
 const { public: { siteUrl } } = useRuntimeConfig()
 const { date, relative } = useFormat()
@@ -143,7 +144,7 @@ useSchemaOrg([
       <div v-if="client">
         <dt>{{ t('project.client') }}</dt>
         <dd class="client">
-          <img v-if="logo" :src="logo.src" alt="" :width="logo.width" :height="logo.height" class="logo" decoding="async">
+          <img v-if="logo" :src="cdn(logo.src)" alt="" :width="logo.width" :height="logo.height" class="logo" decoding="async">
           <a v-if="client.website" :href="client.website" target="_blank" rel="noopener" class="link-quiet">{{ client.name }}</a>
           <template v-else>{{ client.name }}</template>
         </dd>

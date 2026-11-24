@@ -5,6 +5,7 @@
  * its poster with controls, so the visitor decides.
  */
 const props = defineProps<{ name: string, label: string, fill?: boolean }>()
+const cdn = useCdn()
 const video = ref<HTMLVideoElement | null>(null)
 const reduced = ref(false)
 
@@ -35,12 +36,12 @@ onMounted(() => {
     playsinline
     preload="none"
     :controls="reduced"
-    :poster="`/media/${props.name}.jpg`"
+    :poster="cdn(`/media/${props.name}.jpg`)"
     :aria-label="props.label"
     width="1280"
     height="800"
   >
-    <source :src="`/media/${props.name}.av1.mp4`" type="video/mp4; codecs=av01.0.05M.08">
-    <source :src="`/media/${props.name}.mp4`" type="video/mp4">
+    <source :src="cdn(`/media/${props.name}.av1.mp4`)" type="video/mp4; codecs=av01.0.05M.08">
+    <source :src="cdn(`/media/${props.name}.mp4`)" type="video/mp4">
   </video>
 </template>

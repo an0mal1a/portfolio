@@ -1,9 +1,10 @@
 import tailwindcss from '@tailwindcss/vite'
 
 const SITE_URL = 'https://impablo.dev'
+const CDN_BASE = process.env.NODE_ENV === 'development' ? '' : 'https://cdn.impablo.dev'
 
-// Bump after `npm run icons`: browsers keep favicons for a long time.
-const ICON_VERSION = 2
+// Bump when the icons change: browsers keep favicons for a long time.
+const ICON_VERSION = 3
 
 const poll = process.env.WATCH_POLLING === '1'
 
@@ -49,6 +50,8 @@ export default defineNuxtConfig({
       apiBase: 'https://rust-api.impablo.dev',
       pythonApiBase: 'https://python-api.impablo.dev',
       siteUrl: SITE_URL,
+      // Mirror of /media, /covers, /logos and /certificates (npm run cdn). Dev uses the local files.
+      cdnBase: CDN_BASE,
     },
   },
 
@@ -74,6 +77,7 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: '/site.webmanifest' },
         { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/gantari-latin.woff2', crossorigin: '' },
         // Project screenshots are resized at Cloudinary's edge (app/utils/cloudinary.ts).
+        ...(CDN_BASE ? [{ rel: 'preconnect' as const, href: CDN_BASE }] : []),
         { rel: 'preconnect', href: 'https://res.cloudinary.com' },
       ],
     },
@@ -140,6 +144,7 @@ export default defineNuxtConfig({
     '/fonts/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/brand/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/logos/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
+    '/certificates/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/covers/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/media/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/plates/**': { headers: { 'cache-control': 'public, max-age=2592000' } },

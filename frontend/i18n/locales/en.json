@@ -455,10 +455,13 @@
     "cv": "See my CV (PDF, Spanish)",
     "credentials": {
       "title": "Studies and certificates.",
-      "lead": "Where the issuer offers verification, the link opens the certificate on their own site. Names are in Spanish, as issued.",
+      "lead": "Every document is the original. Below each one, what I did and what stayed with me; the link opens the verification on the issuer’s own site. Documents and names are in Spanish, as issued.",
       "hours": "{n} hours",
       "verify": "Verify",
-      "verifyOf": "Verify the certificate {name}"
+      "verifyOf": "Verify the certificate {name}",
+      "open": "See the certificate {name}",
+      "docAlt": "Certificate for {name}, issued by {issuer}",
+      "close": "Close"
     }
   },
   "contactPage": {

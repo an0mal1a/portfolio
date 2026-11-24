@@ -7,6 +7,7 @@ import { mediaForSlug } from '~/content/showcase'
 // stock picture.
 const props = defineProps<{ project: Pick<ProjectSummary, 'name' | 'image' | 'project_type'> & { slug?: string }, sizes?: string, eager?: boolean, still?: boolean }>()
 const { t } = useI18n()
+const cdn = useCdn()
 
 const sizes = computed(() => props.sizes ?? 'xs:100vw md:720px')
 const recording = computed(() => (props.project.slug ? mediaForSlug(props.project.slug) : undefined))
@@ -14,7 +15,7 @@ const media = computed(() => (props.still ? undefined : recording.value))
 // A still of a recorded product is the recording's own poster. Root-relative images
 // are already sized files in /public and skip IPX.
 const image = computed(() => (props.still && recording.value ? `/media/${recording.value}.jpg` : props.project.image))
-const cdn = computed(() => isCloudinary(image.value))
+const cloudinary = computed(() => isCloudinary(image.value))
 const local = computed(() => !!image.value?.startsWith('/'))
 const failed = ref(false)
 const img = ref<HTMLImageElement | null>(null)
@@ -31,7 +32,7 @@ onMounted(() => {
     <ScreenVideo v-if="media" :name="media" :label="t('home.work.video', { name: props.project.name })" fill />
     <template v-else-if="image && !failed">
       <img
-        v-if="cdn"
+        v-if="cloudinary"
         ref="img"
         :src="cloudinaryUrl(image, 1280)"
         :srcset="cloudinarySrcset(image)"
@@ -48,7 +49,7 @@ onMounted(() => {
       <img
         v-else-if="local"
         ref="img"
-        :src="image"
+        :src="cdn(image)"
         :alt="t('work.imageAlt', { name: props.project.name })"
         width="1600"
         height="1000"

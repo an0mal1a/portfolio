@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ArrowUpRight } from '@lucide/vue'
+import { PROFILES } from '~/content/profiles'
 import { SERVICE_IDS, getServices } from '~/content/services'
 
 const { t, locale } = useI18n()
@@ -43,9 +44,9 @@ const year = new Date().getFullYear()
           <div>
             <p class="col-title">{{ t('footer.elsewhere') }}</p>
             <ul>
-              <li>
-                <a href="https://github.com/an0mal1a" target="_blank" rel="noopener me" class="inline-flex items-center gap-1.5">
-                  GitHub <ArrowUpRight class="size-3.5" aria-hidden="true" />
+              <li v-for="p in PROFILES" :key="p.url">
+                <a :href="p.url" target="_blank" rel="noopener me" class="inline-flex items-center gap-1.5">
+                  {{ p.name }} <ArrowUpRight class="size-3.5" aria-hidden="true" />
                 </a>
               </li>
             </ul>

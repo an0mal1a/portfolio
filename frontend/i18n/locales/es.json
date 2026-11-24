@@ -455,10 +455,13 @@
     "cv": "Ver mi CV (PDF)",
     "credentials": {
       "title": "Formación y certificados.",
-      "lead": "Donde el centro ofrece verificación, el enlace abre el certificado en su propia web.",
+      "lead": "Cada documento es el original. Debajo, qué hice y con qué me quedé; el enlace abre la verificación en la web de quien lo emite.",
       "hours": "{n} horas",
       "verify": "Verificar",
-      "verifyOf": "Verificar el certificado {name}"
+      "verifyOf": "Verificar el certificado {name}",
+      "open": "Ver el certificado {name}",
+      "docAlt": "Certificado de {name}, emitido por {issuer}",
+      "close": "Cerrar"
     }
   },
   "contactPage": {
