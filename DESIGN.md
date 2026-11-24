@@ -228,7 +228,7 @@ Depth comes from light, not borders. Surfaces are flat colour steps (`ground` to
 - **Screens** (`--radius-screen`, 10-16px fluid): product recordings, project figures, the empty graph placeholder.
 - **Panels** (`--radius-panel`, 20px): raised sheets.
 - **Fields** (12px) and the checkbox (6px). Graph cells are 10px squares with 2.5px corners.
-- **The P mark** is fixed geometry from the brand kit: two forward modules with 45-degree chamfers on one continuous spine. Never stretch, rotate, outline, shadow or recolour it; on dark grounds it is `ink`.
+- **The P mark** is fixed geometry from the brand kit. Two forward modules with 45-degree chamfers share one continuous spine. The site lockup uses `ink` on dark grounds. The favicon, app icons, accent variants in the brand kit and social cards use Signal Orange (`#FF4D2E`).
 
 ## Components
 
@@ -326,7 +326,7 @@ A year of GitHub contributions as 10px cells: five steps of ink wash (6%, 20%, 3
 - **Don't** build identical card grids or a hero-metric template (big number, small label, repeated).
 - **Don't** use Azeret Mono outside literal machine text.
 - **Don't** use pure black or cool greys; the neutrals are all warm.
-- **Don't** stretch, rotate, outline, shadow or recolour the P mark.
+- **Don't** stretch, rotate, outline, shadow or apply custom colours to the P mark.
 - **Don't** use hacker theatre (green terminals, glitch, matrix), illustrations of products, or stock imagery.
 
 ## Hero portrait

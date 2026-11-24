@@ -58,7 +58,7 @@ Constraints:
 ## Brand Commitments
 
 - **Binding: the P logo only** (owner decision, 2026-11-23). The modular directional "P" mark (`frontend/pablo-brand-kit/assets/logo-mark.svg`: two forward-facing modules with 45° chamfers on one continuous vertical spine) plus the **PABLO** wordmark. Never stretch, rotate, outline, shadow or gradient-recolour the mark; clear space at least the width of its spine. On dark grounds it is set in the page's off-white.
-- **Not binding any more:** the brand kit's palette (Graphite Ink, Warm Paper, Signal Lime, Ultramarine, Oxide), its fonts (Bricolage Grotesque, Azeret Mono), the descriptor INDEPENDENT BUILDER and the tagline. The visual system lives in DESIGN.md once the current redesign ships.
+- The brand kit includes Graphite Ink, Warm Paper, Signal Orange (`#FF4D2E`), Ultramarine, Oxide, Bricolage Grotesque, Azeret Mono, the descriptor INDEPENDENT BUILDER and the tagline. DESIGN.md defines the site's visual system.
 - **Owner's taste for this redesign:** dark and premium, Apple-keynote calm and finish, motion where it earns its place, real personality; never a cold luxury agency, never a flat generic landing. Real material (recordings of shipped products, real data) over illustration.
 - Name in copy: **Pablo Diez**. GitHub handle `an0mal1a`. Domain `impablo.dev`.
 - Owner's framing of the site: "it's a portfolio, it has to be seriously impressive" (WOW, crafted motion), while SEO stays oriented to web/software development in Ibiza.

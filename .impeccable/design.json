@@ -500,7 +500,7 @@
       "**Don't** build identical card grids or a hero-metric template (big number, small label, repeated).",
       "**Don't** use Azeret Mono outside literal machine text.",
       "**Don't** use pure black or cool greys; the neutrals are all warm.",
-      "**Don't** stretch, rotate, outline, shadow or recolour the P mark.",
+      "**Don't** stretch, rotate, outline, shadow or apply custom colours to the P mark.",
       "**Don't** use hacker theatre (green terminals, glitch, matrix), illustrations of products, or stock imagery."
     ]
   }

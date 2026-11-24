@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-11-23T23:27:26.671Z",
         "reason": "agent: exploration prototypes predate DESIGN.md and are never shipped; the built frontend uses Gantari + Azeret Mono as documented"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "bricolage grotesque",
+        "files": [
+          "frontend/pablo-brand-kit/assets/brand-tokens.css"
+        ],
+        "createdAt": "2026-11-24T16:02:25.760Z",
+        "reason": "The standalone brand kit already specifies Bricolage Grotesque in its README and artwork. DESIGN.md specifies the website font."
       }
     ]
   }

@@ -31,11 +31,11 @@ Tagline: **IDEAS INTO SYSTEMS.**
 |---|---|---|
 | Graphite Ink | `#171B1E` | Primary text, dark surfaces, logo |
 | Warm Paper | `#F1EEE6` | Main light background |
-| Signal Lime | `#D8F16B` | Primary accent and calls to attention |
+| Signal Orange | `#FF4D2E` | Primary accent and calls to attention |
 | Ultramarine | `#5263E8` | Secondary digital accent |
 | Oxide | `#B8644D` | Warm supporting accent |
 
-Use Graphite Ink and Warm Paper as the foundation. Signal Lime should remain a signal accent, not a full-page fill. Ultramarine and Oxide are supporting accents; avoid using all three accents at equal intensity in one composition.
+Use Graphite Ink and Warm Paper as the foundation. Reserve Signal Orange (`--pablo-accent` in CSS) for accents and calls to attention. Use Ultramarine and Oxide as supporting accents, with a clear hierarchy when they appear together.
 
 ## Typography
 

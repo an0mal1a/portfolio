@@ -7,6 +7,6 @@
     <path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/>
   </g>
   <text x="250" y="151" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="142" font-weight="800" letter-spacing="-5" fill="#171B1E">PABLO</text>
-  <rect x="255" y="174" width="550" height="50" fill="#D8F16B"/>
+  <rect x="255" y="174" width="550" height="50" fill="#FF4D2E"/>
   <text x="280" y="210" font-family="'Azeret Mono', 'Courier New', monospace" font-size="27" font-weight="600" letter-spacing="5.2" fill="#171B1E">INDEPENDENT BUILDER</text>
 </svg>

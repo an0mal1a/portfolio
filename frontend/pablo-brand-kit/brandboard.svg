@@ -12,26 +12,26 @@
 
   <g transform="translate(78 154) scale(1.1)" fill="#171B1E"><path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/></g>
   <text x="270" y="282" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="142" font-weight="800" letter-spacing="-5" fill="#171B1E">PABLO</text>
-  <rect x="278" y="313" width="548" height="50" fill="#D8F16B"/>
+  <rect x="278" y="313" width="548" height="50" fill="#FF4D2E"/>
   <text x="300" y="348" font-family="'Azeret Mono', monospace" font-size="25" font-weight="600" letter-spacing="4" fill="#171B1E">INDEPENDENT BUILDER</text>
 
   <text x="1050" y="150" font-family="'Azeret Mono', monospace" font-size="20" letter-spacing="2" fill="#171B1E">MONOGRAM</text>
   <g transform="translate(1090 192) scale(0.92)" fill="#171B1E"><path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/></g>
   <text x="1320" y="150" font-family="'Azeret Mono', monospace" font-size="20" letter-spacing="2" fill="#171B1E">FAVICON</text>
   <rect x="1350" y="196" width="156" height="156" rx="34" fill="#171B1E"/>
-  <g transform="translate(1393 231) scale(0.49)" fill="#D8F16B"><path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/></g>
+  <g transform="translate(1393 231) scale(0.49)" fill="#FF4D2E"><path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/></g>
 
   <text x="42" y="475" font-family="'Azeret Mono', monospace" font-size="22" font-weight="700" letter-spacing="2" fill="#171B1E">PALETA DE COLORES</text>
   <g transform="translate(120 510)">
     <rect width="245" height="120" rx="14" fill="#171B1E"/>
     <rect x="270" width="245" height="120" rx="14" fill="#F1EEE6" stroke="#171B1E" stroke-width="1.5"/>
-    <rect x="540" width="245" height="120" rx="14" fill="#D8F16B"/>
+    <rect x="540" width="245" height="120" rx="14" fill="#FF4D2E"/>
     <rect x="810" width="245" height="120" rx="14" fill="#5263E8"/>
     <rect x="1080" width="245" height="120" rx="14" fill="#B8644D"/>
     <g font-family="'Azeret Mono', monospace" font-size="18" fill="#171B1E">
       <text x="0" y="155" font-weight="700">GRAPHITE INK</text><text x="0" y="184">#171B1E</text>
       <text x="270" y="155" font-weight="700">WARM PAPER</text><text x="270" y="184">#F1EEE6</text>
-      <text x="540" y="155" font-weight="700">SIGNAL LIME</text><text x="540" y="184">#D8F16B</text>
+      <text x="540" y="155" font-weight="700">SIGNAL ORANGE</text><text x="540" y="184">#FF4D2E</text>
       <text x="810" y="155" font-weight="700">ULTRAMARINE</text><text x="810" y="184">#5263E8</text>
       <text x="1080" y="155" font-weight="700">OXIDE</text><text x="1080" y="184">#B8644D</text>
     </g>
@@ -45,6 +45,6 @@
   <text x="850" y="904" font-family="'Azeret Mono', monospace" font-size="76" font-weight="600" fill="#171B1E">Azeret Mono</text>
   <text x="850" y="956" font-family="'Azeret Mono', monospace" font-size="20" fill="#171B1E">WEIGHTS 400–600 · LABELS · METADATA · CODE NOTES</text>
 
-  <rect x="42" y="990" width="90" height="12" fill="#D8F16B"/><rect x="144" y="990" width="90" height="12" fill="#5263E8"/><rect x="246" y="990" width="90" height="12" fill="#B8644D"/>
+  <rect x="42" y="990" width="90" height="12" fill="#FF4D2E"/><rect x="144" y="990" width="90" height="12" fill="#5263E8"/><rect x="246" y="990" width="90" height="12" fill="#B8644D"/>
   <text x="1558" y="1005" text-anchor="end" font-family="'Azeret Mono', monospace" font-size="23" letter-spacing="5" fill="#171B1E">IDEAS INTO SYSTEMS.</text>
 </svg>

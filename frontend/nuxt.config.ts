@@ -3,8 +3,8 @@ import tailwindcss from '@tailwindcss/vite'
 const SITE_URL = 'https://impablo.dev'
 const CDN_BASE = process.env.NODE_ENV === 'development' ? '' : 'https://cdn.impablo.dev'
 
-// Bump when the icons change: browsers keep favicons for a long time.
-const ICON_VERSION = 3
+// Bump when the icons change and update the icon URLs in public/site.webmanifest.
+const ICON_VERSION = 4
 
 const poll = process.env.WATCH_POLLING === '1'
 
@@ -74,7 +74,7 @@ export default defineNuxtConfig({
         { rel: 'icon', href: `/favicon.ico?v=${ICON_VERSION}`, sizes: '48x48' },
         { rel: 'icon', type: 'image/svg+xml', href: `/favicon.svg?v=${ICON_VERSION}` },
         { rel: 'apple-touch-icon', href: `/apple-touch-icon.png?v=${ICON_VERSION}` },
-        { rel: 'manifest', href: '/site.webmanifest' },
+        { rel: 'manifest', href: `/site.webmanifest?v=${ICON_VERSION}` },
         { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/gantari-latin.woff2', crossorigin: '' },
         // Project screenshots are resized at Cloudinary's edge (app/utils/cloudinary.ts).
         ...(CDN_BASE ? [{ rel: 'preconnect' as const, href: CDN_BASE }] : []),
