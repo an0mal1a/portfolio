@@ -35,6 +35,10 @@ npm run preview    # serve the build
 npm run typecheck
 ```
 
+In dev the browser writes to the backends through the Nuxt server (`/_backend/rust`, `/_backend/python`, see `nitro.devProxy` and `useBackendBase()`), so they work on any port; if 3001 is taken (the Docker frontend uses it) `npm run dev` moves to 3000. Dev reads are cached for 2 s only. Production still calls the backends directly.
+
+`npm run icons` rebuilds the favicon and app icons (bump `ICON_VERSION` in `nuxt.config.ts`); `npm run plates` re-encodes the hero portrait.
+
 On an NTFS mount under WSL, file watching needs polling: `WATCH_POLLING=1 npm run dev`. It is off by default because it makes dev SSR very slow; verifying against `npm run build` + `node .output/server/index.mjs` is faster there.
 
 Backends locally: see `README.md` (`cargo run` in `backends/rust-api`, `uvicorn app:app --port 8080` in `backends/python-api`). Point the frontend at them with `NUXT_PUBLIC_API_BASE` / `NUXT_PUBLIC_PYTHON_API_BASE`.

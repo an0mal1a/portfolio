@@ -67,14 +67,16 @@ Constraints:
 
 ## Evidence on Hand
 
-- 8 real case studies in the database (Vestta CRM, Brisa Operations, Post Producciones, Tierras de Ibiza, NextLevelApps, AlcoberBot, self-debrid, Nightmare Framework), several with hero images on Cloudinary and live URLs.
+- 9 public case studies in the database (Vestta CRM, Vestta.io, Brisa Operations, Post Producciones, Tierras de Ibiza, La Casa de Susana, NextLevelApps, self-debrid, Nightmare Framework). AlcoberBot is hidden (owner decision, 2026-11-24): show nothing from Alcober on the home.
 - 5 real clients with logos: Post Producciones, Tierras de Ibiza, La Casa de Susana, Limpiezas Alcober, Alcober Services.
 - GitHub: 36 visible repositories, 17 languages, ~2,750 contributions in the last year, 15 followers; profile links to LinkedIn, X and Hack The Box.
 - Stack evidence from shipped work: Nuxt/Vue, Tailwind, FastAPI, PostgreSQL, Redis, Docker, Rust/Axum, C/C++, WhatsApp Business API, LLM pipelines, SSE.
+- Studies and certificates (`frontend/app/content/credentials.ts`, shown on About): Grado Medio SMR, Hack4u, Mastermind and Rustlang en Español. A verification link is only published after opening the issuer's page.
+- CV: `frontend/public/cv/pablo-diez-cv.pdf`, the owner's PDF without the phone number (owner decision). Remove the phone again whenever it is replaced.
 - Owner portrait: `frontend/public/images/portfolio-color.png` (1122×1402 studio headshot, neutral grey backdrop, black t-shirt). Ship it through optimized AVIF/WebP, never the 2.6 MB PNG.
 - Primary conversion action (owner-confirmed): the contact form backed by `POST /contact`.
 - Owner-confirmed anti-goals: generic agency template, cold/corporate tone, "hacker theatre" (green terminals, glitch, matrix), and anything slow. The owner loves animation when it is well crafted and purposeful.
-- Absent and must not be fabricated: testimonials, star ratings, revenue/traffic results for clients, certifications by name, pricing, team size, years-of-experience claims.
+- Absent and must not be fabricated: testimonials, star ratings, revenue/traffic results for clients, certifications beyond that list, pricing, team size, years-of-experience claims.
 
 ## Product Principles
 

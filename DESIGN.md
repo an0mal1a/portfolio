@@ -268,14 +268,26 @@ A real recording of a shipped product (`frontend/public/media/<name>.{av1.mp4,mp
 ### Stage (home hero)
 Full-height (`max(100svh, 40rem)`), the portrait covering the stage from the top, the centred display headline over the chest, lead in 90% ink, then the large tally pill and a "Ver proyectos" link-more. Nothing else above the fold.
 
-### Service row
-Full-width hairline row: name at title scale, pitch in `ink-2`, includes in `mute` 0.875rem, and a round wash chevron. Hover slides the name 6px and inverts the chevron to `ink`.
+### Client logo
+Set in one ink tone on transparent, about 2rem tall, beside the client's name (home rail, case facts). A client's own accent may stay when it is the mark itself (Post's red dot). `frontend/public/logos`, declared in `app/content/showcase.ts`. Clients without a usable mark show the name alone.
+
+### Project cover
+A project with no interface to record gets one sober still in the site's light (film black, warm key, at most one tally point): `frontend/public/covers`. Never a stock image, never hacker theatre.
+
+### Shop window (home services)
+One panel. Left: the three services as vertical tabs at title scale (`mute`, `ink` when picked, hairline between), then the picked service's pitch and a ghost pill. Right: a screen that plays real work of that kind, pills with the projects' names under it, and a link to the case. A resting pointer (140ms) previews; click or arrow keys pick. Screens cut: the new one comes up from 30% brightness over the old. Tabs are links, so without JS they open the landing.
+
+### Project premiere (case page)
+Centred page h1, tagline and actions; then the recording starts at 70% width and grows to the edges (cap 106rem) as it rises under the header, held there for 28svh (64rem and up; phones grow from 90%, reduced motion shows it static). Facts follow as one row of ruled columns. The case reads in chapters (its h2s) with a sticky index whose current chapter is `ink`; lists become hairline rows and a blockquote is set large at 700. The next project waits at the end as a huge name beside its screen, turned 16 degrees, which faces you on hover. Opening a project from the grid or from that link grows its screen into place (`view-transition-name: project-screen`).
+
+### Repository explorer (lab)
+Language chips, search and sort in one row over the list. Each row is a repository with its name, description, language, stars and forks and a line on a shared year axis from creation to last push: 50% ink, full ink when it moved in the last 60 days. Repositories kept off the site are listed in `app/content/repos.ts`.
 
 ### Security sheet
 A panel whose header is the literal response line in mono (`HTTP 200 · impablo.dev`) and whose rows are literal header lines in mono with a plain-language explanation beside them. Each row's dot: `ink-2` configured (server render), `faint` pending, `tally` received, `error` missing.
 
 ### Contribution graph
-A year of GitHub contributions as 10px cells: five steps of ink wash (6%, 20%, 38%, 62%, full ink), today in tally. A tabular readout below; hover shows the day.
+A year of GitHub contributions as 10px cells: five steps of ink wash (6%, 20%, 38%, 62%, full ink), today in tally. Pointing at a day rings it and floats an `ink` label with its count and date, as on GitHub; a less/more legend sits below. In the lab, the weekday and month bars under it are toggles: the picked one is full ink, every other day drops to 22%, and the sentence under the graph is rewritten.
 
 ### Status dot
 7-8px pill. `faint` while checking, `tally` when operational (it breathes at 2.4s in the built-daily line), `error` when degraded or down. Always next to text that says the same thing, inside an `aria-live` region.
@@ -305,7 +317,7 @@ A year of GitHub contributions as 10px cells: five steps of ink wash (6%, 20%, 3
 - **Don't** build identical card grids or a hero-metric template (big number, small label, repeated).
 - **Don't** use Azeret Mono outside literal machine text.
 - **Don't** use pure black or cool greys; the neutrals are all warm.
-- **Don't** stretch, rotate, outline, shadow or recolour the P mark.
+- **Don't** stretch, rotate, outline, shadow or recolour the P mark. One exception: the favicon and app icons are the P in tally on film black (`npm run icons`), so the tab is findable (owner decision, 2026-11-24).
 - **Don't** use hacker theatre (green terminals, glitch, matrix), illustrations of products, or stock imagery.
 
 ## Hero portrait
