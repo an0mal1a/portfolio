@@ -1,0 +1,489 @@
+{
+  "nav": {
+    "services": "Services",
+    "projects": "Work",
+    "lab": "Lab",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "a11y": {
+    "skip": "Skip to content",
+    "home": "Pablo Diez, home",
+    "mainNav": "Main navigation",
+    "switchLocale": "Switch language to Spanish",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "cta": {
+    "primary": "Tell me about your project",
+    "projects": "See the work"
+  },
+  "hero": {
+    "title": "Custom websites and software, made in Ibiza.",
+    "lead": "I'm Pablo Diez. I design, build and ship your website, your software or your automation.",
+    "portraitAlt": "Pablo Diez, studio portrait in warm light",
+    "lines": [
+      "Custom websites and software,",
+      "made in Ibiza."
+    ]
+  },
+  "facts": {
+    "label": "Live data",
+    "projects": "projects",
+    "clients": "clients",
+    "contributions": "contributions in 12 months",
+    "status": {
+      "checking": "Checking system",
+      "operational": "System operational",
+      "degraded": "System degraded",
+      "down": "System not responding"
+    },
+    "db": "DB"
+  },
+  "seo": {
+    "home": {
+      "title": "Web design and custom software in Ibiza · Pablo Diez",
+      "description": "Full-stack developer in Ibiza: web design, custom software and CRMs, and AI automation for businesses in Ibiza and across Spain, secure from day one."
+    },
+    "projects": {
+      "title": "Work: websites, SaaS and automations",
+      "description": "Real case studies in web design, custom software and AI automation for businesses in Ibiza and Spain, with code and data running in production."
+    },
+    "lab": {
+      "title": "Lab: the system, live",
+      "description": "The Rust API, Python worker and database behind this portfolio, live: system status, GitHub activity and a sync you can trigger yourself."
+    },
+    "about": {
+      "title": "About: full-stack developer in Ibiza",
+      "description": "Pablo Diez, independent full-stack developer in Ibiza with a background in offensive security. How I work, with which technologies and for whom."
+    },
+    "contact": {
+      "title": "Contact: tell me about your project",
+      "description": "Write to me about your website, custom software or AI automation. I reply personally from Ibiza, in English or Spanish."
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "description": "What data this site collects, what it is used for and how to exercise your rights."
+    }
+  },
+  "schema": {
+    "jobTitle": "Independent full-stack developer",
+    "businessName": "Pablo Diez · Web design and custom software in Ibiza"
+  },
+  "home": {
+    "services": {
+      "title": "Choose where we start.",
+      "lead": "Three ways to work with me. In all of them you talk directly to the person who designs, builds and ships your project."
+    },
+    "work": {
+      "title": "Then other businesses came along.",
+      "lead": "Websites and software in production today, recorded as they run.",
+      "visit": "Visit the site",
+      "case": "Read the case study",
+      "prev": "Previous project",
+      "next": "Next project",
+      "all": "All projects",
+      "listLabel": "Projects in production",
+      "video": "Recording of {name}"
+    },
+    "faq": {
+      "title": "Questions people ask",
+      "items": [
+        {
+          "q": "Do you only work with businesses in Ibiza?",
+          "a": "No. I live and work in Ibiza, so I can meet island clients in person, but I work remotely with companies across Spain and abroad."
+        },
+        {
+          "q": "How much does a website or custom software cost?",
+          "a": "It depends on the scope. After a first conversation I send a written proposal with what it includes, the timeline and the cost, before anything starts."
+        },
+        {
+          "q": "What is the difference between a website and custom software?",
+          "a": "A website tells people what you do and brings in enquiries. Custom software is a working tool: a CRM, an internal dashboard or a platform your team or clients use every day."
+        },
+        {
+          "q": "Why does security matter for my project?",
+          "a": "Because a website or system holding client data is a target. I come from offensive security and build with how it could be attacked in mind, from day one rather than as an add-on."
+        },
+        {
+          "q": "Do you work in English?",
+          "a": "Yes. I work in Spanish and English, and can build your site in both languages with copy written for each audience."
+        }
+      ]
+    },
+    "vestta": {
+      "title": "Vestta was born inside an estate agency.",
+      "body": "Too many tabs, duplicated data and manual chores. So I built the CRM that was missing: clients, properties, deals, documents and WhatsApp in one place.",
+      "facts": [
+        {
+          "t": "Multi-company",
+          "d": "Each agency with its own data, team and permissions."
+        },
+        {
+          "t": "Automatic sourcing",
+          "d": "Collects public listings and turns them into useful records."
+        },
+        {
+          "t": "Matching that explains itself",
+          "d": "Says what fits, what is missing and where the comparison is a stretch."
+        },
+        {
+          "t": "WhatsApp built in",
+          "d": "Conversations live on the client record."
+        }
+      ],
+      "case": "Read the Vestta case study",
+      "live": "See Vestta live",
+      "note": "Real product recording, with fictional data.",
+      "video": "Recording of the Vestta CRM in use, with fictional data"
+    },
+    "daily": {
+      "title": "And it gets built every day.",
+      "lead": "Everything you have seen is still running and still growing. Each square is a day of code from the last twelve months, read live from my GitHub.",
+      "summary": "{total} contributions in twelve months, across {active} days. Longest streak: {streak} days in a row.",
+      "now": "This site, right now",
+      "db": "database at {ms} ms",
+      "lab": "See the lab",
+      "aria": "GitHub contributions over the last twelve months: {total} across {active} active days.",
+      "today": "Today"
+    }
+  },
+  "work": {
+    "imageAlt": "Screenshot of {name}",
+    "inProgress": "In progress",
+    "types": {
+      "saas": "SaaS",
+      "web": "Website",
+      "automation": "Automation",
+      "tool": "Tool"
+    }
+  },
+  "wall": {
+    "title": "The wall I build every day.",
+    "lead": "Each brick is a day of code from the last twelve months, read live from my GitHub. The lighter it is, the more work that day. The top course is still under construction.",
+    "total": "Contributions",
+    "active": "Active days",
+    "streak": "Longest streak",
+    "busiest": "Record day",
+    "days": "{n} days",
+    "count": "no contributions | 1 contribution | {n} contributions",
+    "hint": "Hover over a brick",
+    "less": "Less",
+    "more": "More",
+    "lab": "Open the lab",
+    "aria": "GitHub contribution wall for the last 12 months: {total} contributions over {active} active days, longest streak {streak} days.",
+    "daysUnit": "days"
+  },
+  "security": {
+    "title": "What you cannot see is done too.",
+    "lead": "I come from offensive security: before building systems I learned how they break. This is the response your browser just received from this site. Each line is a protection, next to what it means for you.",
+    "checked": "{n} of {total} checked",
+    "failed": "Your browser could not run the check.",
+    "missing": "Not received",
+    "rows": {
+      "strict-transport-security": "Always over HTTPS, for a year, even if you type http.",
+      "x-content-type-options": "Your browser never reinterprets a file as something else.",
+      "referrer-policy": "Other sites do not see which page you came from.",
+      "permissions-policy": "This site cannot ask for your camera, microphone, location or payments.",
+      "cross-origin-opener-policy": "No window from another site can control this one.",
+      "x-frame-options": "Nobody can embed this site inside another to trick you.",
+      "content-security-policy": "It cannot be framed, load plugins or change its base address."
+    },
+    "limits": {
+      "contact": {
+        "value": "3 per minute",
+        "body": "Messages the contact form accepts from one connection. It stops spam without captchas."
+      },
+      "api": {
+        "value": "120 per minute",
+        "body": "Requests the API accepts per visitor. The rest wait their turn."
+      }
+    },
+    "evidence": "Security case study: Nightmare Framework",
+    "configured": "{total} protections configured"
+  },
+  "contact": {
+    "title": "Tell me about your project.",
+    "lead": "Explain what you need in your own words. I read every message and reply personally, with no sales forms or middlemen.",
+    "place": "Ibiza, Balearic Islands",
+    "languages": "English · Español",
+    "reply": "Personal reply, by email",
+    "homeTitle": "Now, your project."
+  },
+  "form": {
+    "kind": "What do you need?",
+    "kinds": {
+      "web": "A website",
+      "software": "Custom software",
+      "automation": "AI automation",
+      "other": "Something else"
+    },
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "optional": "optional",
+    "message": "Your project",
+    "messagePlaceholder": "What you do, what you would like to have and by when.",
+    "consent": "I agree to my data being used to reply to my message, as described in the",
+    "privacy": "privacy policy",
+    "submit": "Send message",
+    "sending": "Sending",
+    "again": "Send another message",
+    "errors": {
+      "name": "Please add your name.",
+      "email": "Check the email address, otherwise I cannot reply.",
+      "message": "Tell me a little more (at least 20 characters).",
+      "consent": "I need your permission to reply."
+    },
+    "status": {
+      "sentTitle": "Message received.",
+      "sent": "I will reply to the email you left. If it is urgent, say so in a second message.",
+      "rateLimited": "You have sent several messages in a row. Wait {s} seconds and try again.",
+      "invalidMail": "The server does not accept that email. Check it and send again.",
+      "network": "Cannot reach the server. Check your connection and try again.",
+      "failed": "The message could not be sent. Please try again in a few minutes."
+    }
+  },
+  "footer": {
+    "nav": "Footer",
+    "studio": "Studio",
+    "elsewhere": "Elsewhere",
+    "privacy": "Privacy",
+    "line": "Custom websites and software, made in Ibiza."
+  },
+  "breadcrumb": {
+    "label": "Breadcrumb",
+    "home": "Home",
+    "projects": "Work"
+  },
+  "service": {
+    "seeWork": "See the work",
+    "forWhom": "Who it is for",
+    "process": "How we work",
+    "step": "Step {n} of {total}",
+    "included": "What's included",
+    "stepOf": "{n}/{total}"
+  },
+  "projects": {
+    "title": "Projects that work in the real world.",
+    "lead": "Websites, SaaS platforms, automations and tools I have designed and built. Each case covers the problem, the decisions and how it turned out.",
+    "filter": "Filter by type",
+    "all": "All",
+    "listLabel": "Project list",
+    "empty": "No projects of this type yet."
+  },
+  "project": {
+    "live": "Visit live",
+    "code": "View code",
+    "type": "Type",
+    "client": "Client",
+    "period": "Period",
+    "status": "Status",
+    "language": "Main language",
+    "lastPush": "Last change",
+    "repo": "Repository",
+    "private": "Private",
+    "public": "Public",
+    "now": "now",
+    "next": "Next project",
+    "nextLabel": "Next project",
+    "spanishOnly": "This case study is written in Spanish.",
+    "statuses": {
+      "draft": "Draft",
+      "in_progress": "In progress",
+      "published": "In production",
+      "archived": "Archived"
+    },
+    "nextShort": "Next"
+  },
+  "lab": {
+    "title": "Lab.",
+    "lead": "This portfolio is not a mock-up. It runs on a Rust API, a Python worker that syncs my GitHub and a PostgreSQL database. Here you can watch the system working, live.",
+    "system": "System status",
+    "observed": "Checked {when}",
+    "uptime": "up {d}",
+    "unreachable": "Not responding",
+    "lastSync": "synced {when}",
+    "svc": {
+      "api": "API (Rust)",
+      "db": "Database",
+      "worker": "Worker (Python)",
+      "smtp": "Email (SMTP)",
+      "github": "GitHub sync"
+    },
+    "state": {
+      "healthy": "Operational",
+      "unhealthy": "Failing",
+      "timeout": "Timed out",
+      "unreachable": "Unreachable",
+      "disabled": "Disabled",
+      "degraded": "Degraded",
+      "running": "Syncing",
+      "unknown": "No data"
+    },
+    "sync": {
+      "title": "Sync my GitHub now.",
+      "body": "Start a real job on the Python worker and follow its progress live. Each visitor gets a limited number of syncs per day.",
+      "profile": "Profile and activity",
+      "repos": "Repositories",
+      "progress": "Sync progress",
+      "remaining": "{n} left today",
+      "states": {
+        "pending": "Queued",
+        "running": "Running",
+        "completed": "Done",
+        "failed": "Failed"
+      },
+      "errors": {
+        "job_already_running": "A sync is already running: following its progress.",
+        "visitor_daily_limit": "You have used all your syncs for today. Come back tomorrow.",
+        "public_daily_limit": "The public sync limit for today has been reached. Come back tomorrow.",
+        "network_error": "The worker cannot be reached right now.",
+        "unknown": "The sync could not start."
+      }
+    },
+    "rhythm": {
+      "title": "When I code.",
+      "lead": "Contributions by weekday and by month over the last twelve months.",
+      "months": "Contributions per month"
+    },
+    "languages": {
+      "title": "What I build with.",
+      "lead": "Main languages across my {repos} repositories ({langs} languages in total), by number of repositories."
+    },
+    "repos": {
+      "title": "Public code.",
+      "lead": "{pub} public repositories and {priv} private ones for clients and products. These are the public ones with the latest changes.",
+      "all": "See everything on GitHub"
+    },
+    "arch": {
+      "title": "How each piece of data travels",
+      "browser": "Your browser",
+      "browserRole": "Requests the page and sends forms straight to the API.",
+      "nuxtRole": "Renders on the server and caches reads so the API is never flooded.",
+      "apiRole": "Projects, clients, contact and system status, rate-limited per IP.",
+      "dbRole": "Case studies, repositories and GitHub activity.",
+      "workerRole": "Syncs GitHub every night or when you trigger it, with live progress."
+    },
+    "graph": {
+      "title": "A year of code.",
+      "lead": "Each square is a day of the last twelve months, read live from my GitHub. The brighter it is, the more work that day. Today is the square still open."
+    }
+  },
+  "about": {
+    "title": "I build systems knowing how they break.",
+    "p1": "I'm Pablo Diez, an independent full-stack developer in Ibiza. I design and code websites, custom software and AI automations, from the database to the last screen.",
+    "p2": "I come from offensive security: I started out researching how systems get attacked, and then moved on to building them. That way of looking stays with you: every technical decision is also weighed from the side of someone trying to break it.",
+    "p3": "I work with island businesses, companies from abroad and founders who need to take an idea to production. Always directly, with no middlemen: the person who listens is the person who builds.",
+    "principlesTitle": "How I work",
+    "principles": [
+      {
+        "title": "You talk to the builder",
+        "body": "No sales reps or layers in between. Decisions are made with the person who will code them."
+      },
+      {
+        "title": "Proof before promises",
+        "body": "I would rather show you something working than promise it. This portfolio is built that way."
+      },
+      {
+        "title": "Security as craft",
+        "body": "Not an extra at the end: it lives in the data model, on the server and in how things are deployed."
+      },
+      {
+        "title": "Clear about what I don't know",
+        "body": "If something is out of my hands or not a good idea, I tell you before it costs money."
+      }
+    ],
+    "stack": {
+      "title": "Tools.",
+      "lead": "I choose technology for the problem. These are the ones I use in real projects in production.",
+      "groups": [
+        {
+          "group": "Interface",
+          "items": "Nuxt, Vue, TypeScript, Tailwind CSS"
+        },
+        {
+          "group": "Server",
+          "items": "Rust (Axum), Python (FastAPI), C / C++"
+        },
+        {
+          "group": "Data",
+          "items": "PostgreSQL, Redis"
+        },
+        {
+          "group": "AI",
+          "items": "Language models, WhatsApp Business API, SSE workflows"
+        },
+        {
+          "group": "Infrastructure",
+          "items": "Docker, Coolify, continuous deployment"
+        },
+        {
+          "group": "Security",
+          "items": "Pentesting, red teaming, code review"
+        }
+      ]
+    },
+    "clients": "Clients I have worked with"
+  },
+  "contactPage": {
+    "lead": "Tell me what you do and what you would like to have. I reply myself, personally, and if it fits we talk it through.",
+    "stepsLabel": "What happens next",
+    "steps": [
+      {
+        "title": "You write",
+        "body": "In your own words, no jargon needed. The more context, the better I can advise you."
+      },
+      {
+        "title": "We talk",
+        "body": "I reply by email and, if it makes sense, we have a call or meet in Ibiza."
+      },
+      {
+        "title": "A written proposal",
+        "body": "I send what it includes, the timeline and the cost before anything starts."
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Privacy",
+    "updated": "Last updated: November 2026",
+    "intro": "This site collects the minimum data needed to reply to people who write. It uses no tracking cookies or advertising tools.",
+    "sections": [
+      {
+        "title": "Controller",
+        "body": "Pablo Diez, independent developer based in Ibiza (Balearic Islands, Spain). You can contact me about any privacy matter through this site's contact form."
+      },
+      {
+        "title": "What data I collect",
+        "body": "Only what you type into the contact form: name, email, phone if you add it and your message. The server also temporarily logs the IP address to limit the number of submissions and prevent abuse."
+      },
+      {
+        "title": "What I use it for",
+        "body": "To reply to your message and, if we end up working together, to manage that relationship. The legal basis is your consent when you send the form."
+      },
+      {
+        "title": "How long I keep it",
+        "body": "As long as needed to handle your enquiry and, where applicable, as long as legal obligations require. You can ask me to delete it at any time."
+      },
+      {
+        "title": "Who I share it with",
+        "body": "Nobody, for commercial purposes. Data is stored on my own servers and each message notification is sent by email through the email provider."
+      },
+      {
+        "title": "Your rights",
+        "body": "You can access, correct, delete, object to the processing of or request the portability of your data by writing through the form. If you believe your rights have not been respected, you can complain to the Spanish Data Protection Agency (aepd.es)."
+      },
+      {
+        "title": "Cookies",
+        "body": "This site sets no first- or third-party cookies for analytics or advertising. If that ever changes, this page will say so first."
+      }
+    ]
+  },
+  "error": {
+    "notFoundTitle": "This module hasn't been built.",
+    "notFound": "The page you are looking for does not exist or has moved. The rest of the system is still standing.",
+    "title": "Something went wrong.",
+    "body": "An unexpected error happened. Please try again in a moment.",
+    "home": "Back to home"
+  }
+}

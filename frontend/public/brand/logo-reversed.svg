@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="260" viewBox="0 0 1120 260" role="img" aria-labelledby="title desc">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&amp;display=swap');</style>
+
+  <title id="title">Pablo — Independent Builder, reversed</title>
+  <desc id="desc">Light wordmark and lime modular P symbol for dark backgrounds.</desc>
+  <g transform="translate(52 42) scale(0.92)" fill="#D8F16B">
+    <path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/>
+  </g>
+  <text x="250" y="151" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="142" font-weight="800" letter-spacing="-5" fill="#F1EEE6">PABLO</text>
+  <rect x="255" y="174" width="550" height="50" fill="#D8F16B"/>
+  <text x="280" y="210" font-family="'Azeret Mono', 'Courier New', monospace" font-size="27" font-weight="600" letter-spacing="5.2" fill="#171B1E">INDEPENDENT BUILDER</text>
+</svg>

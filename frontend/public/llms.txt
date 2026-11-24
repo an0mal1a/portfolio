@@ -1,0 +1,20 @@
+# Pablo Diez · impablo.dev
+
+> Pablo Diez is an independent full-stack developer based in Ibiza (Balearic Islands, Spain). He designs and builds custom websites, custom software (CRMs, internal dashboards, APIs, SaaS platforms) and AI automations (WhatsApp Business API bots, language-model workflows) for businesses in Ibiza and across Spain, working directly with clients in Spanish or English. Background in offensive security; security is designed in from the data model up.
+
+The site is in Spanish (default) and English (/en). Case studies are written in Spanish.
+
+## Services
+- [Diseño web en Ibiza](https://impablo.dev/diseno-web-ibiza): custom web design and development for Ibiza businesses, bilingual, built for local search.
+- [Desarrollo de software a medida](https://impablo.dev/desarrollo-software-a-medida): custom CRMs, internal tools, APIs and SaaS platforms.
+- [Automatización con IA](https://impablo.dev/automatizacion-ia): WhatsApp bots, AI workflows and integrations that remove repetitive work.
+- [Web design in Ibiza (English)](https://impablo.dev/en/web-design-ibiza)
+
+## Work and evidence
+- [Proyectos](https://impablo.dev/proyectos): case studies of websites, SaaS platforms, automations and tools in production.
+- [Laboratorio](https://impablo.dev/laboratorio): the live system behind the site (Rust API, Python worker, PostgreSQL) and GitHub activity.
+- [GitHub](https://github.com/an0mal1a)
+
+## About and contact
+- [Sobre mí](https://impablo.dev/sobre-mi): background, way of working and stack.
+- [Contacto](https://impablo.dev/contacto): contact form; replies personally, in Spanish or English.

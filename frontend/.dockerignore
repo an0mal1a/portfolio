@@ -1,0 +1,15 @@
+node_modules
+.nuxt
+.output
+.git
+.env
+.env.*
+npm-debug.log*
+Dockerfile*
+docker-compose*
+.claude-flow
+.swarm
+ruvector.db
+*.zip
+pablo-brand-kit
+graphify-out

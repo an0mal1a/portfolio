@@ -1,0 +1,489 @@
+{
+  "nav": {
+    "services": "Servicios",
+    "projects": "Proyectos",
+    "lab": "Laboratorio",
+    "about": "Sobre mí",
+    "contact": "Contacto"
+  },
+  "a11y": {
+    "skip": "Saltar al contenido",
+    "home": "Pablo Diez, inicio",
+    "mainNav": "Navegación principal",
+    "switchLocale": "Cambiar idioma a inglés",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
+  },
+  "cta": {
+    "primary": "Cuéntame tu proyecto",
+    "projects": "Ver proyectos"
+  },
+  "hero": {
+    "title": "Webs y software a medida, hechos en Ibiza.",
+    "lead": "Soy Pablo Diez. Diseño, desarrollo y pongo en producción tu web, tu software o tu automatización.",
+    "portraitAlt": "Pablo Diez, retrato de estudio con luz cálida",
+    "lines": [
+      "Webs y software a medida,",
+      "hechos en Ibiza."
+    ]
+  },
+  "facts": {
+    "label": "Datos en vivo",
+    "projects": "proyectos",
+    "clients": "clientes",
+    "contributions": "contribuciones en 12 meses",
+    "status": {
+      "checking": "Comprobando sistema",
+      "operational": "Sistema operativo",
+      "degraded": "Sistema degradado",
+      "down": "Sistema sin respuesta"
+    },
+    "db": "BD"
+  },
+  "seo": {
+    "home": {
+      "title": "Diseño web y software a medida en Ibiza · Pablo Diez",
+      "description": "Desarrollador full-stack en Ibiza: diseño web, software y CRMs a medida y automatización con IA para negocios de Ibiza y toda España, con la seguridad de serie."
+    },
+    "projects": {
+      "title": "Proyectos: webs, SaaS y automatizaciones",
+      "description": "Casos reales de diseño web, software a medida y automatización con IA para negocios de Ibiza y España, con el código y los datos en producción."
+    },
+    "lab": {
+      "title": "Laboratorio: el sistema en directo",
+      "description": "La API en Rust, el worker en Python y la base de datos que mueven este portfolio, en directo: estado del sistema, actividad de GitHub y una sincronización que puedes lanzar tú."
+    },
+    "about": {
+      "title": "Sobre mí: desarrollador full-stack en Ibiza",
+      "description": "Pablo Diez, desarrollador full-stack independiente en Ibiza con base en seguridad ofensiva. Cómo trabajo, con qué tecnologías y para quién."
+    },
+    "contact": {
+      "title": "Contacto: cuéntame tu proyecto",
+      "description": "Escríbeme para tu web, software a medida o automatización con IA. Respondo personalmente desde Ibiza, en español o en inglés."
+    },
+    "privacy": {
+      "title": "Política de privacidad",
+      "description": "Qué datos recoge este sitio, para qué se usan y cómo ejercer tus derechos."
+    }
+  },
+  "schema": {
+    "jobTitle": "Desarrollador full-stack independiente",
+    "businessName": "Pablo Diez · Diseño web y software a medida en Ibiza"
+  },
+  "home": {
+    "services": {
+      "title": "Elige cómo empezamos.",
+      "lead": "Tres formas de trabajar conmigo. En todas hablas directamente con quien diseña, programa y publica tu proyecto."
+    },
+    "work": {
+      "title": "Después vinieron otros negocios.",
+      "lead": "Webs y software que hoy están en producción, grabados tal como funcionan.",
+      "visit": "Visitar la web",
+      "case": "Leer el caso",
+      "prev": "Proyecto anterior",
+      "next": "Proyecto siguiente",
+      "all": "Todos los proyectos",
+      "listLabel": "Proyectos en producción",
+      "video": "Grabación de {name}"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "items": [
+        {
+          "q": "¿Trabajas solo con negocios de Ibiza?",
+          "a": "No. Vivo y trabajo en Ibiza, así que con clientes de la isla puedo reunirme en persona, pero trabajo en remoto con empresas de toda España y de fuera."
+        },
+        {
+          "q": "¿Cuánto cuesta una web o un software a medida?",
+          "a": "Depende del alcance. Después de una primera conversación te envío una propuesta por escrito con qué incluye, en qué plazos y cuánto cuesta, antes de empezar nada."
+        },
+        {
+          "q": "¿Qué diferencia hay entre una web y un software a medida?",
+          "a": "Una web cuenta lo que haces y consigue contactos. Un software a medida es una herramienta de trabajo: un CRM, un panel interno o una plataforma que usa tu equipo o tus clientes cada día."
+        },
+        {
+          "q": "¿Por qué importa la seguridad en mi proyecto?",
+          "a": "Porque una web o un sistema con datos de clientes es un objetivo. Vengo de la seguridad ofensiva y construyo pensando en cómo se podría atacar lo que hago, desde el primer día y no como un añadido."
+        },
+        {
+          "q": "¿Trabajas en inglés?",
+          "a": "Sí. Trabajo en español y en inglés, y puedo hacer tu web en ambos idiomas con textos pensados para cada público."
+        }
+      ]
+    },
+    "vestta": {
+      "title": "Vestta nació dentro de una inmobiliaria.",
+      "body": "Demasiadas pestañas, datos repetidos y tareas a mano. Así que construí el CRM que faltaba: clientes, propiedades, oportunidades, documentos y WhatsApp en un mismo sitio.",
+      "facts": [
+        {
+          "t": "Multiempresa",
+          "d": "Cada agencia con sus datos, su equipo y sus permisos."
+        },
+        {
+          "t": "Captación automática",
+          "d": "Recoge anuncios públicos y los convierte en fichas útiles."
+        },
+        {
+          "t": "Matching que se explica",
+          "d": "Dice qué encaja, qué falta y dónde fuerza la comparación."
+        },
+        {
+          "t": "WhatsApp dentro",
+          "d": "Las conversaciones viven en la ficha del cliente."
+        }
+      ],
+      "case": "Leer el caso de Vestta",
+      "live": "Ver Vestta en vivo",
+      "note": "Grabación real del producto, con datos ficticios.",
+      "video": "Grabación del CRM de Vestta en uso, con datos ficticios"
+    },
+    "daily": {
+      "title": "Y se construye cada día.",
+      "lead": "Todo lo que has visto sigue funcionando y sigue creciendo. Cada cuadro es un día de código de los últimos doce meses, leído en directo de mi GitHub.",
+      "summary": "{total} contribuciones en doce meses, repartidas en {active} días. La racha más larga: {streak} días seguidos.",
+      "now": "Esta web, ahora mismo",
+      "db": "base de datos a {ms} ms",
+      "lab": "Ver el laboratorio",
+      "aria": "Contribuciones de GitHub de los últimos doce meses: {total} en {active} días activos.",
+      "today": "Hoy"
+    }
+  },
+  "work": {
+    "imageAlt": "Captura del proyecto {name}",
+    "inProgress": "En desarrollo",
+    "types": {
+      "saas": "SaaS",
+      "web": "Web",
+      "automation": "Automatización",
+      "tool": "Herramienta"
+    }
+  },
+  "wall": {
+    "title": "La pared que levanto cada día.",
+    "lead": "Cada ladrillo es un día de código de los últimos doce meses, leído en directo de mi GitHub. Cuanto más claro, más trabajo ese día. La hilada de arriba sigue en obra.",
+    "total": "Contribuciones",
+    "active": "Días activos",
+    "streak": "Racha más larga",
+    "busiest": "Día récord",
+    "days": "{n} días",
+    "count": "sin contribuciones | 1 contribución | {n} contribuciones",
+    "hint": "Pasa por encima de un ladrillo",
+    "less": "Menos",
+    "more": "Más",
+    "lab": "Ver el laboratorio",
+    "aria": "Pared de contribuciones de GitHub de los últimos 12 meses: {total} contribuciones en {active} días activos, racha más larga de {streak} días.",
+    "daysUnit": "días"
+  },
+  "security": {
+    "title": "Lo que no se ve también está hecho.",
+    "lead": "Vengo de la seguridad ofensiva: antes de construir sistemas aprendí cómo se rompen. Esta es la respuesta que tu navegador acaba de recibir de esta web. Cada línea es una protección, junto a lo que significa para ti.",
+    "checked": "{n} de {total} comprobadas",
+    "failed": "No se ha podido comprobar desde tu navegador.",
+    "missing": "No recibida",
+    "rows": {
+      "strict-transport-security": "Siempre por HTTPS, durante un año, aunque escribas http.",
+      "x-content-type-options": "El navegador no reinterpreta un archivo como otra cosa.",
+      "referrer-policy": "Otras webs no ven desde qué página llegas.",
+      "permissions-policy": "La web no puede pedir cámara, micrófono, ubicación ni pagos.",
+      "cross-origin-opener-policy": "Ninguna ventana de otro sitio puede manejar esta.",
+      "x-frame-options": "Nadie puede incrustar esta web dentro de otra para engañarte.",
+      "content-security-policy": "No se puede enmarcar, cargar plugins ni cambiar su dirección base."
+    },
+    "limits": {
+      "contact": {
+        "value": "3 por minuto",
+        "body": "Mensajes que acepta el formulario desde una misma conexión. Frena el spam sin captchas."
+      },
+      "api": {
+        "value": "120 por minuto",
+        "body": "Peticiones que acepta la API por visitante. El resto espera su turno."
+      }
+    },
+    "evidence": "Caso de seguridad: Nightmare Framework",
+    "configured": "{total} protecciones configuradas"
+  },
+  "contact": {
+    "title": "Cuéntame tu proyecto.",
+    "lead": "Explícame qué necesitas con tus palabras. Leo cada mensaje y te respondo personalmente, sin formularios de ventas ni intermediarios.",
+    "place": "Ibiza, Illes Balears",
+    "languages": "Español · English",
+    "reply": "Respuesta personal, por email",
+    "homeTitle": "Ahora, tu proyecto."
+  },
+  "form": {
+    "kind": "¿Qué necesitas?",
+    "kinds": {
+      "web": "Una web",
+      "software": "Software a medida",
+      "automation": "Automatización con IA",
+      "other": "Otra cosa"
+    },
+    "name": "Nombre",
+    "email": "Email",
+    "phone": "Teléfono",
+    "optional": "opcional",
+    "message": "Tu proyecto",
+    "messagePlaceholder": "Qué haces, qué te gustaría tener y para cuándo.",
+    "consent": "Acepto que use estos datos para responder a mi mensaje, según la",
+    "privacy": "política de privacidad",
+    "submit": "Enviar mensaje",
+    "sending": "Enviando",
+    "again": "Enviar otro mensaje",
+    "errors": {
+      "name": "Escribe tu nombre.",
+      "email": "Revisa el email: así no podré responderte.",
+      "message": "Cuéntame un poco más (al menos 20 caracteres).",
+      "consent": "Necesito tu permiso para responderte."
+    },
+    "status": {
+      "sentTitle": "Mensaje recibido.",
+      "sent": "Te responderé al email que me has dejado. Si es urgente, indícalo en un segundo mensaje.",
+      "rateLimited": "Has enviado varios mensajes seguidos. Espera {s} segundos y vuelve a intentarlo.",
+      "invalidMail": "El servidor no acepta ese email. Revísalo y vuelve a enviar.",
+      "network": "No hay conexión con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
+      "failed": "No se ha podido enviar el mensaje. Inténtalo de nuevo en unos minutos."
+    }
+  },
+  "footer": {
+    "nav": "Pie de página",
+    "studio": "Estudio",
+    "elsewhere": "En otros sitios",
+    "privacy": "Privacidad",
+    "line": "Webs y software a medida, hechos en Ibiza."
+  },
+  "breadcrumb": {
+    "label": "Ruta de navegación",
+    "home": "Inicio",
+    "projects": "Proyectos"
+  },
+  "service": {
+    "seeWork": "Ver proyectos",
+    "forWhom": "Para quién es",
+    "process": "Cómo trabajamos",
+    "step": "Paso {n} de {total}",
+    "included": "Qué incluye",
+    "stepOf": "{n}/{total}"
+  },
+  "projects": {
+    "title": "Proyectos que funcionan en el mundo real.",
+    "lead": "Webs, plataformas SaaS, automatizaciones y herramientas que he diseñado y programado. Cada caso cuenta el problema, las decisiones y lo que salió.",
+    "filter": "Filtrar por tipo",
+    "all": "Todos",
+    "listLabel": "Lista de proyectos",
+    "empty": "No hay proyectos de este tipo todavía."
+  },
+  "project": {
+    "live": "Ver en vivo",
+    "code": "Ver código",
+    "type": "Tipo",
+    "client": "Cliente",
+    "period": "Periodo",
+    "status": "Estado",
+    "language": "Lenguaje principal",
+    "lastPush": "Último cambio",
+    "repo": "Repositorio",
+    "private": "Privado",
+    "public": "Público",
+    "now": "ahora",
+    "next": "Siguiente proyecto",
+    "nextLabel": "Siguiente proyecto",
+    "spanishOnly": "Este caso de estudio está escrito en español.",
+    "statuses": {
+      "draft": "Borrador",
+      "in_progress": "En desarrollo",
+      "published": "En producción",
+      "archived": "Archivado"
+    },
+    "nextShort": "Siguiente"
+  },
+  "lab": {
+    "title": "Laboratorio.",
+    "lead": "Este portfolio no es una maqueta. Lo mueve una API en Rust, un worker en Python que sincroniza mi GitHub y una base de datos PostgreSQL. Aquí puedes ver el sistema funcionando, en directo.",
+    "system": "Estado del sistema",
+    "observed": "Comprobado {when}",
+    "uptime": "activa {d}",
+    "unreachable": "Sin respuesta",
+    "lastSync": "sincronizado {when}",
+    "svc": {
+      "api": "API (Rust)",
+      "db": "Base de datos",
+      "worker": "Worker (Python)",
+      "smtp": "Correo (SMTP)",
+      "github": "Sincronización GitHub"
+    },
+    "state": {
+      "healthy": "Operativo",
+      "unhealthy": "Con errores",
+      "timeout": "Sin respuesta a tiempo",
+      "unreachable": "Inaccesible",
+      "disabled": "Desactivado",
+      "degraded": "Degradado",
+      "running": "Sincronizando",
+      "unknown": "Sin datos"
+    },
+    "sync": {
+      "title": "Sincroniza mi GitHub ahora.",
+      "body": "Lanza un trabajo real en el worker de Python y sigue su progreso en directo. Cada visitante tiene un número limitado de sincronizaciones al día.",
+      "profile": "Perfil y actividad",
+      "repos": "Repositorios",
+      "progress": "Progreso de la sincronización",
+      "remaining": "Te quedan {n} hoy",
+      "states": {
+        "pending": "En cola",
+        "running": "En curso",
+        "completed": "Completado",
+        "failed": "Ha fallado"
+      },
+      "errors": {
+        "job_already_running": "Ya hay una sincronización en marcha: sigo su progreso.",
+        "visitor_daily_limit": "Has usado todas tus sincronizaciones de hoy. Vuelve mañana.",
+        "public_daily_limit": "Hoy se ha alcanzado el límite público de sincronizaciones. Vuelve mañana.",
+        "network_error": "No se puede contactar con el worker ahora mismo.",
+        "unknown": "La sincronización no ha podido empezar."
+      }
+    },
+    "rhythm": {
+      "title": "Cuándo programo.",
+      "lead": "Contribuciones por día de la semana y por mes en los últimos doce meses.",
+      "months": "Contribuciones por mes"
+    },
+    "languages": {
+      "title": "Con qué construyo.",
+      "lead": "Lenguajes principales de mis {repos} repositorios ({langs} lenguajes en total), por número de repositorios."
+    },
+    "repos": {
+      "title": "Código público.",
+      "lead": "{pub} repositorios públicos y {priv} privados de clientes y productos. Estos son los públicos con cambios más recientes.",
+      "all": "Ver todo en GitHub"
+    },
+    "arch": {
+      "title": "Cómo viaja cada dato",
+      "browser": "Tu navegador",
+      "browserRole": "Pide la página y envía formularios directamente a la API.",
+      "nuxtRole": "Renderiza en servidor y guarda en caché las lecturas para no saturar la API.",
+      "apiRole": "Proyectos, clientes, contacto y estado del sistema, con límite de peticiones por IP.",
+      "dbRole": "Casos de estudio, repositorios y actividad de GitHub.",
+      "workerRole": "Sincroniza GitHub cada noche o cuando tú lo lanzas, con progreso en directo."
+    },
+    "graph": {
+      "title": "Un año de código.",
+      "lead": "Cada cuadro es un día de los últimos doce meses, leído en directo de mi GitHub. Cuanto más claro, más trabajo ese día. El cuadro de hoy es el que sigue abierto."
+    }
+  },
+  "about": {
+    "title": "Construyo sistemas sabiendo cómo se rompen.",
+    "p1": "Soy Pablo Diez, desarrollador full-stack independiente en Ibiza. Diseño y programo webs, software a medida y automatizaciones con IA, de la base de datos a la última pantalla.",
+    "p2": "Vengo de la seguridad ofensiva: empecé investigando cómo se atacan los sistemas y después me dediqué a construirlos. Esa forma de mirar se queda: cada decisión técnica la pienso también desde el lado de quien intentaría romperla.",
+    "p3": "Trabajo con negocios de la isla, empresas de fuera y fundadores que necesitan llevar una idea a producción. Siempre directamente, sin intermediarios: quien te escucha es quien construye.",
+    "principlesTitle": "Cómo trabajo",
+    "principles": [
+      {
+        "title": "Hablas con quien construye",
+        "body": "Sin comerciales ni capas intermedias. Las decisiones se toman con quien las va a programar."
+      },
+      {
+        "title": "Pruebas antes que promesas",
+        "body": "Prefiero enseñarte algo funcionando que prometértelo. Este propio portfolio está construido así."
+      },
+      {
+        "title": "Seguridad como oficio",
+        "body": "No es un extra al final: está en el modelo de datos, en el servidor y en cómo se despliega."
+      },
+      {
+        "title": "Claridad en lo que no sé",
+        "body": "Si algo no depende de mí o no es buena idea, te lo digo antes de que cueste dinero."
+      }
+    ],
+    "stack": {
+      "title": "Herramientas.",
+      "lead": "Elijo la tecnología según el problema. Estas son las que uso en proyectos reales en producción.",
+      "groups": [
+        {
+          "group": "Interfaz",
+          "items": "Nuxt, Vue, TypeScript, Tailwind CSS"
+        },
+        {
+          "group": "Servidor",
+          "items": "Rust (Axum), Python (FastAPI), C / C++"
+        },
+        {
+          "group": "Datos",
+          "items": "PostgreSQL, Redis"
+        },
+        {
+          "group": "IA",
+          "items": "Modelos de lenguaje, WhatsApp Business API, flujos con SSE"
+        },
+        {
+          "group": "Infraestructura",
+          "items": "Docker, Coolify, despliegue continuo"
+        },
+        {
+          "group": "Seguridad",
+          "items": "Pentesting, red teaming, revisión de código"
+        }
+      ]
+    },
+    "clients": "Clientes con los que he trabajado"
+  },
+  "contactPage": {
+    "lead": "Cuéntame qué haces y qué te gustaría tener. Te respondo yo, personalmente, y si encaja hablamos para concretarlo.",
+    "stepsLabel": "Qué pasa después",
+    "steps": [
+      {
+        "title": "Me escribes",
+        "body": "Con tus palabras, sin tecnicismos. Cuanto más contexto, mejor te puedo orientar."
+      },
+      {
+        "title": "Hablamos",
+        "body": "Te respondo por email y, si tiene sentido, hacemos una llamada o nos vemos en Ibiza."
+      },
+      {
+        "title": "Propuesta por escrito",
+        "body": "Te envío qué incluye, en qué plazos y cuánto cuesta antes de empezar nada."
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Privacidad",
+    "updated": "Última actualización: noviembre de 2026",
+    "intro": "Este sitio recoge los mínimos datos necesarios para responder a quien escribe. No usa cookies de seguimiento ni herramientas de publicidad.",
+    "sections": [
+      {
+        "title": "Responsable",
+        "body": "Pablo Diez, desarrollador independiente con base en Ibiza (Illes Balears, España). Puedes contactar conmigo para cualquier cuestión de privacidad a través del formulario de contacto de este sitio."
+      },
+      {
+        "title": "Qué datos recojo",
+        "body": "Solo los que escribes en el formulario de contacto: nombre, email, teléfono si lo indicas y tu mensaje. El servidor también registra de forma temporal la dirección IP para limitar el número de envíos y evitar abusos."
+      },
+      {
+        "title": "Para qué los uso",
+        "body": "Para responder a tu mensaje y, si llegamos a trabajar juntos, para gestionar esa relación. La base legal es tu consentimiento al enviar el formulario."
+      },
+      {
+        "title": "Cuánto tiempo los conservo",
+        "body": "El tiempo necesario para atender tu consulta y, en su caso, el que exijan las obligaciones legales. Puedes pedir que los borre en cualquier momento."
+      },
+      {
+        "title": "Con quién los comparto",
+        "body": "Con nadie con fines comerciales. Los datos se guardan en servidores propios y el aviso de cada mensaje se envía por correo electrónico a través del proveedor de email."
+      },
+      {
+        "title": "Tus derechos",
+        "body": "Puedes acceder a tus datos, rectificarlos, suprimirlos, oponerte a su tratamiento o pedir su portabilidad escribiéndome por el formulario. Si crees que no se han respetado tus derechos, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es)."
+      },
+      {
+        "title": "Cookies",
+        "body": "Este sitio no instala cookies propias ni de terceros con fines de análisis o publicidad. Si en el futuro cambia, esta página lo dirá antes."
+      }
+    ]
+  },
+  "error": {
+    "notFoundTitle": "Este módulo no está construido.",
+    "notFound": "La página que buscas no existe o ha cambiado de sitio. El resto del sistema sigue en pie.",
+    "title": "Algo ha fallado.",
+    "body": "Ha ocurrido un error inesperado. Vuelve a intentarlo en un momento.",
+    "home": "Volver al inicio"
+  }
+}
