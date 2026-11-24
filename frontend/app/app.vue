@@ -30,7 +30,7 @@ useSchemaOrg([
     'url': siteUrl,
     'image': `${siteUrl}/og/og-es.png?v=2`,
     'logo': `${siteUrl}/icon-512.png?v=5`,
-    'founder': { '@type': 'Person', 'name': 'Pablo Diez' },
+    'founder': { '@id': `${siteUrl}/#identity` },
     'address': { '@type': 'PostalAddress', 'addressLocality': 'Ibiza', 'addressRegion': 'Illes Balears', 'addressCountry': 'ES' },
     'areaServed': [{ '@type': 'Place', 'name': 'Ibiza' }, { '@type': 'Country', 'name': 'España' }],
     'knowsLanguage': ['es', 'en'],

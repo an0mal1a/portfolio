@@ -14,7 +14,8 @@ const stack = computed(() => list<{ group: string, items: string }>('about.stack
 
 usePageSeo({ title: t('seo.about.title'), description: t('seo.about.description'), type: 'profile', image: '/images/pablo-color.jpg' })
 useSchemaOrg([
-  defineWebPage({ '@type': 'ProfilePage' }),
+  // Google requires a profile page to say whose profile it is.
+  defineWebPage({ '@type': 'ProfilePage', 'mainEntity': { '@id': `${siteUrl}/#identity` } } as Record<string, unknown>),
   definePerson({
     'name': 'Pablo Diez',
     'url': siteUrl,
