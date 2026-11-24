@@ -15,27 +15,35 @@ import { isUnpublishedClient } from '#shared/unpublished'
 
 // Cached upstream reads. `swr: true` serves the last good copy instantly and
 // refreshes it in the background; maxAge is how long a copy counts as fresh.
+// In dev the cache lives on disk (.nuxt/cache) and survives restarts, so the same
+// settings would open the site on data from days ago: there it only deduplicates
+// the requests of one page load.
+const MIN = 60
+const HOUR = 60 * MIN
+function cached(maxAge: number, staleMaxAge: number) {
+  return import.meta.dev ? { maxAge: 2, swr: false } : { maxAge, swr: true, staleMaxAge }
+}
 
 export const getProjects = defineCachedFunction(async (): Promise<Project[]> => {
   const res = assertOk(await backendGet<{ status: string, projects: Project[] }>(undefined, '/projects'), 'projects')
   return res.projects
-}, { name: 'projects', maxAge: 60 * 10, swr: true, staleMaxAge: 60 * 60 * 24 })
+}, { name: 'projects', ...cached(10 * MIN, 24 * HOUR) })
 
 export const getClients = defineCachedFunction(async (): Promise<Client[]> => {
   const res = assertOk(await backendGet<{ status: string, clients: Client[] }>(undefined, '/clients'), 'clients')
   // Unpublished work is listed without a link (see shared/unpublished.ts).
   return res.clients.map(c => (isUnpublishedClient(c.name) ? { ...c, website: null } : c))
-}, { name: 'clients', maxAge: 60 * 30, swr: true, staleMaxAge: 60 * 60 * 24 * 7 })
+}, { name: 'clients', ...cached(30 * MIN, 7 * 24 * HOUR) })
 
 export const getRepos = defineCachedFunction(async (): Promise<Repo[]> => {
   const res = assertOk(await backendGet<{ status: string, repos: Repo[] }>(undefined, '/github/repositories'), 'repositories')
   return res.repos
-}, { name: 'repos', maxAge: 60 * 10, swr: true, staleMaxAge: 60 * 60 * 24 })
+}, { name: 'repos', ...cached(10 * MIN, 24 * HOUR) })
 
 export const getProfile = defineCachedFunction(async (): Promise<GHProfileRaw> => {
   const res = assertOk(await backendGet<{ status: string, profile: GHProfileRaw }>(undefined, '/github/me'), 'profile')
   return res.profile
-}, { name: 'profile', maxAge: 60 * 10, swr: true, staleMaxAge: 60 * 60 * 24 })
+}, { name: 'profile', ...cached(10 * MIN, 24 * HOUR) })
 
 export const getStatus = defineCachedFunction(async (): Promise<StatusPayload> => {
   try {
@@ -47,7 +55,7 @@ export const getStatus = defineCachedFunction(async (): Promise<StatusPayload> =
   catch {
     return unreachableStatus()
   }
-}, { name: 'status', maxAge: 20, swr: true, staleMaxAge: 60 * 10 })
+}, { name: 'status', ...cached(20, 10 * MIN) })
 
 function unreachableStatus(): StatusPayload {
   const down = { status: 'unreachable', latency_ms: null, detail: null }

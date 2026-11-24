@@ -10,15 +10,23 @@ import type { H3Event } from 'h3'
  */
 export async function backendGet<T>(event: H3Event | undefined, path: string, opts: { timeout?: number } = {}): Promise<T> {
   const config = useRuntimeConfig(event)
-  // Plain ofetch typing: Nitro's typed internal-route inference does not apply to an external base URL.
-  const data: unknown = await $fetch(path, {
-    baseURL: config.apiInternalBase || config.public.apiBase,
-    timeout: opts.timeout ?? 6000,
-    retry: 1,
-    retryDelay: 300,
-    headers: { accept: 'application/json' },
-  })
-  return data as T
+  const baseURL = config.apiInternalBase || config.public.apiBase
+  try {
+    // Plain ofetch typing: Nitro's typed internal-route inference does not apply to an external base URL.
+    const data: unknown = await $fetch(path, {
+      baseURL,
+      timeout: opts.timeout ?? 6000,
+      retry: 1,
+      retryDelay: 300,
+      headers: { accept: 'application/json' },
+    })
+    return data as T
+  }
+  catch (err) {
+    // Pages degrade quietly when a read fails; in dev, say which backend did not answer.
+    if (import.meta.dev) console.warn(`[backend] ${baseURL}${path} failed: ${err instanceof Error ? err.message : err}`)
+    throw err
+  }
 }
 
 /** Normalises the `{ status: 'ok' | 'ko' }` envelope used by the Rust API. */

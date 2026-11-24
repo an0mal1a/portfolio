@@ -7,7 +7,7 @@ type JobError = 'job_already_running' | 'visitor_daily_limit' | 'public_daily_li
  * over Server-Sent Events, falling back to polling when EventSource fails.
  */
 export function usePublicJob() {
-  const { public: { pythonApiBase } } = useRuntimeConfig()
+  const { pythonApiBase } = useBackendBase()
   const run = ref<PublicJobRun | null>(null)
   const error = ref<JobError | null>(null)
   const remaining = ref<number | null>(null)

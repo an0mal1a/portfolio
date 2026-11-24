@@ -2,7 +2,14 @@ import tailwindcss from '@tailwindcss/vite'
 
 const SITE_URL = 'https://impablo.dev'
 
+// Bump after `npm run icons`: browsers keep favicons for a long time.
+const ICON_VERSION = 2
+
 const poll = process.env.WATCH_POLLING === '1'
+
+// Same values the runtime config reads; needed here for the dev-only proxy.
+const API_BASE = process.env.NUXT_PUBLIC_API_BASE || 'https://rust-api.impablo.dev'
+const PYTHON_API_BASE = process.env.NUXT_PUBLIC_PYTHON_API_BASE || 'https://python-api.impablo.dev'
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-11-01',
@@ -61,9 +68,9 @@ export default defineNuxtConfig({
         { name: 'color-scheme', content: 'dark' },
       ],
       link: [
-        { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'icon', href: `/favicon.ico?v=${ICON_VERSION}`, sizes: '48x48' },
+        { rel: 'icon', type: 'image/svg+xml', href: `/favicon.svg?v=${ICON_VERSION}` },
+        { rel: 'apple-touch-icon', href: `/apple-touch-icon.png?v=${ICON_VERSION}` },
         { rel: 'manifest', href: '/site.webmanifest' },
         { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/gantari-latin.woff2', crossorigin: '' },
         // Project screenshots are resized at Cloudinary's edge (app/utils/cloudinary.ts).
@@ -132,12 +139,19 @@ export default defineNuxtConfig({
     '/_ipx/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/fonts/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/brand/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
+    '/logos/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
+    '/covers/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/media/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/plates/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
   },
 
   nitro: {
     compressPublicAssets: true,
+    // Dev only: browser calls to the backends, on whatever port dev runs (useBackendBase).
+    devProxy: {
+      '/_backend/rust': { target: API_BASE, changeOrigin: true },
+      '/_backend/python': { target: PYTHON_API_BASE, changeOrigin: true },
+    },
   },
 
   experimental: {

@@ -7,7 +7,7 @@ type State = 'idle' | 'sending' | 'sent' | 'error'
  * (3/min) applies to each visitor, not to the Nuxt server.
  */
 export function useContactForm() {
-  const { public: { apiBase } } = useRuntimeConfig()
+  const { apiBase } = useBackendBase()
   const state = ref<State>('idle')
   const error = ref<ContactError | null>(null)
   const retryAfter = ref<number | null>(null)

@@ -9,6 +9,7 @@
     "generate": "nuxt generate",
     "typecheck": "nuxt typecheck",
     "plates": "node scripts/build-plates.mjs",
+    "icons": "node scripts/build-icons.mjs",
     "postinstall": "nuxt prepare"
   },
   "overrides": {
