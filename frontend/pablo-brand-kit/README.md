@@ -6,7 +6,7 @@ Brand identity starter kit for Pablo's personal brand.
 
 **PABLO** is the umbrella identity. The descriptor **INDEPENDENT BUILDER** communicates an independent maker who thinks across product, technology and business without locking the brand into a single stack or service.
 
-The visual language combines editorial typography, modular geometry and a restrained technical vocabulary. The monogram is a custom directional “P” made from two forward-facing modules and one continuous vertical spine. It is designed to work independently of the wordmark.
+The visual language combines editorial typography, modular geometry and a restrained technical vocabulary. The monogram is a custom directional “P” formed by three separated pieces: a chamfered top bar, a vertical foot and a rising middle section. The geometry follows the monogram in `brandboard.png`. It is designed to work independently of the wordmark.
 
 Tagline: **IDEAS INTO SYSTEMS.**
 
@@ -57,7 +57,7 @@ Both are available through Google Fonts. The supplied CSS loads them remotely; i
 
 - Use the complete logo on presentations, proposals, website headers and profile covers.
 - Use the standalone mark for avatars, favicon, watermark and small interface placements.
-- Keep clear space around the mark at least equal to the width of its vertical spine.
+- Keep clear space around the mark at least equal to the width of its vertical foot.
 - Do not stretch, rotate, add shadows, outline the mark, or recolor it with arbitrary gradients.
 - For dark backgrounds, use `logo-reversed.svg`.
 - Prefer generous whitespace, thin rules, modular grids and a small number of strong typographic moments.

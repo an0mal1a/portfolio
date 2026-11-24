@@ -3,8 +3,8 @@
 
   <title id="title">Pablo — Independent Builder, reversed</title>
   <desc id="desc">Light wordmark and orange modular P symbol for dark backgrounds.</desc>
-  <g transform="translate(52 42) scale(0.92)" fill="#FF4D2E">
-    <path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/>
+  <g transform="translate(52 42) scale(1.055)" fill="#FF4D2E">
+    <path d="M 0 0 H 104 L 138 35 V 41 H 0 Z M 0 56 H 44 V 150 H 0 Z M 45 111 L 56 81 H 97 V 58 L 138 49 V 71 L 99 111 Z"/>
   </g>
   <text x="250" y="151" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="142" font-weight="800" letter-spacing="-5" fill="#F1EEE6">PABLO</text>
   <rect x="255" y="174" width="550" height="50" fill="#FF4D2E"/>

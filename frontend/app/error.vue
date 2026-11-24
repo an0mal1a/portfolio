@@ -25,13 +25,8 @@ useSeoMeta({ robots: 'noindex' })
           <NuxtLinkLocale to="projects" class="link-more" @click="clearError()">{{ t('cta.projects') }} <ChevronRight aria-hidden="true" /></NuxtLinkLocale>
         </div>
       </div>
-      <!-- The P with its middle bar missing. -->
       <div class="hidden lg:col-span-3 lg:col-start-10 lg:block" aria-hidden="true">
-        <svg viewBox="0 0 140 172" class="w-full text-ink">
-          <path d="M 0,0 H 104 L 140,34 V 46 H 0 Z" fill="currentColor" />
-          <path d="M 0,72 H 140 V 84 L 106,118 H 0 Z" fill="none" stroke="var(--color-faint)" stroke-width="1.5" stroke-dasharray="4 4" />
-          <path d="M 0,0 H 38 V 172 H 0 Z" fill="currentColor" />
-        </svg>
+        <BrandMark class="w-full text-ink" missing-middle />
       </div>
     </section>
   </NuxtLayout>

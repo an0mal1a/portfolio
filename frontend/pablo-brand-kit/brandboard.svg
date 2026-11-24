@@ -10,16 +10,16 @@
   <text x="42" y="62" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="5" fill="#171B1E">PABLO</text>
   <text x="1558" y="62" text-anchor="end" font-family="'Azeret Mono', monospace" font-size="18" letter-spacing="2" fill="#171B1E">BRANDBOARD / PERSONAL IDENTITY</text>
 
-  <g transform="translate(78 154) scale(1.1)" fill="#171B1E"><path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/></g>
+  <g transform="translate(78 154) scale(1.26)" fill="#171B1E"><path d="M 0 0 H 104 L 138 35 V 41 H 0 Z M 0 56 H 44 V 150 H 0 Z M 45 111 L 56 81 H 97 V 58 L 138 49 V 71 L 99 111 Z"/></g>
   <text x="270" y="282" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="142" font-weight="800" letter-spacing="-5" fill="#171B1E">PABLO</text>
   <rect x="278" y="313" width="548" height="50" fill="#FF4D2E"/>
   <text x="300" y="348" font-family="'Azeret Mono', monospace" font-size="25" font-weight="600" letter-spacing="4" fill="#171B1E">INDEPENDENT BUILDER</text>
 
   <text x="1050" y="150" font-family="'Azeret Mono', monospace" font-size="20" letter-spacing="2" fill="#171B1E">MONOGRAM</text>
-  <g transform="translate(1090 192) scale(0.92)" fill="#171B1E"><path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/></g>
+  <g transform="translate(1090 192) scale(1.055)" fill="#171B1E"><path d="M 0 0 H 104 L 138 35 V 41 H 0 Z M 0 56 H 44 V 150 H 0 Z M 45 111 L 56 81 H 97 V 58 L 138 49 V 71 L 99 111 Z"/></g>
   <text x="1320" y="150" font-family="'Azeret Mono', monospace" font-size="20" letter-spacing="2" fill="#171B1E">FAVICON</text>
   <rect x="1350" y="196" width="156" height="156" rx="34" fill="#171B1E"/>
-  <g transform="translate(1393 231) scale(0.49)" fill="#FF4D2E"><path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/></g>
+  <g transform="translate(1390 233) scale(0.55)" fill="#FF4D2E"><path d="M 0 0 H 104 L 138 35 V 41 H 0 Z M 0 56 H 44 V 150 H 0 Z M 45 111 L 56 81 H 97 V 58 L 138 49 V 71 L 99 111 Z"/></g>
 
   <text x="42" y="475" font-family="'Azeret Mono', monospace" font-size="22" font-weight="700" letter-spacing="2" fill="#171B1E">PALETA DE COLORES</text>
   <g transform="translate(120 510)">

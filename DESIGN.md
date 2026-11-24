@@ -228,7 +228,7 @@ Depth comes from light, not borders. Surfaces are flat colour steps (`ground` to
 - **Screens** (`--radius-screen`, 10-16px fluid): product recordings, project figures, the empty graph placeholder.
 - **Panels** (`--radius-panel`, 20px): raised sheets.
 - **Fields** (12px) and the checkbox (6px). Graph cells are 10px squares with 2.5px corners.
-- **The P mark** is fixed geometry from the brand kit. Two forward modules with 45-degree chamfers share one continuous spine. The site lockup uses `ink` on dark grounds. The favicon, app icons, accent variants in the brand kit and social cards use Signal Orange (`#FF4D2E`).
+- **The P mark** is fixed geometry from the brand kit. A chamfered top bar, a vertical foot and a rising middle section form the three separated pieces shown in the kit's `brandboard.png`. The site lockup uses `ink` on dark grounds. The favicon, app icons, accent variants in the brand kit and social cards use Signal Orange (`#FF4D2E`).
 
 ## Components
 

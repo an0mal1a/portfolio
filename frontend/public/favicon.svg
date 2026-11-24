@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title">
   <title id="title">Pablo favicon</title>
   <rect width="256" height="256" rx="54" fill="#171B1E"/>
-  <g transform="translate(71 50) scale(0.82)" fill="#FF4D2E">
-    <path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/>
+  <g transform="translate(63 57) scale(0.94)" fill="#FF4D2E">
+    <path d="M 0 0 H 104 L 138 35 V 41 H 0 Z M 0 56 H 44 V 150 H 0 Z M 45 111 L 56 81 H 97 V 58 L 138 49 V 71 L 99 111 Z"/>
   </g>
 </svg>
