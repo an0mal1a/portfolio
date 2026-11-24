@@ -268,6 +268,12 @@ A real recording of a shipped product (`frontend/public/media/<name>.{av1.mp4,mp
 ### Stage (home hero)
 Full-height (`max(100svh, 40rem)`), the portrait covering the stage from the top, the centred display headline over the chest, lead in 90% ink, then the large tally pill and a "Ver proyectos" link-more. Nothing else above the fold.
 
+### Certificate (About)
+The issuer's real document in a 10:7 frame (`--radius-screen`, dimmed to 0.86, full light on hover), then name, issuer · date · hours in mute, what it covered in ink-2, the owner's note at 600 in ink, and the verification link. One certificate leads at 7/5; the rest are two columns, no card around them. Hack4u's 3:2 documents are shown whole on black. The document opens in a `<dialog>`; without JavaScript the link opens the image.
+
+### Client stage (About)
+Logo centred over a still of the client's own site, defocused (blur 7px) and dimmed to 0.36; under a mouse the logo leaves, the still sharpens and the recording plays. Name bottom left, public address bottom right; an unpublished site shows the name only. Clients without a recording are ruled rows: ink-tone logo, name, address.
+
 ### Client logo
 Set in one ink tone on transparent, about 2rem tall, beside the client's name (home rail, case facts). A client's own accent may stay when it is the mark itself (Post's red dot). `frontend/public/logos`, declared in `app/content/showcase.ts`. Clients without a usable mark show the name alone.
 
@@ -317,7 +323,7 @@ A year of GitHub contributions as 10px cells: five steps of ink wash (6%, 20%, 3
 - **Don't** build identical card grids or a hero-metric template (big number, small label, repeated).
 - **Don't** use Azeret Mono outside literal machine text.
 - **Don't** use pure black or cool greys; the neutrals are all warm.
-- **Don't** stretch, rotate, outline, shadow or recolour the P mark. One exception: the favicon and app icons are the P in tally on film black (`npm run icons`), so the tab is findable (owner decision, 2026-11-24).
+- **Don't** stretch, rotate, outline, shadow or recolour the P mark.
 - **Don't** use hacker theatre (green terminals, glitch, matrix), illustrations of products, or stock imagery.
 
 ## Hero portrait

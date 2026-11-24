@@ -37,7 +37,7 @@ npm run typecheck
 
 In dev the browser writes to the backends through the Nuxt server (`/_backend/rust`, `/_backend/python`, see `nitro.devProxy` and `useBackendBase()`), so they work on any port; if 3001 is taken (the Docker frontend uses it) `npm run dev` moves to 3000. Dev reads are cached for 2 s only. Production still calls the backends directly.
 
-`npm run icons` rebuilds the favicon and app icons (bump `ICON_VERSION` in `nuxt.config.ts`); `npm run plates` re-encodes the hero portrait.
+Bump `ICON_VERSION` in `nuxt.config.ts` when the favicon or app icons change; `npm run plates` re-encodes the hero portrait.
 
 On an NTFS mount under WSL, file watching needs polling: `WATCH_POLLING=1 npm run dev`. It is off by default because it makes dev SSR very slow; verifying against `npm run build` + `node .output/server/index.mjs` is faster there.
 
@@ -75,6 +75,7 @@ Backends locally: see `README.md` (`cargo run` in `backends/rust-api`, `uvicorn 
 - LCP < 2.0 s on a mid-range phone over 4G, CLS < 0.05, INP < 150 ms.
 - Images through `<NuxtImg>`/`<NuxtPicture>` (AVIF/WebP, explicit width/height, `sizes`). The hero portrait is preloaded; everything else is lazy.
 - Project screenshots hosted on Cloudinary skip IPX and are resized at Cloudinary's edge (`app/utils/cloudinary.ts`). Never route `/_ipx/**` through the SWR route cache: it stores binary bodies as `{}`.
+- `/media`, `/covers`, `/logos` and `/certificates` are mirrored on Bunny (`https://cdn.impablo.dev`, same paths) and rewritten by `useCdn()`; dev uses the local files and `NUXT_PUBLIC_CDN_BASE` overrides the host. After adding a file run `npm run cdn` (credentials in `frontend/.env`). Never change a file in place, rename it: edges and browsers keep it for 30 days. The hero plate and the fonts stay on the site's own origin so first paint needs one connection.
 - Fonts are Gantari (all text, including the PABLO wordmark) and Azeret Mono (only for literal HTTP headers in the security sheet), self-hosted in `public/fonts` with `@font-face` in `app/assets/css/main.css`, latin subsets, `font-display: swap`, metric-matched fallbacks; Gantari is preloaded. The P mark and the PABLO lockup are the only binding brand elements; the brand kit's lime/paper palette was retired in the dark redesign.
 - GSAP and Lenis load client-side only and must never block first paint. Content is visible without JavaScript and without motion.
 - Every animation respects `prefers-reduced-motion` (render the final state).
