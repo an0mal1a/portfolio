@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Pablo Diez"><rect width="256" height="256" rx="54" fill="#0C0B0A"/><path transform="translate(58 42) scale(1)" fill="#FF4D2E" fill-rule="nonzero" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">Pablo favicon</title>
+  <rect width="256" height="256" rx="54" fill="#171B1E"/>
+  <g transform="translate(71 50) scale(0.82)" fill="#D8F16B">
+    <path fill-rule="evenodd" d="M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z"/>
+  </g>
+</svg>
