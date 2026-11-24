@@ -153,6 +153,9 @@ export default defineNuxtConfig({
     '/projects/**': { redirect: { to: '/proyectos/**', statusCode: 301 } },
     '/github': { redirect: { to: '/laboratorio', statusCode: 301 } },
     '/system': { redirect: { to: '/laboratorio', statusCode: 301 } },
+    // The preview cards of the discarded light design, still held by social networks.
+    '/og/og-es.png': { redirect: { to: '/og/stage-es.jpg', statusCode: 301 } },
+    '/og/og-en.png': { redirect: { to: '/og/stage-en.jpg', statusCode: 301 } },
     '/_ipx/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/fonts/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/brand/**': { headers: { 'cache-control': 'public, max-age=2592000' } },

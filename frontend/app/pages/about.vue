@@ -12,7 +12,7 @@ const list = <T,>(key: string) => tm(key) as T[]
 const principles = computed(() => list<{ title: string, body: string }>('about.principles').map(p => ({ title: rt(p.title), body: rt(p.body) })))
 const stack = computed(() => list<{ group: string, items: string }>('about.stack.groups').map(g => ({ group: rt(g.group), items: rt(g.items) })))
 
-usePageSeo({ title: t('seo.about.title'), description: t('seo.about.description'), type: 'profile', image: '/images/pablo-color.jpg' })
+usePageSeo({ title: t('seo.about.title'), description: t('seo.about.description'), type: 'profile' })
 useSchemaOrg([
   // Google requires a profile page to say whose profile it is.
   defineWebPage({ '@type': 'ProfilePage', 'mainEntity': { '@id': `${siteUrl}/#identity` } } as Record<string, unknown>),

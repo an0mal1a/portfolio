@@ -17,6 +17,12 @@ export function cloudinaryUrl(url: string, width: number): string {
   return `${m[1]}c_limit,w_${width},f_auto,q_auto/${m[2]}`
 }
 
+/** A link preview: JPEG (some crawlers refuse WebP) and light enough for WhatsApp. */
+export function cloudinaryCard(url: string): string {
+  const m = url.match(/^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(?:.*\/)?(v\d+\/.+)$/)
+  return m ? `${m[1]}c_limit,w_1200,f_jpg,q_auto:good/${m[2]}` : url
+}
+
 export function cloudinarySrcset(url: string): string {
   return WIDTHS.map(w => `${cloudinaryUrl(url, w)} ${w}w`).join(', ')
 }

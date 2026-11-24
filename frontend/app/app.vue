@@ -28,7 +28,7 @@ useSchemaOrg([
     'name': t('schema.businessName'),
     'description': t('seo.home.description'),
     'url': siteUrl,
-    'image': `${siteUrl}/og/og-es.png?v=2`,
+    'image': `${siteUrl}${ogCard('es')}`,
     'logo': `${siteUrl}/icon-512.png?v=5`,
     'founder': { '@id': `${siteUrl}/#identity` },
     'address': { '@type': 'PostalAddress', 'addressLocality': 'Ibiza', 'addressRegion': 'Illes Balears', 'addressCountry': 'ES' },

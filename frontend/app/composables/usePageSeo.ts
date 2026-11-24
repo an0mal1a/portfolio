@@ -13,7 +13,7 @@ export function usePageSeo(o: PageSeo) {
   const { locale } = useI18n()
   const { public: { siteUrl } } = useRuntimeConfig()
   const abs = (u: string) => (u.startsWith('http') ? u : `${siteUrl}${u}`)
-  const image = abs(o.image ?? `/og/og-${locale.value}.png?v=2`)
+  const image = abs(o.image ? cloudinaryCard(o.image) : ogCard(locale.value))
 
   useSeoMeta({
     title: o.title,
