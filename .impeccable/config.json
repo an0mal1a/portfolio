@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/explore/**"
+        ],
+        "createdAt": "2026-11-23T23:27:26.671Z",
+        "reason": "agent: exploration prototypes predate DESIGN.md and are never shipped; the built frontend uses Gantari + Azeret Mono as documented"
+      }
+    ]
+  }
+}

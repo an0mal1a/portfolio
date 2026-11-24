@@ -1,0 +1,507 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-23T23:20:51+00:00",
+  "title": "Design System: Pablo Diez",
+  "extensions": {
+    "colorMeta": {
+      "tally": {
+        "role": "primary",
+        "displayName": "Tally Red-Orange",
+        "canonical": "oklch(67.0% 0.219 32.3)",
+        "tonalRamp": [
+          "#250000",
+          "#5b0000",
+          "#950000",
+          "#be0000",
+          "#e83412",
+          "#ff6040",
+          "#ff8a6a",
+          "#ffc9b0"
+        ]
+      },
+      "tally-hover": {
+        "role": "primary",
+        "displayName": "Tally Glow",
+        "canonical": "oklch(70.6% 0.187 32.3)",
+        "tonalRamp": [
+          "#220000",
+          "#540000",
+          "#8b0000",
+          "#b31d00",
+          "#db492f",
+          "#ff6f54",
+          "#ff977a",
+          "#ffcfb9"
+        ]
+      },
+      "ground": {
+        "role": "neutral",
+        "displayName": "Film Black",
+        "canonical": "oklch(15.0% 0.003 67.5)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262524",
+          "#434240",
+          "#626160",
+          "#838281",
+          "#a6a5a3",
+          "#cac9c7",
+          "#efeeed"
+        ]
+      },
+      "raise": {
+        "role": "neutral",
+        "displayName": "Raised Black",
+        "canonical": "oklch(18.8% 0.005 67.5)",
+        "tonalRamp": [
+          "#0c0b0a",
+          "#262523",
+          "#44413f",
+          "#63615e",
+          "#84827f",
+          "#a7a4a2",
+          "#cbc8c6",
+          "#f0eeec"
+        ]
+      },
+      "raise-2": {
+        "role": "neutral",
+        "displayName": "Raised Black Hover",
+        "canonical": "oklch(22.4% 0.007 67.4)",
+        "tonalRamp": [
+          "#0c0b0a",
+          "#272522",
+          "#45413e",
+          "#64605d",
+          "#85827e",
+          "#a8a4a0",
+          "#ccc8c4",
+          "#f1eeeb"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Warm Ink",
+        "canonical": "oklch(93.8% 0.010 81.8)",
+        "tonalRamp": [
+          "#0c0b09",
+          "#272521",
+          "#45423c",
+          "#64615b",
+          "#85827c",
+          "#a8a49e",
+          "#ccc9c2",
+          "#f1eee9"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Warm Ink 2",
+        "canonical": "oklch(83.8% 0.015 80.7)",
+        "tonalRamp": [
+          "#0c0b08",
+          "#28251f",
+          "#464139",
+          "#666058",
+          "#878278",
+          "#aaa49b",
+          "#cec8bf",
+          "#f2eee7"
+        ]
+      },
+      "mute": {
+        "role": "neutral",
+        "displayName": "Warm Mute",
+        "canonical": "oklch(61.6% 0.015 78.2)",
+        "tonalRamp": [
+          "#0d0b08",
+          "#28241f",
+          "#464139",
+          "#666058",
+          "#878178",
+          "#aaa49b",
+          "#cec8bf",
+          "#f2eee7"
+        ]
+      },
+      "faint": {
+        "role": "neutral",
+        "displayName": "Warm Faint (non-text only)",
+        "canonical": "oklch(44.1% 0.013 76.5)",
+        "tonalRamp": [
+          "#0c0b09",
+          "#282520",
+          "#46413a",
+          "#666059",
+          "#87817a",
+          "#aaa49c",
+          "#cec8c0",
+          "#f2eee8"
+        ]
+      },
+      "error": {
+        "role": "semantic",
+        "displayName": "Warm Error",
+        "canonical": "oklch(78.5% 0.105 33.4)",
+        "tonalRamp": [
+          "#190402",
+          "#42140b",
+          "#6f2819",
+          "#934838",
+          "#b86a58",
+          "#de8c7a",
+          "#ffb19e",
+          "#ffded1"
+        ]
+      },
+      "screen-paper": {
+        "role": "neutral",
+        "displayName": "Screen Paper",
+        "canonical": "oklch(96.4% 0.004 91.4)",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#252523",
+          "#43423f",
+          "#62615f",
+          "#83827f",
+          "#a6a5a2",
+          "#cac9c6",
+          "#efeeec"
+        ]
+      },
+      "on-tally": {
+        "role": "primary",
+        "displayName": "On Tally",
+        "canonical": "oklch(15.0% 0.003 67.5)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262524",
+          "#434240",
+          "#626160",
+          "#838281",
+          "#a6a5a3",
+          "#cac9c7",
+          "#efeeed"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": null,
+        "tonalRamp": [
+          "#0c0b09",
+          "#272521",
+          "#45423c",
+          "#64615b",
+          "#85827c",
+          "#a8a49e",
+          "#ccc9c2",
+          "#f1eee9"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": null,
+        "tonalRamp": [
+          "#0c0b09",
+          "#272521",
+          "#45423c",
+          "#64615b",
+          "#85827c",
+          "#a8a49e",
+          "#ccc9c2",
+          "#f1eee9"
+        ]
+      },
+      "ink-wash": {
+        "role": "neutral",
+        "displayName": "Ink Wash",
+        "canonical": null,
+        "tonalRamp": [
+          "#0c0b09",
+          "#272521",
+          "#45423c",
+          "#64615b",
+          "#85827c",
+          "#a8a49e",
+          "#ccc9c2",
+          "#f1eee9"
+        ]
+      },
+      "ink-wash-hover": {
+        "role": "neutral",
+        "displayName": "Ink Wash Hover",
+        "canonical": null,
+        "tonalRamp": [
+          "#0c0b09",
+          "#272521",
+          "#45423c",
+          "#64615b",
+          "#85827c",
+          "#a8a49e",
+          "#ccc9c2",
+          "#f1eee9"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home stage headline only."
+      },
+      "page": {
+        "displayName": "Page",
+        "purpose": "h1 of every inner page (h-page)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Every home section heading (h-section)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Headings inside inner page sections (h-sub)."
+      },
+      "item": {
+        "displayName": "Item",
+        "purpose": "Row and list item headings."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Paragraph under a section heading, ink-2."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose, 44-64ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, footer column titles, meta."
+      },
+      "mono": {
+        "displayName": "Literal Mono",
+        "purpose": "Literal HTTP header and response lines; inline code in case prose. Nothing else."
+      }
+    },
+    "shadows": [
+      {
+        "name": "panel",
+        "value": "0 1px 0 rgb(238 234 227 / 0.06) inset, 0 40px 80px -40px rgb(0 0 0 / 0.9)",
+        "purpose": "Every raised panel."
+      },
+      {
+        "name": "screen",
+        "value": "0 1px 0 rgb(238 234 227 / 0.1) inset, 0 36px 70px -24px rgb(0 0 0 / 0.85)",
+        "purpose": "Product recordings on the stage (rail and figures use 0 30px 60px -28px/-30px)."
+      },
+      {
+        "name": "field-focus",
+        "value": "0 0 0 3px rgb(238 234 227 / 0.12)",
+        "purpose": "Focus ring on text fields, with the border turning ink."
+      },
+      {
+        "name": "focus-outline",
+        "value": "outline: 2px solid #eeeae3; outline-offset: 4px",
+        "purpose": "Global :focus-visible."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Movement: rises, slides, chevron nudges, screen turns."
+      },
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.25, 1, 0.5, 1)",
+        "purpose": "Colour, opacity and fill transitions (0.2-0.35s)."
+      },
+      {
+        "name": "ease-in-out-expo",
+        "value": "cubic-bezier(0.87, 0, 0.13, 1)",
+        "purpose": "The stage headline settling into place (1.3s)."
+      },
+      {
+        "name": "reveal",
+        "value": "opacity 0.9s, transform 1.1s, blur 6px, translateY 1.75rem, stagger 110ms",
+        "purpose": "v-reveal for headings and leads that start below the fold."
+      },
+      {
+        "name": "stage-failsafe",
+        "value": "2.8s",
+        "purpose": "CSS reveals the stage if the entrance script never runs; entrance skipped if hydration lands after 2.6s."
+      },
+      {
+        "name": "status-breathe",
+        "value": "2.4s infinite, opacity 1 to 0.35",
+        "purpose": "Operational status dot in the built-daily line."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "xs",
+        "value": "24rem"
+      },
+      {
+        "name": "35rem",
+        "value": "35rem"
+      },
+      {
+        "name": "40rem",
+        "value": "40rem"
+      },
+      {
+        "name": "md",
+        "value": "48rem"
+      },
+      {
+        "name": "56rem",
+        "value": "56rem"
+      },
+      {
+        "name": "lg",
+        "value": "64rem"
+      },
+      {
+        "name": "72rem",
+        "value": "72rem"
+      },
+      {
+        "name": "3xl",
+        "value": "112rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Tally pill: the one primary action (contact, form submit).",
+      "html": "<button class=\"ds-pill ds-pill-tally\">Cuéntame tu proyecto <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-pill{display:inline-flex;align-items:center;justify-content:center;gap:.5em;height:3.25rem;padding:0 1.6rem;border:0;border-radius:999px;font-family: 'Gantari', 'Gantari Fallback', ui-sans-serif, system-ui, sans-serif;font-size:1rem;font-weight:700;letter-spacing:-.01em;line-height:1;white-space:nowrap;cursor:pointer;transition:background-color .2s cubic-bezier(.25,1,.5,1),transform .25s cubic-bezier(.16,1,.3,1)} .ds-pill svg{width:1.1em;height:1.1em;transition:transform .3s cubic-bezier(.16,1,.3,1)} .ds-pill:hover svg{transform:translateX(.15em)} .ds-pill:active{transform:scale(.98)} .ds-pill:focus-visible{outline:2px solid #eeeae3;outline-offset:4px} .ds-pill-tally{background:var(--color-tally,#ff4d2e);color:var(--color-on-tally,#0c0b0a)} .ds-pill-tally:hover{background:var(--color-tally-hover,#ff6a4f)}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Quiet companion pill on an ink wash.",
+      "html": "<button class=\"ds-pill ds-pill-ghost\">Ver el caso</button>",
+      "css": ".ds-pill{display:inline-flex;align-items:center;justify-content:center;gap:.5em;height:3.25rem;padding:0 1.6rem;border:0;border-radius:999px;font-family: 'Gantari', 'Gantari Fallback', ui-sans-serif, system-ui, sans-serif;font-size:1rem;font-weight:700;letter-spacing:-.01em;line-height:1;white-space:nowrap;cursor:pointer;transition:background-color .2s cubic-bezier(.25,1,.5,1),transform .25s cubic-bezier(.16,1,.3,1)} .ds-pill svg{width:1.1em;height:1.1em;transition:transform .3s cubic-bezier(.16,1,.3,1)} .ds-pill:hover svg{transform:translateX(.15em)} .ds-pill:active{transform:scale(.98)} .ds-pill:focus-visible{outline:2px solid #eeeae3;outline-offset:4px} .ds-pill-ghost{background:rgb(238 234 227 / .08);color:var(--color-ink,#eeeae3);font-weight:600} .ds-pill-ghost:hover{background:rgb(238 234 227 / .14)}"
+    },
+    {
+      "name": "Link More",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Inline link that leads somewhere: weight 600, chevron nudges on hover.",
+      "html": "<a href=\"#\" class=\"ds-more\">Ver proyectos <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m9 18 6-6-6-6\"/></svg></a>",
+      "css": ".ds-more{display:inline-flex;align-items:center;gap:.25em;font-family: 'Gantari', 'Gantari Fallback', ui-sans-serif, system-ui, sans-serif;font-size:1.0625rem;font-weight:600;color:var(--color-ink,#eeeae3);text-decoration:none} .ds-more svg{width:1.1em;height:1.1em;transition:transform .25s cubic-bezier(.16,1,.3,1)} .ds-more:hover svg{transform:translateX(3px)} .ds-more:focus-visible{outline:2px solid #eeeae3;outline-offset:4px}"
+    },
+    {
+      "name": "Kind Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Pill radio for the project kind; selected inverts to ink.",
+      "html": "<div class=\"ds-chips\"><label class=\"ds-chip\"><input type=\"radio\" name=\"k\" checked><span>Web</span></label><label class=\"ds-chip\"><input type=\"radio\" name=\"k\"><span>Software a medida</span></label></div>",
+      "css": ".ds-chips{display:flex;gap:.5rem;flex-wrap:wrap} .ds-chip input{position:absolute;opacity:0;width:1px;height:1px} .ds-chip span{display:inline-flex;align-items:center;height:2.5rem;padding:0 1.1rem;border-radius:999px;font-family: 'Gantari', 'Gantari Fallback', ui-sans-serif, system-ui, sans-serif;font-size:.9375rem;font-weight:600;color:#cfc9bf;background:rgb(238 234 227 / .06);cursor:pointer;transition:background-color .2s,color .2s} .ds-chip:hover span{background:rgb(238 234 227 / .12);color:#eeeae3} .ds-chip input:checked+span{background:#eeeae3;color:#0c0b0a} .ds-chip input:focus-visible+span{outline:2px solid #eeeae3;outline-offset:3px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Labelled field on a faint wash; focus turns the border to ink with a soft ring.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-n\">Nombre</label><input id=\"ds-n\" type=\"text\" placeholder=\"Tu nombre\"></div>",
+      "css": ".ds-field{display:grid;gap:.5rem;font-family: 'Gantari', 'Gantari Fallback', ui-sans-serif, system-ui, sans-serif;} .ds-field label{font-size:.875rem;font-weight:600;color:#cfc9bf} .ds-field input{width:100%;border-radius:.75rem;border:1px solid rgb(238 234 227 / .12);background:rgb(238 234 227 / .04);padding:.8rem 1rem;font:inherit;font-size:1.0625rem;color:#eeeae3;caret-color:#ff4d2e;transition:border-color .2s,background-color .2s,box-shadow .2s} .ds-field input::placeholder{color:#8a847b} .ds-field input:hover{border-color:rgb(238 234 227 / .24)} .ds-field input:focus{outline:none;border-color:#eeeae3;background:rgb(238 234 227 / .06);box-shadow:0 0 0 3px rgb(238 234 227 / .12)}"
+    },
+    {
+      "name": "Solid Header",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Header once past the stage: logo, links in ink-2, small tally pill.",
+      "html": "<header class=\"ds-nav\"><span class=\"ds-brand\"><svg viewBox=\"0 0 140 172\" fill=\"currentColor\" aria-hidden=\"true\"><path fill-rule=\"evenodd\" d=\"M 0,0 H 104 L 140,34 V 46 H 0 Z M 0,72 H 140 V 84 L 106,118 H 0 Z M 0,0 H 38 V 172 H 0 Z\"/></svg>PABLO</span><nav><a href=\"#\" class=\"on\">Servicios</a><a href=\"#\">Proyectos</a><a href=\"#\">Laboratorio</a><a href=\"#\">Sobre mí</a></nav><a href=\"#\" class=\"ds-cta\">Cuéntame tu proyecto</a></header>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:1.5rem;height:4.5rem;padding:0 1.5rem;background:#0c0b0a;box-shadow:0 1px 0 rgb(238 234 227 / .12);font-family: 'Gantari', 'Gantari Fallback', ui-sans-serif, system-ui, sans-serif;} .ds-brand{display:inline-flex;align-items:flex-start;gap:.48em;margin-right:auto;font-size:1.375rem;font-weight:800;color:#eeeae3;line-height:1} .ds-brand svg{height:1.08em;width:auto} .ds-nav nav{display:flex;gap:1.75rem} .ds-nav nav a{font-size:.9375rem;font-weight:500;color:#cfc9bf;text-decoration:none;transition:color .2s} .ds-nav nav a:hover,.ds-nav nav a.on{color:#eeeae3} .ds-cta{display:inline-flex;align-items:center;height:2.375rem;padding:0 1.1rem;border-radius:999px;background:#ff4d2e;color:#0c0b0a;font-size:.9375rem;font-weight:700;text-decoration:none} .ds-cta:hover{background:#ff6a4f}"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The only container: raised black, 20px corners, lit from above. One per section.",
+      "html": "<div class=\"ds-panel\"><h3>Cómo trabajo</h3><p>Rows inside are divided by hairlines, never nested cards.</p></div>",
+      "css": ".ds-panel{padding:clamp(1.5rem,3.5vw,3rem);border-radius:1.25rem;background:#151311;box-shadow:0 1px 0 rgb(238 234 227 / .06) inset,0 40px 80px -40px rgb(0 0 0 / .9);font-family: 'Gantari', 'Gantari Fallback', ui-sans-serif, system-ui, sans-serif;} .ds-panel h3{font-size:1.75rem;font-weight:720;letter-spacing:-.03em;line-height:1.04;color:#eeeae3;margin:0} .ds-panel p{margin:.75rem 0 0;color:#cfc9bf;font-size:1.0625rem;line-height:1.55}"
+    },
+    {
+      "name": "Security Header Row",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Literal header line in mono with a live dot (tally = received) and a plain explanation.",
+      "html": "<div class=\"ds-sec\"><code><span class=\"d ok\"></span>strict-transport-security: <i>max-age=63072000; includeSubDomains; preload</i></code><p>El navegador solo habla con este sitio por HTTPS.</p></div>",
+      "css": ".ds-sec{display:grid;grid-template-columns:1.25fr 1fr;gap:.5rem 3rem;padding:1.125rem 0;border-bottom:1px solid rgb(238 234 227 / .12);align-items:baseline} .ds-sec code{font-family:'Azeret Mono','Azeret Fallback',ui-monospace,monospace;font-size:.8125rem;line-height:1.65;color:#eeeae3;overflow-wrap:anywhere} .ds-sec i{font-style:normal;color:#8a847b} .ds-sec p{margin:0;font-family: 'Gantari', 'Gantari Fallback', ui-sans-serif, system-ui, sans-serif;color:#cfc9bf} .ds-sec .d{display:inline-block;width:.4375rem;height:.4375rem;margin-right:.8125rem;border-radius:999px;background:#57524b;vertical-align:.1em} .ds-sec .d.ok{background:#ff4d2e}"
+    },
+    {
+      "name": "Service Row",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Full-width hairline row; hover slides the name and inverts the round chevron.",
+      "html": "<a href=\"#\" class=\"ds-row\"><span class=\"n\">Diseño web</span><span class=\"p\">Webs rápidas que traen clientes.</span><span class=\"g\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m9 18 6-6-6-6\"/></svg></span></a>",
+      "css": ".ds-row{display:grid;grid-template-columns:5fr 5fr auto;gap:2.5rem;align-items:baseline;padding:2rem 0;border-top:1px solid rgb(238 234 227 / .12);border-bottom:1px solid rgb(238 234 227 / .12);color:#eeeae3;text-decoration:none;font-family: 'Gantari', 'Gantari Fallback', ui-sans-serif, system-ui, sans-serif;} .ds-row .n{font-size:2.25rem;font-weight:720;letter-spacing:-.03em;line-height:1.04;transition:transform .5s cubic-bezier(.16,1,.3,1)} .ds-row .p{color:#cfc9bf} .ds-row .g{display:grid;place-items:center;width:2.75rem;height:2.75rem;border-radius:999px;background:rgb(238 234 227 / .08);align-self:center;transition:background-color .25s,color .25s,transform .45s cubic-bezier(.16,1,.3,1)} .ds-row .g svg{width:1.25rem;height:1.25rem} .ds-row:hover .n{transform:translateX(.375rem)} .ds-row:hover .g{background:#eeeae3;color:#0c0b0a;transform:translateX(.25rem)} .ds-row:focus-visible{outline:2px solid #eeeae3;outline-offset:4px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Keynote Stage",
+    "overview": "**Creative North Star: \"The Keynote Stage\"**\n\nOne independent builder presents his own work on a dark stage. The ground is warm film black, the type is a warm off-white, and the only colour in the room is a single red-orange tally light that means \"act here\" or \"this is live\". Shipped products walk on as real recordings playing on screens, never as illustrations or mockups. Depth comes from light: a warm key light on the portrait, screens glowing on black with a soft floor reflection, raised panels that catch a hairline of light along their top edge.\n\nDensity is low and air is generous: one idea per section, one heading size for every story beat, large centred or split compositions rather than grids of tiles. Type does the heavy lifting: a heavy, tight geometric grotesk (Gantari) set big, with a quiet body below it. The system refuses the dark-dev-portfolio template (glass cards, stack-logo walls, gradient text, terminal theatre) and the cold luxury agency.\n\nMotion is choreographed and earned: the stage entrance (\"Mezcla\"), the Vestta screen that turns towards the visitor, headings that rise in once, a contribution graph that lights up column by column. Everything renders its final state without JavaScript and under reduced motion.",
+    "keyCharacteristics": [
+      "Warm film-black ground (no pure black, no cool greys); ink and greys share one warm hue.",
+      "One accent, tally, reserved for the primary action and live data.",
+      "Gantari everywhere; Azeret Mono only for literal machine text.",
+      "Fully rounded pills for every control; softly rounded screens and panels.",
+      "Real product recordings on \"screens\"; one portrait under a key light.",
+      "Hairline rules divide content; there are no card grids."
+    ],
+    "rules": [
+      {
+        "name": "The One Tally Rule",
+        "body": "Tally marks exactly two things: the primary action and live data. Never a heading, an icon, a border, a hover tint, a highlight or decoration. If a screen shows tally on something that is neither, it is wrong.",
+        "section": "colors"
+      },
+      {
+        "name": "The Faint Is Not Text Rule",
+        "body": "`faint` (about 2.5:1) is for marks only. Any readable text uses `mute` or brighter.",
+        "section": "colors"
+      },
+      {
+        "name": "The Literal Mono Rule",
+        "body": "Azeret Mono appears only where the text is literally machine text (an HTTP header line, a response line, inline code). Never as a \"technical\" costume for labels, numbers, nav or captions.",
+        "section": "typography"
+      },
+      {
+        "name": "The No Label-Above Rule",
+        "body": "Headings stand alone. No eyebrow, kicker, overline or section number above them, and no uppercase tracked labels anywhere.",
+        "section": "typography"
+      },
+      {
+        "name": "The Light-Not-Lines Rule",
+        "body": "Depth is carried by light (inset highlight, long soft shadow, key light). Never a coloured glow, never glass or backdrop blur, never a decorative border around a container.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep tally for the primary action and live data only (status dots, today's graph cell, received security headers, lab sync progress).",
+      "**Do** set every readable text in `ink`, `ink-2` or `mute`; keep `faint` for non-text marks.",
+      "**Do** use one heading size per level (`h-section` for home beats, `h-page` for page h1s, `h-sub` inside pages) and let the heading stand alone.",
+      "**Do** show real material: product recordings from `public/media` (AV1 + H.264 + poster), real API data, the real portrait.",
+      "**Do** separate content with hairline rows and top rules; use at most one raised panel per section.",
+      "**Do** make every control a pill, with Lucide icons (`@lucide/vue`) only.",
+      "**Do** render the final state on the server, without JS and under reduced motion; hold animations back only for content that starts below the fold."
+    ],
+    "donts": [
+      "**Don't** use tally on headings, icons, borders, hovers or decoration.",
+      "**Don't** put eyebrows, kickers, overlines, section numbers or uppercase tracked labels above or beside headings.",
+      "**Don't** use gradient text, glass or backdrop blur, coloured glows, or decorative borders around containers.",
+      "**Don't** build identical card grids or a hero-metric template (big number, small label, repeated).",
+      "**Don't** use Azeret Mono outside literal machine text.",
+      "**Don't** use pure black or cool greys; the neutrals are all warm.",
+      "**Don't** stretch, rotate, outline, shadow or recolour the P mark.",
+      "**Don't** use hacker theatre (green terminals, glitch, matrix), illustrations of products, or stock imagery."
+    ]
+  }
+}
