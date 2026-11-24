@@ -91,8 +91,8 @@ export const CERTIFICATES: Credential[] = [
       en: 'Python from the ground up to writing your own tools: port and network scanners, traffic analysers and a chat with end-to-end encryption.',
     },
     note: {
-      es: 'Me quedo con los sockets, los hilos y el tráfico visto por dentro: es lo que hay debajo de cualquier integración. Esa misma semana publiqué PythonTools, un repositorio con herramientas de red hechas en Python.',
-      en: 'What stayed with me is sockets, threads and traffic seen from the inside: it is what lies under any integration. That same week I published PythonTools, a repository of network tools written in Python.',
+      es: 'Te enseña una metodología de desarrollo muy buena, tanto para temas ofensivos como para programar sin más, desde el inicio hasta los sockets, los hilos y el tráfico visto por dentro: es lo que hay debajo de cualquier integración.',
+      en: 'It teaches you a very good development methodology for both offensive topics and basic programming, from the very beginning all the way to sockets, threads, and an inside look at network traffic: that\'s what lies beneath any integration.',
     },
   },
   {
@@ -126,8 +126,8 @@ export const CERTIFICATES: Credential[] = [
       en: 'Users and permissions in Linux, pentesting basics, discovering services on a network, capturing traffic with Wireshark and protecting a server from the best-known vulnerabilities.',
     },
     note: {
-      es: 'Me gustó que cada ataque viniera con su defensa. Es como sigo pensando la seguridad.',
-      en: 'I liked that every attack came with its defence. It is still how I think about security.',
+      es: 'Me gustó que cada ataque viniera con su defensa. Es como sigo pensando la seguridad. (El curso ya tiene sus años y hoy está algo desactualizado.)',
+      en: 'I liked that every attack came with its defence. It is still how I think about security. (The course is a few years old and somewhat outdated today.)',
     },
   },
   {
@@ -144,8 +144,8 @@ export const CERTIFICATES: Credential[] = [
       en: 'Programming from scratch: variables, control flow, functions, graphical interfaces and real problems.',
     },
     note: {
-      es: 'Por aquí empecé con Python. Tres semanas después subí a GitHub un escáner de puertos, el repositorio público más antiguo que conservo.',
-      en: 'This is where I started with Python. Three weeks later I pushed a port scanner to GitHub, the oldest public repository I still keep.',
+      es: 'Por aquí empecé con Python, y le tengo un cariño enorme: para mí es el curso de oro. La línea de aprendizaje es increíble y todo es interactivo, con ejercicios en cada capítulo y un examen por módulo. Y, sobre todo, está Nate Gentile, que lo explica de una forma asombrosa. Tres semanas después subí a GitHub un escáner de puertos, servicios y vulnerabilidades sin necesidad de nmap (mas o menos), el repositorio público más antiguo que conservo.',
+      en: 'This is where I started with Python, and I am hugely fond of it: to me it is the gold-standard course. The learning path is incredible and everything is interactive, with exercises in every chapter and an exam per module. And above all there is Nate Gentile, who explains things amazingly well. Three weeks later I pushed a port scanner to GitHub, the oldest public repository I still keep.',
     },
   },
   {
@@ -162,8 +162,8 @@ export const CERTIFICATES: Credential[] = [
       en: 'Passwords, antivirus, safe browsing, WiFi networks, the most common cyberattacks and social engineering.',
     },
     note: {
-      es: 'Mi primer certificado: antes de atacar nada, entender de qué hay que protegerse. Ese mismo año empecé SecurEntry, un gestor de contraseñas en Python.',
-      en: 'My first certificate: before attacking anything, understand what you need protecting from. That same year I started SecurEntry, a password manager in Python.',
+      es: 'Un curso básico, muy de iniciación. Mi primer certificado: antes de atacar nada, entender de qué hay que protegerse. Ese mismo año empecé SecurEntry, un gestor de contraseñas en Python.',
+      en: 'A basic course, very much for beginners. My first certificate: before attacking anything, understand what you need protecting from. That same year I started SecurEntry, a password manager in Python.',
     },
   },
 ]
