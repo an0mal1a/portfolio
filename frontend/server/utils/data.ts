@@ -24,6 +24,15 @@ function cached(maxAge: number, staleMaxAge: number) {
   return import.meta.dev ? { maxAge: 2, swr: false } : { maxAge, swr: true, staleMaxAge }
 }
 
+// A sync run from the Lab makes every GitHub copy taken before it invalid: the next
+// read waits for fresh data instead of serving the stale copy. Throttled, because
+// anyone can ask and the API limits our server to 120 requests a minute.
+let githubStaleBefore = 0
+export function expireGithubData() {
+  if (Date.now() - githubStaleBefore > 3000) githubStaleBefore = Date.now()
+}
+const currentGithub = (entry: { mtime?: number }) => (entry.mtime ?? 0) > githubStaleBefore
+
 export const getProjects = defineCachedFunction(async (): Promise<Project[]> => {
   const res = assertOk(await backendGet<{ status: string, projects: Project[] }>(undefined, '/projects'), 'projects')
   return res.projects
@@ -38,12 +47,13 @@ export const getClients = defineCachedFunction(async (): Promise<Client[]> => {
 export const getRepos = defineCachedFunction(async (): Promise<Repo[]> => {
   const res = assertOk(await backendGet<{ status: string, repos: Repo[] }>(undefined, '/github/repositories'), 'repositories')
   return res.repos
-}, { name: 'repos', ...cached(10 * MIN, 24 * HOUR) })
+  // An empty list only means the first sync has not run yet: never keep it.
+}, { name: 'repos', ...cached(10 * MIN, 24 * HOUR), validate: e => !!e.value?.length && currentGithub(e) })
 
 export const getProfile = defineCachedFunction(async (): Promise<GHProfileRaw> => {
   const res = assertOk(await backendGet<{ status: string, profile: GHProfileRaw }>(undefined, '/github/me'), 'profile')
   return res.profile
-}, { name: 'profile', ...cached(10 * MIN, 24 * HOUR) })
+}, { name: 'profile', ...cached(10 * MIN, 24 * HOUR), validate: e => !!e.value && currentGithub(e) })
 
 export const getStatus = defineCachedFunction(async (): Promise<StatusPayload> => {
   try {

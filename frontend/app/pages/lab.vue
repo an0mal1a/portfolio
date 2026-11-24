@@ -48,9 +48,11 @@ async function sync(type: JobType) {
   jobType.value = type
   await job.start(type)
 }
-watch(() => job.run.value?.status, (s) => {
+watch(() => job.run.value?.status, async (s) => {
   if (s === 'completed') {
     status.refresh()
+    // Our own cache still holds the data from before the sync.
+    await $fetch('/api/github/refresh', { method: 'POST' }).catch(() => {})
     refreshNuxtData(['gh-profile', 'gh-repos'])
   }
 })

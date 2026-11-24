@@ -134,6 +134,8 @@ export default defineNuxtConfig({
     routeRules: {
       '/**': { swr: 300 },
       '/api/status': { swr: false, cache: false },
+      // Already cached per source (server/utils/data.ts), and a sync has to show at once.
+      '/api/github/**': { swr: false, cache: false },
       // The route cache stores binary bodies as "{}": never put IPX images through it.
       '/_ipx/**': { swr: false, cache: false },
     },
