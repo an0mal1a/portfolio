@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="660" viewBox="0 0 1500 660">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&amp;display=swap');</style>
+
+  <rect width="1500" height="660" fill="#F1EEE6"/>
+  <text x="58" y="82" font-family="'Azeret Mono', monospace" font-size="24" letter-spacing="4" fill="#171B1E">PABLO / TYPOGRAPHY SYSTEM</text>
+  <line x1="750" y1="130" x2="750" y2="590" stroke="#171B1E" opacity="0.28"/>
+  <text x="58" y="155" font-family="'Azeret Mono', monospace" font-size="18" fill="#6D7476">01 / DISPLAY + HEADLINES</text>
+  <text x="58" y="260" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="86" font-weight="800" fill="#171B1E">Bricolage</text>
+  <text x="58" y="345" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="86" font-weight="800" fill="#171B1E">Grotesque</text>
+  <text x="58" y="415" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="26" font-weight="500" fill="#171B1E">Expressive editorial voice</text>
+  <text x="58" y="449" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="26" font-weight="500" fill="#171B1E">with a technical edge.</text>
+  <rect x="58" y="495" width="150" height="38" fill="#D8F16B"/>
+  <text x="73" y="521" font-family="'Azeret Mono', monospace" font-size="15" font-weight="700" fill="#171B1E">WEIGHTS</text>
+  <text x="58" y="567" font-family="'Azeret Mono', monospace" font-size="18" fill="#171B1E">600 / 700 / 800</text>
+  <text x="800" y="155" font-family="'Azeret Mono', monospace" font-size="18" fill="#6D7476">02 / LABELS + TECHNICAL DETAILS</text>
+  <text x="800" y="265" font-family="'Azeret Mono', monospace" font-size="72" font-weight="600" fill="#171B1E">AZERET</text>
+  <text x="800" y="350" font-family="'Azeret Mono', monospace" font-size="72" font-weight="600" fill="#171B1E">MONO</text>
+  <text x="800" y="415" font-family="'Azeret Mono', monospace" font-size="22" fill="#171B1E">0123456789 / API / BUILD</text>
+  <text x="800" y="449" font-family="'Azeret Mono', monospace" font-size="22" fill="#171B1E">2026 / META / DATA</text>
+  <rect x="800" y="495" width="150" height="38" fill="#5263E8"/>
+  <text x="815" y="521" font-family="'Azeret Mono', monospace" font-size="15" font-weight="700" fill="#FFFFFF">WEIGHTS</text>
+  <text x="800" y="567" font-family="'Azeret Mono', monospace" font-size="18" fill="#171B1E">400 / 500 / 600</text>
+</svg>

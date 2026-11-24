@@ -1,0 +1,15 @@
+/* PABLO — Independent Builder brand tokens */
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap');
+
+:root {
+    --pablo-ink: #171B1E;
+    --pablo-paper: #F1EEE6;
+    --pablo-lime: #D8F16B;
+    --pablo-ultramarine: #5263E8;
+    --pablo-oxide: #B8644D;
+    --pablo-muted: #6D7476;
+
+    --font-display: 'Bricolage Grotesque', sans-serif;
+    --font-body: 'Bricolage Grotesque', sans-serif;
+    --font-mono: 'Azeret Mono', monospace;
+}

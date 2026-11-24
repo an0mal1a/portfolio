@@ -35,3 +35,18 @@ backends/postgres/hardcoded_data/*.sql
 /graphify-out
 docker-compose.override.yml
 /frontend/graphify-out
+/.impeccable
+/.playwright-mcp
+/.claude-flow
+/.swarm
+frontend/PABLO_personal_brand_kit.zip
+frontend/ruvector.db
+
+# Agent tooling runtime (any folder)
+.claude-flow/
+.swarm/
+ruvector.db
+.claude/settings.local.json
+.claude/proven-config.json
+/assets/plates/portrait.png
+/result.json

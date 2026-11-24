@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="540" viewBox="0 0 1500 540">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&amp;display=swap');</style>
+
+  <rect width="1500" height="540" fill="#F1EEE6"/>
+  <text x="58" y="82" font-family="'Azeret Mono', monospace" font-size="24" letter-spacing="4" fill="#171B1E">PABLO / COLOR SYSTEM</text>
+  <text x="58" y="142" font-family="'Bricolage Grotesque', Arial, sans-serif" font-size="54" font-weight="800" fill="#171B1E">A warm foundation. A sharp signal.</text>
+  <g transform="translate(58 205)">
+    <rect width="260" height="190" rx="14" fill="#171B1E"/>
+    <rect x="276" width="260" height="190" rx="14" fill="#F1EEE6" stroke="#171B1E" stroke-width="2"/>
+    <rect x="552" width="260" height="190" rx="14" fill="#D8F16B"/>
+    <rect x="828" width="260" height="190" rx="14" fill="#5263E8"/>
+    <rect x="1104" width="260" height="190" rx="14" fill="#B8644D"/>
+    <g font-family="'Azeret Mono', monospace" font-size="17" fill="#171B1E">
+      <text x="0" y="230" font-weight="700">GRAPHITE INK</text><text x="0" y="260">#171B1E</text>
+      <text x="276" y="230" font-weight="700">WARM PAPER</text><text x="276" y="260">#F1EEE6</text>
+      <text x="552" y="230" font-weight="700">SIGNAL LIME</text><text x="552" y="260">#D8F16B</text>
+      <text x="828" y="230" font-weight="700">ULTRAMARINE</text><text x="828" y="260">#5263E8</text>
+      <text x="1104" y="230" font-weight="700">OXIDE</text><text x="1104" y="260">#B8644D</text>
+    </g>
+  </g>
+  <text x="58" y="510" font-family="'Azeret Mono', monospace" font-size="16" fill="#6D7476">Use lime as a signal, not as a background everywhere. Blue and oxide are supporting accents.</text>
+</svg>
