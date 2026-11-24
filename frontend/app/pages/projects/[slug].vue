@@ -11,7 +11,7 @@ const { public: { siteUrl } } = useRuntimeConfig()
 const { date, relative } = useFormat()
 const slug = computed(() => String(route.params.slug))
 
-const { data, error } = await useFetch<ProjectDetail>(() => `/api/projects/${slug.value}`, { key: `project-${slug.value}` })
+const { data, error } = await useFetch<ProjectDetail>(() => `/api/projects/${slug.value}`, { key: `project-${slug.value}-${locale.value}`, query: { locale: locale.value } })
 if (error.value || !data.value) {
   throw createError({ statusCode: error.value?.statusCode ?? 404, statusMessage: 'Project not found', fatal: true })
 }
@@ -37,8 +37,9 @@ const period = computed(() => {
   return [from, to].filter(Boolean).join(' – ')
 })
 
-// Case studies are authored in Spanish in the database. Strip anything executable
-// defensively even though the source is trusted.
+// Case studies are authored in Spanish in the database and translated in
+// server/content/projects-en.ts. Strip anything executable defensively even though
+// the source is trusted.
 const html = computed(() => (project.value.content_html ?? '')
   .replace(/<script[\s\S]*?<\/script>/gi, '')
   .replace(/\son\w+="[^"]*"/gi, '')
@@ -99,10 +100,10 @@ useSchemaOrg([
     'headline': project.value.name,
     'description': project.value.tagline ?? project.value.description,
     'image': project.value.image ?? undefined,
-    'inLanguage': 'es-ES',
+    'inLanguage': project.value.lang === 'en' ? 'en' : 'es-ES',
     'datePublished': project.value.completed_at ?? project.value.created_at,
     'dateModified': project.value.updated_at,
-    'author': { '@type': 'Person', 'name': 'Pablo Diez', 'url': siteUrl },
+    'author': { '@id': `${siteUrl}/#identity` },
   } as Record<string, unknown>),
   defineBreadcrumb({
     itemListElement: [
@@ -119,7 +120,7 @@ useSchemaOrg([
     <header class="opening container-x">
       <UiCrumbs :items="[{ label: t('breadcrumb.home'), to: localePath('index') }, { label: t('breadcrumb.projects'), to: localePath('projects') }, { label: project.name }]" />
       <h1 class="title">{{ project.name }}</h1>
-      <p v-if="project.tagline" class="lead tagline" lang="es">{{ project.tagline }}</p>
+      <p v-if="project.tagline" class="lead tagline" :lang="project.lang">{{ project.tagline }}</p>
       <div v-if="project.live_url || project.repository_url" class="actions">
         <UiButton v-if="project.live_url" :href="project.live_url" size="md">
           {{ t('project.live') }}
@@ -158,7 +159,7 @@ useSchemaOrg([
 
     <div class="case container-x" :class="{ 'has-index': titled.length > 1 }">
       <nav v-if="titled.length > 1" class="index" :aria-label="t('project.chapters')">
-        <ol lang="es">
+        <ol :lang="project.lang">
           <li v-for="c in titled" :key="c.id">
             <a :href="`#${c.id}`" :aria-current="reading === c.id ? 'location' : undefined">{{ c.title }}</a>
           </li>
@@ -166,12 +167,12 @@ useSchemaOrg([
       </nav>
 
       <div class="chapters">
-        <p v-if="locale !== 'es'" class="panel mb-12 flex items-start gap-3 p-5 text-[0.9375rem] text-ink-2" lang="en">
+        <p v-if="locale !== project.lang" class="panel mb-12 flex items-start gap-3 p-5 text-[0.9375rem] text-ink-2" lang="en">
           <Languages class="mt-0.5 size-5 flex-none text-mute" aria-hidden="true" />
           {{ t('project.spanishOnly') }}
         </p>
         <template v-if="chapters.length">
-          <section v-for="c in chapters" :id="c.id" :key="c.id" class="chapter" lang="es" :aria-labelledby="c.title ? `${c.id}-title` : undefined">
+          <section v-for="c in chapters" :id="c.id" :key="c.id" class="chapter" :lang="project.lang" :aria-labelledby="c.title ? `${c.id}-title` : undefined">
             <h2 v-if="c.title" :id="`${c.id}-title`" v-reveal class="h-sub">{{ c.title }}</h2>
             <!-- eslint-disable-next-line vue/no-v-html -->
             <div class="prose" v-html="c.html" />
@@ -185,7 +186,7 @@ useSchemaOrg([
       <NuxtLink :to="localePath({ name: 'projects-slug', params: { slug: next.slug } })" class="next" @click="opening = next.slug">
         <span class="next-copy">
           <span class="next-name">{{ next.name }}</span>
-          <span v-if="next.tagline" class="next-tagline" lang="es">{{ next.tagline }}</span>
+          <span v-if="next.tagline" class="next-tagline" :lang="next.lang">{{ next.tagline }}</span>
           <span class="next-go">{{ t('project.next') }} <ArrowRight aria-hidden="true" /></span>
         </span>
         <span class="next-space">

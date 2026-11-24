@@ -65,7 +65,7 @@ Backends locally: see `README.md` (`cargo run` in `backends/rust-api`, `uvicorn 
 
 - Locales: `es` (default, no prefix) and `en` (`/en/...`). Localised slugs are declared once in `nuxt.config.ts` (`i18n.pages`, `customRoutes: 'config'`). Add a page there whenever you add one under `app/pages/`.
 - Always link with `localePath()` / `<NuxtLinkLocale>`; never hard-code `/en`.
-- UI strings live in `frontend/i18n/locales/{es,en}.json`. Case-study content comes from the database in Spanish only; on `/en` show it with a clear "written in Spanish" note rather than machine-translating it.
+- UI strings live in `frontend/i18n/locales/{es,en}.json`. Case-study content comes from the database in Spanish; its English text lives in `frontend/server/content/projects-en.ts` (change both together). A project without a translation shows in Spanish on `/en` with the "written in Spanish" note.
 - Every page sets title, description, canonical and OG through `useSeoMeta` and adds JSON-LD with `useSchemaOrg` where relevant (Person, ProfessionalService/LocalBusiness, Service, CreativeWork, BreadcrumbList, FAQPage only when the FAQ is visible on the page).
 - Service landing pages target real queries (DataForSEO, Spain): "diseño web ibiza" / "diseñador web ibiza" (~140/mo, low competition), "desarrollo software a medida" (~50), "crm a medida" (~40), "programador freelance" (~90), "web design ibiza" (EN). Keep one primary intent per URL.
 - Never fabricate testimonials, ratings, prices, client results or certifications (see `PRODUCT.md` › Evidence on Hand).

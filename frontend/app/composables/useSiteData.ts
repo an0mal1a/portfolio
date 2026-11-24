@@ -14,7 +14,8 @@ export function useOverview() {
 }
 
 export function useProjects() {
-  return useFetch<ProjectSummary[]>('/api/projects', { key: 'projects', dedupe: 'defer', default: () => [] })
+  const locale = useI18n().locale.value
+  return useFetch<ProjectSummary[]>('/api/projects', { key: `projects-${locale}`, query: { locale }, dedupe: 'defer', default: () => [] })
 }
 
 /**

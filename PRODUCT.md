@@ -52,7 +52,7 @@ Constraints:
 
 - Languages: Spanish (default) and English, confirmed. Content and URLs need proper hreflang.
 - The P logo is the only binding brand asset; palette and fonts are free (decided 2026-11-23). The previous sites (2025 version and the 2026 paper/Ibiza-sun redesign) must not be used as reference.
-- Project content is Spanish-only in the database today; English case-study content does not exist yet.
+- Project content is written in Spanish in the database; the English case studies live in the frontend (`frontend/server/content/projects-en.ts`).
 - Undecided: public phone/WhatsApp, physical address / Google Business Profile, pricing. Do not invent them.
 
 ## Brand Commitments

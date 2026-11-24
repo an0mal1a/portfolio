@@ -5,6 +5,7 @@ import type {
   ContributionSummary,
   GHProfileRaw,
   GitHubProfile,
+  LocalizedProject,
   Project,
   Repo,
   ReposPayload,
@@ -12,6 +13,7 @@ import type {
   SystemStatus,
 } from '#shared/types/api'
 import { isUnpublishedClient } from '#shared/unpublished'
+import { PROJECTS_EN } from '../content/projects-en'
 
 // Cached upstream reads. `swr: true` serves the last good copy instantly and
 // refreshes it in the background; maxAge is how long a copy counts as fresh.
@@ -37,6 +39,11 @@ export const getProjects = defineCachedFunction(async (): Promise<Project[]> => 
   const res = assertOk(await backendGet<{ status: string, projects: Project[] }>(undefined, '/projects'), 'projects')
   return res.projects
 }, { name: 'projects', ...cached(10 * MIN, 24 * HOUR) })
+
+export function localizeProject(project: Project, locale: unknown): LocalizedProject {
+  const en = locale === 'en' ? PROJECTS_EN[project.slug] : undefined
+  return en ? { ...project, ...en, lang: 'en' } : { ...project, lang: 'es' }
+}
 
 export const getClients = defineCachedFunction(async (): Promise<Client[]> => {
   const res = assertOk(await backendGet<{ status: string, clients: Client[] }>(undefined, '/clients'), 'clients')

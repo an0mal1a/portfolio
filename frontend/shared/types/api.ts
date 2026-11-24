@@ -27,13 +27,18 @@ export interface Project {
   updated_at: string
 }
 
-export type ProjectSummary = Omit<Project, 'content_html'> & {
+export type ContentLocale = 'es' | 'en'
+
+/** A project with its text in `lang`: the one asked for or, without a translation, Spanish. */
+export type LocalizedProject = Project & { lang: ContentLocale }
+
+export type ProjectSummary = Omit<LocalizedProject, 'content_html'> & {
   client: Client | null
   repo: Pick<Repo, 'display_name' | 'primary_language' | 'stars_count' | 'visibility' | 'github_pushed_at'> | null
 }
 
 export interface ProjectDetail {
-  project: Project
+  project: LocalizedProject
   client: Client | null
   repo: Repo | null
 }

@@ -1,12 +1,14 @@
 import type { ProjectSummary } from '#shared/types/api'
 
-export default defineEventHandler(async (): Promise<ProjectSummary[]> => {
+export default defineEventHandler(async (event): Promise<ProjectSummary[]> => {
+  const { locale } = getQuery(event)
   const [projects, clients, repos] = await Promise.all([
     getProjects(),
     getClients().catch(() => []),
     getRepos().catch(() => []),
   ])
-  return projects.map(({ content_html: _omit, ...project }) => {
+  return projects.map((source) => {
+    const { content_html: _omit, ...project } = localizeProject(source, locale)
     const repo = repos.find(r => r.id === project.github_repository_id) ?? null
     return {
       ...project,
