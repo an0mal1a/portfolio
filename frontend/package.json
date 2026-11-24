@@ -8,6 +8,7 @@
     "preview": "node .output/server/index.mjs",
     "generate": "nuxt generate",
     "typecheck": "nuxt typecheck",
+    "plates": "node scripts/build-plates.mjs",
     "postinstall": "nuxt prepare"
   },
   "overrides": {

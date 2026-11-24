@@ -119,16 +119,17 @@ if (import.meta.client) {
   padding-inline: var(--gutter);
   transition: height 0.45s var(--ease-out-expo);
 }
-/* Over the stage the header takes the comp's proportions; solid, it compacts. */
-.is-stage { --bar-h: clamp(4.25rem, 6.6vw, 6.75rem); --brand: clamp(1.375rem, 3vw, 2.875rem); --link: clamp(0.9375rem, 1.19vw, 1.25rem); }
+/* Over the stage the header takes the comp's proportions, capped like the hero
+   type (smaller of width and height); solid, it compacts. */
+.is-stage { --bar-h: clamp(4.25rem, min(6.6vw, 10.5svh), 5.75rem); --brand: clamp(1.375rem, min(3vw, 4.8svh), 2.25rem); --link: clamp(0.9375rem, min(1.19vw, 1.9svh), 1.125rem); }
 .is-stage .bar { padding-right: calc(var(--gutter) * 0.78); }
 /* In the comp the links ride a little above the logo's centre line. */
-.is-stage .links { transform: translateY(-0.45vw); }
+.is-stage .links { transform: translateY(max(-0.45vw, -0.375rem)); }
 .is-stage .link { font-weight: 540; }
 .is-solid { --bar-h: var(--header-h); --brand: clamp(1.25rem, 1rem + 0.5vw, 1.5rem); --link: 0.9375rem; }
 .brand { margin-right: auto; font-size: var(--brand); transition: font-size 0.45s var(--ease-out-expo), transform 0.45s var(--ease-out-expo); }
 /* On the stage the lockup sits a little below the nav's line, as in the comp. */
-.is-stage .brand { transform: translateY(0.85vw); }
+.is-stage .brand { transform: translateY(min(0.85vw, 0.625rem)); }
 .links { display: flex; align-items: center; gap: clamp(1.25rem, 1.7vw, 2rem); }
 .link {
   font-size: var(--link);

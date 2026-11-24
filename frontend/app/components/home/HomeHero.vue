@@ -13,19 +13,17 @@ import { ChevronRight } from '@lucide/vue'
  */
 const { t, tm, rt } = useI18n()
 const localePath = useLocalePath()
-const img = useImage()
 
 const lines = computed(() => (tm('hero.lines') as string[]).map(l => rt(l)))
 const words = computed(() => lines.value.map(l => l.split(' ')))
 
-// Responsive portrait (the plate). On portrait screens the stage is taller than
-// 16:10, so the cover-cropped image renders at ~160vh wide.
-const SRC = '/plates/pablo-hero.jpg'
-const WIDTHS = [640, 960, 1280, 1600, 2000, 2400]
-// Quality 85, not the site's usual 72: phones show this plate ~2.5x magnified and
-// lower settings smooth the skin texture away.
-const QUALITY = 85
-const srcset = (format: string) => WIDTHS.map(w => `${img(SRC, { width: w, format, quality: QUALITY })} ${w}w`).join(', ')
+// Responsive portrait (the plate), pre-encoded by `npm run plates` into static
+// files: IPX keeps no server cache and an AVIF encode this size takes 5-7 s.
+// On portrait screens the stage is taller than 16:10, so the cover-cropped
+// image renders at ~160vh wide.
+const PLATE = '/plates/hero/pablo-hero'
+const WIDTHS = [640, 960, 1280, 1600, 2000, 2400] // keep in sync with scripts/build-plates.mjs
+const srcset = (ext: 'avif' | 'webp') => WIDTHS.map(w => `${PLATE}-${w}.${ext} ${w}w`).join(', ')
 const SIZES = '(max-aspect-ratio: 16/10) 160vh, 100vw'
 useHead({
   link: [{ rel: 'preload', as: 'image', type: 'image/avif', imagesrcset: srcset('avif'), imagesizes: SIZES, fetchpriority: 'high', key: 'hero-portrait' }],
@@ -99,7 +97,7 @@ onMounted(() => {
       <source type="image/avif" :srcset="srcset('avif')" :sizes="SIZES">
       <source type="image/webp" :srcset="srcset('webp')" :sizes="SIZES">
       <img
-        :src="img(SRC, { width: 1600, format: 'jpg', quality: QUALITY })"
+        :src="`${PLATE}-1600.jpg`"
         :alt="t('hero.portraitAlt')"
         width="2400"
         height="1500"
@@ -161,11 +159,15 @@ onMounted(() => {
   padding: 0 var(--gutter) clamp(3.5rem, 8.5svh, 6rem);
   text-align: center;
 }
-/* Sizes from the approved comp (1586x992): cap 68px, lead cap 19px, pill 72px. */
+/*
+ * Type follows the smaller of width and height, so wide but short screens
+ * (a 2K monitor at 125-150% scaling, laptops) keep the face clear of the
+ * headline. Caps follow the approved hybrid prototype (headline 88px).
+ */
 .stage-title {
   margin-inline: auto;
   max-width: 24ch;
-  font-size: clamp(2.75rem, 6.37vw, 6rem);
+  font-size: clamp(2.75rem, min(6.37vw, 10.2svh), 5.5rem);
   font-weight: 720;
   line-height: 0.9;
   letter-spacing: -0.032em;
@@ -177,7 +179,7 @@ onMounted(() => {
 .stage-lead {
   margin: clamp(0.75rem, 1.4svh, 1.25rem) auto 0;
   max-width: 78ch;
-  font-size: clamp(1.0625rem, 1.7vw, 1.6875rem);
+  font-size: clamp(1.0625rem, min(1.7vw, 2.7svh), 1.375rem);
   line-height: 1.4;
   color: rgb(238 234 227 / 0.9);
 }
@@ -190,15 +192,15 @@ onMounted(() => {
   gap: 0.875rem clamp(1.5rem, 2.2vw, 2.25rem);
 }
 .stage-cta {
-  height: clamp(3.25rem, 4.54vw, 4.5rem);
-  padding-inline: clamp(1.75rem, 3.2vw, 3.25rem);
-  font-size: clamp(1.0625rem, 1.79vw, 1.75rem);
+  height: clamp(3.25rem, min(4.54vw, 7.3svh), 3.75rem);
+  padding-inline: clamp(1.75rem, 3.2vw, 2.5rem);
+  font-size: clamp(1.0625rem, min(1.79vw, 2.9svh), 1.25rem);
 }
 .stage-more {
   display: inline-flex;
   align-items: center;
   gap: 0.3em;
-  font-size: clamp(1.0625rem, 1.7vw, 1.6875rem);
+  font-size: clamp(1.0625rem, min(1.79vw, 2.9svh), 1.25rem);
   font-weight: 600;
   color: var(--color-ink-2);
   text-decoration: none;

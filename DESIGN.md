@@ -21,7 +21,7 @@ colors:
 typography:
   display:
     fontFamily: "Gantari, Gantari Fallback, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.75rem, 6.37vw, 6rem)"
+    fontSize: "clamp(2.75rem, min(6.37vw, 10.2svh), 5.5rem)"
     fontWeight: 720
     lineHeight: 0.9
     letterSpacing: "-0.032em"
@@ -181,7 +181,7 @@ A warm monochrome stage with one signal colour.
 **Character:** A heavy, tightly tracked geometric grotesk at keynote scale over a calm body in the same family. Weight carries hierarchy (720-760 for headings, 600-700 for labels and links, 400 for prose), not colour or case.
 
 ### Hierarchy
-- **Display** (720, `clamp(2.75rem, 6.37vw, 6rem)`, 0.9): the home stage headline only, centred, two lines, `max-width: 24ch` (12ch on phones).
+- **Display** (720, `clamp(2.75rem, min(6.37vw, 10.2svh), 5.5rem)`, 0.9): the home stage headline only, centred, two lines, `max-width: 24ch` (12ch on phones). Every size on the stage (lead 22px max, pill 60px/20px max, stage header) follows the smaller of width and height and stops at the approved hybrid's scale: the owner found the comp-scale type too big on a 2K monitor, and on wide-but-short screens it pushed the headline into the face.
 - **Page** (760, `clamp(2.5rem, 1.2rem + 5vw, 5.25rem)`, 0.98): the h1 of every inner page (projects, case, about, lab, privacy). Service landings and the contact close use the same weight at their own clamp.
 - **Headline** (750, `clamp(2.25rem, 1.2rem + 4vw, 4.5rem)`, 1.02): every home section heading. One size for every story beat.
 - **Title** (720, `clamp(1.75rem, 1.2rem + 2vw, 3rem)`, 1.04): headings inside an inner page section. Service names in the home index use the same scale at a slightly larger clamp.
@@ -282,7 +282,7 @@ A year of GitHub contributions as 10px cells: five steps of ink wash (6%, 20%, 3
 
 ### Motion
 - **Eases:** `--ease-out-expo` for movement, `--ease-out-quart` for colour and opacity, `--ease-in-out-expo` for the stage settle.
-- **Stage entrance "Mezcla":** headline words rise from 118% (75ms stagger), the headline settles from large-and-centred into place while the portrait brightens from 15%, then lead and actions arrive out of 8px blur, then the nav. A pre-paint flag holds the start pose only when JS runs and motion is allowed; a CSS failsafe reveals everything at 2.8s; if hydration lands after 2.6s the entrance is skipped.
+- **Stage entrance "Mezcla":** headline words rise from 118% (75ms stagger), the headline settles from large-and-centred into place while the portrait rises out of black (opacity 0 to 1 together with brightness from 15%, 1.9s; the owner found brightness alone too abrupt), then lead and actions arrive out of 8px blur, then the nav. A pre-paint flag holds the start pose only when JS runs and motion is allowed; a CSS failsafe reveals everything at 2.8s; if hydration lands after 2.6s the entrance is skipped.
 - **v-reveal:** headings and leads rise 1.75rem out of a 6px blur once, staggered 110ms, and only when they start below the fold.
 - **Scroll-driven:** the Vestta screen turns from 30 to 12 degrees as it reaches the middle of the viewport (64rem and up only).
 - **Reduced motion:** every transition and animation collapses to its final state; videos stay on posters; graphs and sheets render whole.
@@ -310,6 +310,7 @@ A year of GitHub contributions as 10px cells: five steps of ink wash (6%, 20%, 3
 
 ## Hero portrait
 
-- **Plate.** `frontend/public/plates/pablo-hero.jpg` (2400x1500, 16:10) is the photo layer of the owner-approved mock `.impeccable/explore/round2/3-mezcla-foto-keynote.png`. Everything above the headline keeps that mock's pixels unchanged; only the T-shirt, shoulders and arms behind the text were reconstructed. Sources are in `.impeccable/photo-brief/round2/`, the composition guides in `.impeccable/photo-brief/guias.png`. The owner rejected the flatter, more heavily graded version in `.impeccable/photo-brief/salida/` ("looks like a ghost"): keep the arms readable behind the text.
+- **Plate.** `frontend/public/plates/pablo-hero.jpg` (2400x1500, 16:10, the master) is the photo layer of the owner-approved mock `.impeccable/explore/round2/3-mezcla-foto-keynote.png`. Everything above the headline keeps that mock's pixels unchanged; only the T-shirt, shoulders and arms behind the text were reconstructed. Sources are in `.impeccable/photo-brief/round2/`, the composition guides in `.impeccable/photo-brief/guias.png`. The owner rejected the flatter, more heavily graded version in `.impeccable/photo-brief/salida/` ("looks like a ghost"): keep the arms readable behind the text.
+- **Served as static files, not through IPX.** `npm run plates` (`frontend/scripts/build-plates.mjs`) encodes the master into `public/plates/hero/` (AVIF and WebP at 640-2400px, JPEG 1600 fallback, quality 85 because phones magnify the face ~2.5x). IPX keeps no server-side cache, so the same hero through `/_ipx` took 5-7s on every first visit. Rerun the script after replacing the master and keep its widths in sync with `HomeHero.vue`.
 - **Composition to keep when replacing it.** Eye line at y 390 (26%), gap between the eyes on x 1200, chin no lower than y 700 (46.7%) because the headline can start at 48% on short screens, whole head inside x 835-1565 (the strip a 360-390px phone shows), everything black from about 60% down. Give a replacement a new filename: `/plates/**` is cached for 30 days.
 - **Never ship** the placeholder of a different person kept as `.impeccable/photo-brief/placeholder-otra-persona.png`.
