@@ -140,6 +140,12 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    // URLs of the site before the redesign, still linked and indexed.
+    '/projects': { redirect: { to: '/proyectos', statusCode: 301 } },
+    '/projects/alcobert': { redirect: { to: '/proyectos', statusCode: 301 } },
+    '/projects/**': { redirect: { to: '/proyectos/**', statusCode: 301 } },
+    '/github': { redirect: { to: '/laboratorio', statusCode: 301 } },
+    '/system': { redirect: { to: '/laboratorio', statusCode: 301 } },
     '/_ipx/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/fonts/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
     '/brand/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
