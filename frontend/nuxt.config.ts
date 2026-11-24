@@ -94,6 +94,8 @@ export default defineNuxtConfig({
     detectBrowserLanguage: false,
     customRoutes: 'config',
     pages: {
+      // The sitemap is built from this map, so the home has to be in it too.
+      'index': { es: '/', en: '/' },
       'web-design': { es: '/diseno-web-ibiza', en: '/web-design-ibiza' },
       'custom-software': { es: '/desarrollo-software-a-medida', en: '/custom-software-development' },
       'ai-automation': { es: '/automatizacion-ia', en: '/ai-automation' },
