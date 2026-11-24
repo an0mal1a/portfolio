@@ -73,7 +73,9 @@
   "home": {
     "services": {
       "title": "Choose where we start.",
-      "lead": "Three ways to work with me. In all of them you talk directly to the person who designs, builds and ships your project."
+      "lead": "Three ways to work with me. In all of them you talk directly to the person who designs, builds and ships your project.",
+      "more": "See the service",
+      "made": "Projects of this kind"
     },
     "work": {
       "title": "Then other businesses came along.",
@@ -156,7 +158,8 @@
       "web": "Website",
       "automation": "Automation",
       "tool": "Tool"
-    }
+    },
+    "logoAlt": "{name} logo"
   },
   "wall": {
     "title": "The wall I build every day.",
@@ -294,7 +297,10 @@
       "published": "In production",
       "archived": "Archived"
     },
-    "nextShort": "Next"
+    "nextShort": "Next",
+    "chapters": "Chapters of the case",
+    "facts": "Project facts",
+    "openCase": "See the case"
   },
   "lab": {
     "title": "Lab.",
@@ -343,18 +349,27 @@
       }
     },
     "rhythm": {
-      "title": "When I code.",
-      "lead": "Contributions by weekday and by month over the last twelve months.",
-      "months": "Contributions per month"
-    },
-    "languages": {
-      "title": "What I build with.",
-      "lead": "Main languages across my {repos} repositories ({langs} languages in total), by number of repositories."
+      "weekdays": "By weekday",
+      "months": "By month"
     },
     "repos": {
       "title": "Public code.",
-      "lead": "{pub} public repositories and {priv} private ones for clients and products. These are the public ones with the latest changes.",
-      "all": "See everything on GitHub"
+      "lead": "Each line runs from the day a repository was created to its last change. The brightest are still moving.",
+      "all": "See everything on GitHub",
+      "byLanguage": "Filter by language",
+      "search": "Search repositories",
+      "sort": "Sort repositories",
+      "sorts": {
+        "pushed": "Latest changes",
+        "stars": "Most stars",
+        "created": "Oldest first"
+      },
+      "count": "no repositories | 1 repository | {n} repositories",
+      "stars": "no stars | 1 star | {n} stars",
+      "forks": "no forks | 1 fork | {n} forks",
+      "empty": "No repository matches that search.",
+      "more": "See all {n} repositories",
+      "less": "Show fewer"
     },
     "arch": {
       "title": "How each piece of data travels",
@@ -367,7 +382,19 @@
     },
     "graph": {
       "title": "A year of code.",
-      "lead": "Each square is a day of the last twelve months, read live from my GitHub. The brighter it is, the more work that day. Today is the square still open."
+      "lead": "Each square is a day of the last twelve months, read live from my GitHub. Point at one to see how much there was, or pick a month or a weekday to keep only those.",
+      "inMonth": "In {label}: {total} contributions across {active} active days. The busiest was {day}, with {best}.",
+      "onWeekday": "{label}: {total} contributions in twelve months, {avg} on average. The busiest was {day}, with {best}.",
+      "days": [
+        "Mondays",
+        "Tuesdays",
+        "Wednesdays",
+        "Thursdays",
+        "Fridays",
+        "Saturdays",
+        "Sundays"
+      ],
+      "all": "Show the whole year"
     }
   },
   "about": {
@@ -424,7 +451,15 @@
         }
       ]
     },
-    "clients": "Clients I have worked with"
+    "clients": "Clients I have worked with",
+    "cv": "See my CV (PDF, Spanish)",
+    "credentials": {
+      "title": "Studies and certificates.",
+      "lead": "Where the issuer offers verification, the link opens the certificate on their own site. Names are in Spanish, as issued.",
+      "hours": "{n} hours",
+      "verify": "Verify",
+      "verifyOf": "Verify the certificate {name}"
+    }
   },
   "contactPage": {
     "lead": "Tell me what you do and what you would like to have. I reply myself, personally, and if it fits we talk it through.",

@@ -217,6 +217,12 @@
   box-shadow: 0 1px 0 rgb(238 234 227 / 0.06) inset, 0 40px 80px -40px rgb(0 0 0 / 0.9);
 }
 
+/* Opening a project: its screen grows into the case's (useOpeningProject). */
+::view-transition-group(project-screen) {
+  animation-duration: 0.7s;
+  animation-timing-function: var(--ease-out-expo);
+}
+
 /* v-reveal (plugins/reveal.ts): held below the fold, then rises into place. */
 [data-reveal] {
   transition: opacity 0.9s var(--ease-out-quart), transform 1.1s var(--ease-out-expo), filter 0.9s var(--ease-out-quart);

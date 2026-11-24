@@ -12,7 +12,10 @@ const active = computed(() => (types.includes(route.query.type as ProjectType) ?
 const all = computed(() => sortProjects(data.value ?? []))
 const list = computed(() => (active.value === 'all' ? all.value : all.value.filter(p => p.project_type === active.value)))
 const count = (type: 'all' | ProjectType) => (type === 'all' ? all.value.length : all.value.filter(p => p.project_type === type).length)
+// Kinds with nothing to show are not offered.
+const offered = computed(() => types.filter(type => type === 'all' || count(type) > 0))
 const select = (type: 'all' | ProjectType) => router.replace({ query: type === 'all' ? {} : { type } })
+const opening = useOpeningProject()
 const to = (slug: string) => localePath({ name: 'projects-slug', params: { slug } })
 
 usePageSeo({ title: t('seo.projects.title'), description: t('seo.projects.description') })
@@ -29,7 +32,7 @@ useSchemaOrg([
 
       <div class="mt-12 flex flex-wrap gap-2" role="group" :aria-label="t('projects.filter')">
         <button
-          v-for="type in types"
+          v-for="type in offered"
           :key="type"
           type="button"
           class="filter"
@@ -45,8 +48,8 @@ useSchemaOrg([
     <section class="container-x pt-12" :aria-label="t('projects.listLabel')">
       <TransitionGroup tag="div" name="grid" class="grid gap-x-[var(--gutter)] gap-y-16 md:grid-cols-2">
         <article v-for="(p, i) in list" :key="p.slug" class="group" :class="{ 'md:col-span-2': i === 0 && active === 'all' }">
-          <NuxtLink :to="to(p.slug)" class="block">
-            <ProjectFigure :project="p" :class="i === 0 && active === 'all' ? 'aspect-[16/10] md:aspect-[2/1]' : 'aspect-[16/10]'" :sizes="i === 0 ? 'xs:100vw lg:1400px' : 'xs:100vw md:720px'" :eager="i < 2" />
+          <NuxtLink :to="to(p.slug)" class="block" @click="opening = p.slug">
+            <ProjectFigure :project="p" :style="opening === p.slug ? { viewTransitionName: 'project-screen' } : undefined" :class="i === 0 && active === 'all' ? 'aspect-[16/10] md:aspect-[2/1]' : 'aspect-[16/10]'" :sizes="i === 0 ? 'xs:100vw lg:1400px' : 'xs:100vw md:720px'" :eager="i < 2" />
             <h2 class="mt-5 text-[1.5rem] font-bold leading-tight tracking-[-0.02em]" :class="{ 'md:text-[2.25rem]': i === 0 && active === 'all' }">{{ p.name }}</h2>
             <p class="mt-2 max-w-[60ch] text-ink-2">{{ p.tagline ?? p.description }}</p>
             <ProjectMeta :project="p" class="mt-3" />

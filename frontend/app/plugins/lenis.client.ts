@@ -4,7 +4,8 @@ import Lenis from 'lenis'
 // and it never blocks first paint (client-only plugin, runs after hydration).
 export default defineNuxtPlugin((nuxtApp) => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-  const lenis = new Lenis({ autoRaf: true, lerp: 0.12, anchors: { offset: -80 } })
+  // Lenis honours scroll-padding-top (main.css), so anchors need no extra offset.
+  const lenis = new Lenis({ autoRaf: true, lerp: 0.12, anchors: true })
   nuxtApp.provide('lenis', lenis)
   nuxtApp.hook('page:finish', () => lenis.resize())
   const router = useRouter()

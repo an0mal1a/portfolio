@@ -127,9 +127,9 @@ if (import.meta.client) {
 .is-stage .links { transform: translateY(max(-0.45vw, -0.375rem)); }
 .is-stage .link { font-weight: 540; }
 .is-solid { --bar-h: var(--header-h); --brand: clamp(1.25rem, 1rem + 0.5vw, 1.5rem); --link: 0.9375rem; }
-.brand { margin-right: auto; font-size: var(--brand); transition: font-size 0.45s var(--ease-out-expo), transform 0.45s var(--ease-out-expo); }
-/* On the stage the lockup sits a little below the nav's line, as in the comp. */
-.is-stage .brand { transform: translateY(min(0.85vw, 0.625rem)); }
+.brand { display: flex; margin-right: auto; font-size: var(--brand); transition: font-size 0.45s var(--ease-out-expo), transform 0.45s var(--ease-out-expo); }
+/* The caps hang from the top of the mark: a hair lower, word and nav share a line. */
+.is-solid .brand { transform: translateY(0.1em); }
 .links { display: flex; align-items: center; gap: clamp(1.25rem, 1.7vw, 2rem); }
 .link {
   font-size: var(--link);

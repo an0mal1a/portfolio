@@ -9,8 +9,13 @@ const props = defineProps<{ project: Pick<ProjectSummary, 'name' | 'image' | 'pr
 const { t } = useI18n()
 
 const sizes = computed(() => props.sizes ?? 'xs:100vw md:720px')
-const media = computed(() => (!props.still && props.project.slug ? mediaForSlug(props.project.slug) : undefined))
-const cdn = computed(() => isCloudinary(props.project.image))
+const recording = computed(() => (props.project.slug ? mediaForSlug(props.project.slug) : undefined))
+const media = computed(() => (props.still ? undefined : recording.value))
+// A still of a recorded product is the recording's own poster. Root-relative images
+// are already sized files in /public and skip IPX.
+const image = computed(() => (props.still && recording.value ? `/media/${recording.value}.jpg` : props.project.image))
+const cdn = computed(() => isCloudinary(image.value))
+const local = computed(() => !!image.value?.startsWith('/'))
 const failed = ref(false)
 const img = ref<HTMLImageElement | null>(null)
 
@@ -24,12 +29,12 @@ onMounted(() => {
 <template>
   <div class="figure relative overflow-hidden rounded-[var(--radius-screen)] bg-raise">
     <ScreenVideo v-if="media" :name="media" :label="t('home.work.video', { name: props.project.name })" fill />
-    <template v-else-if="props.project.image && !failed">
+    <template v-else-if="image && !failed">
       <img
         v-if="cdn"
         ref="img"
-        :src="cloudinaryUrl(props.project.image, 1280)"
-        :srcset="cloudinarySrcset(props.project.image)"
+        :src="cloudinaryUrl(image, 1280)"
+        :srcset="cloudinarySrcset(image)"
         :sizes="toSizesAttr(sizes)"
         :alt="t('work.imageAlt', { name: props.project.name })"
         width="1600"
@@ -40,9 +45,21 @@ onMounted(() => {
         class="size-full object-cover object-left-top transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.02]"
         @error="failed = true"
       >
+      <img
+        v-else-if="local"
+        ref="img"
+        :src="image"
+        :alt="t('work.imageAlt', { name: props.project.name })"
+        width="1600"
+        height="1000"
+        :loading="props.eager ? 'eager' : 'lazy'"
+        decoding="async"
+        class="size-full object-cover object-top transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.02]"
+        @error="failed = true"
+      >
       <NuxtImg
         v-else
-        :src="props.project.image"
+        :src="image"
         :alt="t('work.imageAlt', { name: props.project.name })"
         :sizes="sizes"
         width="1600"

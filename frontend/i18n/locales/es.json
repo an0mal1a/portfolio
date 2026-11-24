@@ -73,7 +73,9 @@
   "home": {
     "services": {
       "title": "Elige cómo empezamos.",
-      "lead": "Tres formas de trabajar conmigo. En todas hablas directamente con quien diseña, programa y publica tu proyecto."
+      "lead": "Tres formas de trabajar conmigo. En todas hablas directamente con quien diseña, programa y publica tu proyecto.",
+      "more": "Ver el servicio",
+      "made": "Proyectos hechos de este tipo"
     },
     "work": {
       "title": "Después vinieron otros negocios.",
@@ -156,7 +158,8 @@
       "web": "Web",
       "automation": "Automatización",
       "tool": "Herramienta"
-    }
+    },
+    "logoAlt": "Logotipo de {name}"
   },
   "wall": {
     "title": "La pared que levanto cada día.",
@@ -294,7 +297,10 @@
       "published": "En producción",
       "archived": "Archivado"
     },
-    "nextShort": "Siguiente"
+    "nextShort": "Siguiente",
+    "chapters": "Capítulos del caso",
+    "facts": "Ficha del proyecto",
+    "openCase": "Ver el caso"
   },
   "lab": {
     "title": "Laboratorio.",
@@ -343,18 +349,27 @@
       }
     },
     "rhythm": {
-      "title": "Cuándo programo.",
-      "lead": "Contribuciones por día de la semana y por mes en los últimos doce meses.",
-      "months": "Contribuciones por mes"
-    },
-    "languages": {
-      "title": "Con qué construyo.",
-      "lead": "Lenguajes principales de mis {repos} repositorios ({langs} lenguajes en total), por número de repositorios."
+      "weekdays": "Por día de la semana",
+      "months": "Por mes"
     },
     "repos": {
       "title": "Código público.",
-      "lead": "{pub} repositorios públicos y {priv} privados de clientes y productos. Estos son los públicos con cambios más recientes.",
-      "all": "Ver todo en GitHub"
+      "lead": "Cada línea va del día en que nació el repositorio a su último cambio. Las más claras siguen moviéndose.",
+      "all": "Ver todo en GitHub",
+      "byLanguage": "Filtrar por lenguaje",
+      "search": "Buscar repositorio",
+      "sort": "Ordenar repositorios",
+      "sorts": {
+        "pushed": "Cambios recientes",
+        "stars": "Más estrellas",
+        "created": "Del más antiguo"
+      },
+      "count": "sin repositorios | 1 repositorio | {n} repositorios",
+      "stars": "sin estrellas | 1 estrella | {n} estrellas",
+      "forks": "sin forks | 1 fork | {n} forks",
+      "empty": "Ningún repositorio coincide con esa búsqueda.",
+      "more": "Ver los {n} repositorios",
+      "less": "Ver menos"
     },
     "arch": {
       "title": "Cómo viaja cada dato",
@@ -367,7 +382,19 @@
     },
     "graph": {
       "title": "Un año de código.",
-      "lead": "Cada cuadro es un día de los últimos doce meses, leído en directo de mi GitHub. Cuanto más claro, más trabajo ese día. El cuadro de hoy es el que sigue abierto."
+      "lead": "Cada cuadro es un día de los últimos doce meses, leído en directo de mi GitHub. Señala uno para ver cuánto hubo, o elige un mes o un día de la semana para quedarte solo con esos.",
+      "inMonth": "En {label}: {total} contribuciones en {active} días activos. El más intenso fue el {day}, con {best}.",
+      "onWeekday": "{label}: {total} contribuciones en doce meses, {avg} de media. El más intenso fue el {day}, con {best}.",
+      "days": [
+        "Los lunes",
+        "Los martes",
+        "Los miércoles",
+        "Los jueves",
+        "Los viernes",
+        "Los sábados",
+        "Los domingos"
+      ],
+      "all": "Ver todo el año"
     }
   },
   "about": {
@@ -424,7 +451,15 @@
         }
       ]
     },
-    "clients": "Clientes con los que he trabajado"
+    "clients": "Clientes con los que he trabajado",
+    "cv": "Ver mi CV (PDF)",
+    "credentials": {
+      "title": "Formación y certificados.",
+      "lead": "Donde el centro ofrece verificación, el enlace abre el certificado en su propia web.",
+      "hours": "{n} horas",
+      "verify": "Verificar",
+      "verifyOf": "Verificar el certificado {name}"
+    }
   },
   "contactPage": {
     "lead": "Cuéntame qué haces y qué te gustaría tener. Te respondo yo, personalmente, y si encaja hablamos para concretarlo.",

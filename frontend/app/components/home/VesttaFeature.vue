@@ -51,7 +51,7 @@ onMounted(() => {
         </dl>
         <div class="links">
           <UiButton :to="localePath({ name: 'projects-slug', params: { slug: 'vestta' } })" variant="ghost">{{ t('home.vestta.case') }}</UiButton>
-          <a class="link-more" href="https://www.vestta.app" target="_blank" rel="noopener">
+          <a class="link-more" href="https://www.vestta.io" target="_blank" rel="noopener">
             {{ t('home.vestta.live') }} <ChevronRight aria-hidden="true" />
           </a>
         </div>

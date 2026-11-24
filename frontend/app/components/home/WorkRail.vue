@@ -47,8 +47,13 @@ onMounted(sync)
         <div class="reflect" aria-hidden="true">
           <img :src="`/media/${item.media}.jpg`" alt="" loading="lazy" decoding="async" width="1280" height="800">
         </div>
-        <h3 class="name">{{ item.name }}</h3>
-        <p class="meta tabular">{{ item.meta }}</p>
+        <div class="id">
+          <img v-if="item.logo" :src="item.logo.src" alt="" :width="item.logo.width" :height="item.logo.height" class="logo" loading="lazy" decoding="async">
+          <div>
+            <h3 class="name">{{ item.name }}</h3>
+            <p class="meta tabular">{{ item.meta }}</p>
+          </div>
+        </div>
         <p class="tagline">{{ item.tagline }}</p>
         <p v-if="item.url || item.slug" class="links">
           <a v-if="item.url" :href="item.url" target="_blank" rel="noopener" class="link-more">
@@ -105,7 +110,11 @@ onMounted(sync)
   border-radius: 0 0 var(--radius-screen) var(--radius-screen);
 }
 .reflect img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: bottom; }
-.name { margin-top: 0.25rem; font-size: 1.375rem; font-weight: 700; letter-spacing: -0.015em; }
+.id { margin-top: 0.25rem; display: flex; align-items: center; gap: 0.875rem; min-height: 3rem; }
+/* The client's mark in one ink tone, as tall as the name and meta beside it. */
+.logo { width: auto; height: 2.75rem; flex: none; }
+.logo[src*="post-producciones"] { height: 2.5rem; }
+.name { font-size: 1.375rem; font-weight: 700; letter-spacing: -0.015em; }
 .meta { margin-top: 0.25rem; font-size: 0.875rem; color: var(--color-mute); }
 .tagline { margin-top: 0.625rem; max-width: 52ch; color: var(--color-ink-2); }
 .links { margin-top: 0.875rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }

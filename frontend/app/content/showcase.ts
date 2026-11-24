@@ -5,12 +5,22 @@
  */
 type Locale = 'es' | 'en'
 
+export interface ClientLogo { src: string, width: number, height: number }
+
+/** Client marks in one ink tone (public/logos, transparent). Shown next to the client's work. */
+const LOGO_BY_SLUG: Record<string, ClientLogo> = {
+  'postproducciones-web': { src: '/logos/post-producciones.webp', width: 531, height: 192 },
+  'tierradeibiza-web': { src: '/logos/tierras-de-ibiza.webp', width: 192, height: 192 },
+  'lacasadesusana-web': { src: '/logos/la-casa-de-susana.webp', width: 117, height: 192 },
+}
+
 export interface ShowcaseItem {
   id: string
   name: string
   media: string
   slug?: string
   url?: string
+  logo?: ClientLogo
   meta: string
   tagline: string
 }
@@ -41,10 +51,11 @@ const items: (Omit<ShowcaseItem, 'meta' | 'tagline'> & { meta: Record<Locale, st
     },
   },
   {
-    // Unpublished (shared/unpublished.ts): no url, no case study until it is live.
+    // Unpublished (shared/unpublished.ts): a case study, but no url until it is live.
     id: 'susana',
     name: 'La Casa de Susana',
     media: 'susana',
+    slug: 'lacasadesusana-web',
     meta: { es: 'Web · 2026 · Conectada con Vestta · Pendiente de publicar', en: 'Website · 2026 · Connected to Vestta · Not yet published' },
     tagline: {
       es: 'Web de una inmobiliaria boutique de Ibiza: el catálogo llega en directo desde Vestta y cada formulario crea el contacto en el CRM.',
@@ -67,7 +78,7 @@ const items: (Omit<ShowcaseItem, 'meta' | 'tagline'> & { meta: Record<Locale, st
 
 export function getShowcase(locale: string): ShowcaseItem[] {
   const l: Locale = locale === 'en' ? 'en' : 'es'
-  return items.map(i => ({ ...i, meta: i.meta[l], tagline: i.tagline[l] }))
+  return items.map(i => ({ ...i, logo: i.slug ? logoForSlug(i.slug) : undefined, meta: i.meta[l], tagline: i.tagline[l] }))
 }
 
 /** Case studies that have a real screen recording in /public/media. */
@@ -75,9 +86,15 @@ const MEDIA_BY_SLUG: Record<string, string> = {
   'vestta': 'vestta-tour',
   'postproducciones-web': 'post',
   'tierradeibiza-web': 'tierras',
+  'lacasadesusana-web': 'susana',
+  'vestta-web': 'vestta-web',
   'brisa-saas': 'brisa',
 }
 
 export function mediaForSlug(slug: string): string | undefined {
   return MEDIA_BY_SLUG[slug]
+}
+
+export function logoForSlug(slug: string): ClientLogo | undefined {
+  return LOGO_BY_SLUG[slug]
 }

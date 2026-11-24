@@ -6,6 +6,8 @@ type Locale = 'es' | 'en'
 export interface ServiceContent {
   id: ServiceId
   projectTypes: ProjectType[]
+  /** Projects of another type that also prove this service. */
+  alsoSlugs?: string[]
   /** Short name used in the home index and nav. */
   name: string
   /** One sentence for the home index row. */
@@ -106,6 +108,7 @@ const es: Record<ServiceId, ServiceContent> = {
   'ai-automation': {
     id: 'ai-automation',
     projectTypes: ['automation'],
+    alsoSlugs: ['vestta'],
     name: 'Automatización con IA',
     pitch: 'Bots y flujos con IA que hacen el trabajo repetitivo por WhatsApp, correo o tu propio sistema.',
     includes: ['WhatsApp Business API', 'LLMs', 'Integraciones', 'Flujos y avisos'],
@@ -137,7 +140,7 @@ const es: Record<ServiceId, ServiceContent> = {
       { q: '¿Qué pasa con los datos de mis clientes?', a: 'Envío a los modelos solo lo necesario, guardo los datos en tu infraestructura y documento qué proveedor procesa qué. Vengo de la seguridad: es lo primero que reviso.' },
       { q: '¿Funciona con WhatsApp?', a: 'Sí, con la API oficial de WhatsApp Business. Ya he construido un sistema de gestión de plantilla que funciona íntegramente por WhatsApp.' },
     ],
-    workTitle: 'Automatizaciones en producción',
+    workTitle: 'La automatización, dentro de un producto real',
   },
 }
 
@@ -220,6 +223,7 @@ const en: Record<ServiceId, ServiceContent> = {
   'ai-automation': {
     id: 'ai-automation',
     projectTypes: ['automation'],
+    alsoSlugs: ['vestta'],
     name: 'AI automation',
     pitch: 'AI bots and workflows that take repetitive work off your plate via WhatsApp, email or your own system.',
     includes: ['WhatsApp Business API', 'LLMs', 'Integrations', 'Workflows and alerts'],
@@ -251,8 +255,35 @@ const en: Record<ServiceId, ServiceContent> = {
       { q: 'What about my customers\' data?', a: 'I send models only what they need, keep data on your infrastructure and document which provider processes what. I come from security: it is the first thing I check.' },
       { q: 'Does it work with WhatsApp?', a: 'Yes, through the official WhatsApp Business API. I have already built a staff-management system that runs entirely over WhatsApp.' },
     ],
-    workTitle: 'Automations in production',
+    workTitle: 'Automation inside a real product',
   },
+}
+
+/**
+ * Shipped work shown for each service in the home showcase: a real recording in
+ * /public/media and the case study behind it.
+ */
+export interface ServiceWork { slug: string, name: string, media: string }
+
+const SERVICE_WORK: Record<ServiceId, { slug: string, name: Record<Locale, string>, media: string }[]> = {
+  'web-design': [
+    { slug: 'tierradeibiza-web', name: { es: 'Tierras de Ibiza', en: 'Tierras de Ibiza' }, media: 'tierras' },
+    { slug: 'postproducciones-web', name: { es: 'Post Producciones', en: 'Post Producciones' }, media: 'post' },
+    { slug: 'lacasadesusana-web', name: { es: 'La Casa de Susana', en: 'La Casa de Susana' }, media: 'susana' },
+    { slug: 'vestta-web', name: { es: 'Vestta.io', en: 'Vestta.io' }, media: 'vestta-web' },
+  ],
+  'custom-software': [
+    { slug: 'vestta', name: { es: 'Vestta CRM', en: 'Vestta CRM' }, media: 'vestta-tour' },
+    { slug: 'brisa-saas', name: { es: 'Brisa Operations', en: 'Brisa Operations' }, media: 'brisa' },
+  ],
+  'ai-automation': [
+    { slug: 'vestta', name: { es: 'El agente de WhatsApp de Vestta', en: 'Vestta\'s WhatsApp agent' }, media: 'vestta-whatsapp' },
+  ],
+}
+
+export function getServiceWork(id: ServiceId, locale: string): ServiceWork[] {
+  const l: Locale = locale === 'en' ? 'en' : 'es'
+  return SERVICE_WORK[id].map(w => ({ ...w, name: w.name[l] }))
 }
 
 export const SERVICE_IDS: ServiceId[] = ['web-design', 'custom-software', 'ai-automation']

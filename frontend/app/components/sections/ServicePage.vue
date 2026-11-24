@@ -10,7 +10,7 @@ const { public: { siteUrl } } = useRuntimeConfig()
 
 const service = computed(() => getServices(locale.value)[props.id])
 const { data: projects } = await useProjects()
-const related = computed(() => sortProjects((projects.value ?? []).filter(p => service.value.projectTypes.includes(p.project_type))))
+const related = computed(() => sortProjects((projects.value ?? []).filter(p => service.value.projectTypes.includes(p.project_type) || service.value.alsoSlugs?.includes(p.slug))))
 const heroProject = computed(() => related.value.find(p => p.slug === service.value.heroSlug && p.image) ?? related.value.find(p => p.image) ?? related.value[0])
 const to = (slug: string) => localePath({ name: 'projects-slug', params: { slug } })
 
