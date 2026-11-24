@@ -39,7 +39,7 @@ onBeforeUnmount(closed)
 </script>
 
 <template>
-  <section class="credentials container-x" aria-labelledby="credentials-title">
+  <section id="certificados" class="credentials container-x" aria-labelledby="credentials-title">
     <div class="head">
       <h2 id="credentials-title" v-reveal class="h-section max-w-[14ch]">{{ t('about.credentials.title') }}</h2>
       <p v-reveal="1" class="max-w-[46ch] text-ink-2">{{ t('about.credentials.lead') }}</p>
@@ -101,7 +101,7 @@ onBeforeUnmount(closed)
 </template>
 
 <style scoped>
-.credentials { padding-top: var(--section); }
+.credentials { padding-top: var(--section); scroll-margin-top: calc(var(--header-h) - var(--section) + 2rem); }
 .head { display: grid; gap: 1.5rem var(--gutter); align-items: end; }
 @media (min-width: 64rem) { .head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
 

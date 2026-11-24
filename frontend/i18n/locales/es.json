@@ -25,7 +25,9 @@
     "lines": [
       "Webs y software a medida,",
       "hechos en Ibiza."
-    ]
+    ],
+    "issuers": "Formación certificada",
+    "issuersLabel": "Formación certificada por {list}: ver los certificados"
   },
   "facts": {
     "label": "Datos en vivo",

@@ -5,6 +5,8 @@
  * certificate: never add an unverified link. Documents live in public/certificates
  * (`<doc.file>-800.webp` and `-1600.webp`), taken from the issuer whenever possible.
  */
+import type { ClientLogo } from './showcase'
+
 type Localized = Record<'es' | 'en', string>
 
 export interface Credential {
@@ -168,3 +170,10 @@ export const CERTIFICATES: Credential[] = [
 
 /** Owner's CV, published without the phone number. */
 export const CV_URL = '/cv/pablo-diez-cv.pdf'
+
+/** Issuers' marks for the hero, in the site's ink. `scale` evens out their optical size. */
+export const ISSUERS: readonly { name: string, logo: ClientLogo, scale: number }[] = [
+  { name: 'Hack4u', logo: { src: '/logos/hack4u.webp', width: 392, height: 96 }, scale: 1 },
+  { name: 'Mastermind', logo: { src: '/logos/mastermind.webp', width: 751, height: 96 }, scale: 0.62 },
+  { name: 'Rustlang en Español', logo: { src: '/logos/rustlang-es.webp', width: 160, height: 96 }, scale: 1 },
+]

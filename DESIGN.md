@@ -268,6 +268,9 @@ A real recording of a shipped product (`frontend/public/media/<name>.{av1.mp4,mp
 ### Stage (home hero)
 Full-height (`max(100svh, 40rem)`), the portrait covering the stage from the top, the centred display headline over the chest, lead in 90% ink, then the large tally pill and a "Ver proyectos" link-more. Nothing else above the fold.
 
+### Issuer marks (hero)
+Hack4u, Mastermind and Rustlang en Español in the site's ink under the hero actions, at 0.6 opacity, full on hover; one link to the certificates on About. Wide screens show the marks alone; phones add a hairline and "Formación certificada", which goes on phones shorter than 45rem. They never outweigh the two actions (owner decision, 2026-11-24).
+
 ### Certificate (About)
 The issuer's real document in a 10:7 frame (`--radius-screen`, dimmed to 0.86, full light on hover), then name, issuer · date · hours in mute, what it covered in ink-2, the owner's note at 600 in ink, and the verification link. One certificate leads at 7/5; the rest are two columns, no card around them. Hack4u's 3:2 documents are shown whole on black. The document opens in a `<dialog>`; without JavaScript the link opens the image.
 

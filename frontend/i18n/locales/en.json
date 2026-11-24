@@ -25,7 +25,9 @@
     "lines": [
       "Custom websites and software,",
       "made in Ibiza."
-    ]
+    ],
+    "issuers": "Certified training",
+    "issuersLabel": "Training certified by {list}: see the certificates"
   },
   "facts": {
     "label": "Live data",

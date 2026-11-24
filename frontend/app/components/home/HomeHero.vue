@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ChevronRight } from '@lucide/vue'
+import { ISSUERS } from '~/content/credentials'
 
 /**
  * The stage: Pablo in a warm key light, the promise over his chest, the one
@@ -13,6 +14,7 @@ import { ChevronRight } from '@lucide/vue'
  */
 const { t, tm, rt } = useI18n()
 const localePath = useLocalePath()
+const cdn = useCdn()
 
 const lines = computed(() => (tm('hero.lines') as string[]).map(l => rt(l)))
 const words = computed(() => lines.value.map(l => l.split(' ')))
@@ -121,6 +123,12 @@ onMounted(() => {
           {{ t('cta.projects') }} <ChevronRight aria-hidden="true" />
         </NuxtLink>
       </div>
+      <NuxtLink :to="`${localePath('about')}#certificados`" class="stage-issuers" data-in :aria-label="t('hero.issuersLabel', { list: ISSUERS.map(i => i.name).join(', ') })">
+        <span class="issuers-title">{{ t('hero.issuers') }}</span>
+        <span class="issuers-row">
+          <img v-for="i in ISSUERS" :key="i.name" :src="cdn(i.logo.src)" alt="" :width="i.logo.width" :height="i.logo.height" :style="{ '--k': i.scale }" decoding="async">
+        </span>
+      </NuxtLink>
     </div>
   </section>
 </template>
@@ -210,9 +218,38 @@ onMounted(() => {
 .stage-more svg { width: 1em; height: 1em; transition: transform 0.25s var(--ease-out-expo); }
 .stage-more:hover svg { transform: translateX(3px); }
 
+/*
+ * Who certified the training, as quiet as a colophon: marks only under the actions
+ * on wide screens; on phones a ruled foot with its title.
+ */
+.stage-issuers {
+  display: block;
+  width: fit-content;
+  margin: clamp(1.5rem, 3.6svh, 2.25rem) auto 0;
+  color: var(--color-mute);
+  text-decoration: none;
+}
+.issuers-title { display: none; }
+.issuers-row { display: flex; align-items: center; justify-content: center; gap: clamp(2rem, 3vw, 2.75rem); opacity: 0.6; transition: opacity 0.25s var(--ease-out-quart); }
+.issuers-row img { width: auto; height: calc(clamp(1.125rem, 2.45svh, 1.5rem) * var(--k)); }
+.stage-issuers:hover .issuers-row, .stage-issuers:focus-visible .issuers-row { opacity: 1; }
+
 @media (max-width: 40rem) {
   .stage-title { max-width: 12ch; }
   .stage-lead { max-width: 34ch; }
+  /* The foot takes the room the empty bottom padding had, so the face stays clear. */
+  .stage-copy { padding-bottom: 1.5rem; }
+  .stage-actions { margin-top: 1.25rem; gap: 0.625rem; }
+  .stage-issuers { width: auto; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--color-line); }
+  .issuers-title { display: block; margin-bottom: 0.625rem; font-size: 0.875rem; }
+  .issuers-row { gap: 1.5rem; opacity: 0.72; }
+  .issuers-row img { height: calc(1.0625rem * var(--k)); }
+}
+/* Short phones: the marks alone, or the headline would climb onto the chin. */
+@media (max-width: 40rem) and (max-height: 45rem) {
+  .issuers-title { display: none; }
+  .stage-issuers { margin-top: 0.875rem; padding-top: 0.875rem; }
+  .stage-copy { padding-bottom: 1.125rem; }
 }
 </style>
 
