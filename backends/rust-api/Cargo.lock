@@ -1740,6 +1740,7 @@ dependencies = [
  "chrono",
  "deadpool-postgres",
  "governor",
+ "ipnet",
  "lettre 0.11.22",
  "lettre_email",
  "reqwest",

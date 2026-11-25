@@ -8,6 +8,7 @@ use axum::{
     middleware::Next,
     response::{IntoResponse, Response},
 };
+use super::client_ip::{client_ip, limit_key};
 use governor::{
     Quota, RateLimiter,
     clock::{Clock, DefaultClock},
@@ -16,11 +17,16 @@ use governor::{
 use std::net::{IpAddr, SocketAddr};
 use std::num::NonZeroU32;
 use std::sync::Arc;
+use std::sync::atomic::{AtomicUsize, Ordering};
+
+/// Requests between two clean-ups of the visitors already forgotten by the limit.
+const CLEANUP_EVERY: usize = 1024;
 
 /// Rate limiter state
 pub struct RateLimitState {
     /// Per-IP limiter for one route group.
     ip_limiter: RateLimiter<IpAddr, DefaultKeyedStateStore<IpAddr>, DefaultClock>,
+    checks: AtomicUsize,
 }
 
 impl RateLimitState {
@@ -29,6 +35,15 @@ impl RateLimitState {
             ip_limiter: RateLimiter::keyed(Quota::per_minute(
                 NonZeroU32::new(requests).expect("Rate limit must be greater than zero"),
             )),
+            checks: AtomicUsize::new(0),
+        }
+    }
+
+    /// One entry per visitor is kept in memory: drop those whose quota is full again.
+    fn forget_idle_visitors(&self) {
+        if self.checks.fetch_add(1, Ordering::Relaxed) % CLEANUP_EVERY == CLEANUP_EVERY - 1 {
+            self.ip_limiter.retain_recent();
+            self.ip_limiter.shrink_to_fit();
         }
     }
 }
@@ -40,7 +55,8 @@ pub async fn rate_limit_middleware(
     request: Request<Body>,
     next: Next,
 ) -> Response {
-    let ip = addr.ip();
+    let ip = limit_key(client_ip(addr.ip(), request.headers()));
+    state.forget_idle_visitors();
 
     // Check IP rate limit
     match state.ip_limiter.check_key(&ip) {
