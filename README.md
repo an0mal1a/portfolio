@@ -83,6 +83,13 @@ El portfolio permite a los visitantes sincronizar manualmente el perfil y los
 repositorios desde `/github`. Las ejecuciones son independientes de los jobs
 interiores y quedan registradas en `github.job_runs`.
 
+Cada visitante puede lanzar cada sincronización una vez al día, y entre todos
+hay un máximo de 3 por tipo y día. El visitante es su IP real, resuelta detrás
+de Cloudflare y del proxy de Coolify en `services/depends/client_ip.py` con las
+mismas reglas que la API Rust; una red IPv6 /64 cuenta como un visitante. Por
+eso Uvicorn arranca con `--no-proxy-headers`: la dirección del socket es la del
+proxy y las cabeceras solo se leen allí.
+
 El progreso de la sincronización se transmite en tiempo real mediante SSE,
 sin esperas silenciosas. El frontend recibe actualizaciones de cada fase:
 validación de acceso, consulta del perfil, carga de repositorios, topics,
@@ -173,6 +180,9 @@ cd backends/rust-api
 cargo fmt -- --check
 cargo test --offline web_requester::tests
 cargo check --offline
+
+cd ../python-api
+python -m unittest discover tests
 
 cd ../../frontend
 npm run build

@@ -2,6 +2,7 @@
 from services.jobber import TaskType
 from services.jobber.runner import execute_run
 from services.depends.visitor import hash_visitor
+from services.depends.client_ip import client_ip, limit_key
 from services.jobber.runs import JobRuns, JobAlreadyRunning, PublicDailyLimitReached, VisitorDailyLimitReached
 
 # fastapi
@@ -26,9 +27,10 @@ router = APIRouter(
 def run_public_job(task_type: TaskType, request: Request, background_tasks: BackgroundTasks):
     today = datetime.now(ZoneInfo("Europe/Madrid")).date()
 
-    ip = request.client.host
+    # Behind the proxy every connection has the same address: count the visitor.
+    ip = limit_key(client_ip(request.client.host, request.headers))
 
-    requester_hash = hash_visitor(ip, today)
+    requester_hash = hash_visitor(str(ip), today)
 
     jobs = JobRuns()
 
