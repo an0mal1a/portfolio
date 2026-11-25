@@ -47,8 +47,9 @@ Backends locally: see `README.md` (`cargo run` in `backends/rust-api`, `uvicorn 
 
 - **Reads** go browser -> Nuxt server (`frontend/server/api/*`) -> Rust API. Nitro caches every upstream read with stale-while-revalidate (`server/utils/data.ts`). Reason: SSR traffic reaches the Rust API from one IP and the API rate-limits **120 req/min per IP**. Never fetch the Rust API directly from page components during SSR.
 - **Writes** go browser -> backend directly, so per-visitor rate limits stay per visitor:
-  - `POST {apiBase}/contact` (3 req/min per IP) via `useContactForm()`.
+  - `POST {apiBase}/contact` (3 req/min per IP) via `useContactForm()`. It carries a Cloudflare Turnstile token (`TurnstileField.vue`, loaded on first focus of the form) that the Rust API verifies (`services/turnstile.rs`). Two values go together: `NUXT_PUBLIC_TURNSTILE_SITE_KEY` (frontend) and `TURNSTILE_SECRET_KEY` (Rust). The secret without the site key rejects every message; the site key without the secret checks nothing.
   - `POST {pythonApiBase}/public/jobs/{repo_sync|profile}/run` and SSE `GET /public/jobs/{id}/events` via `usePublicJob()`.
+- Analytics: self-hosted Umami, script tag in `app/app.vue`, values in `nuxt.config.ts`, off in dev and counted only on the live domain. Custom events go through `trackEvent()` and never carry what a visitor typed. The privacy page describes it and Turnstile: change them together.
 - CORS: Rust accepts `https://impablo.dev` and any `http://localhost:*`; Python accepts `https://impablo.dev`, `https://www.impablo.dev` and `http://localhost:3001` only.
 - API contracts are typed in `frontend/shared/types/api.ts`. If a backend model changes (`backends/rust-api/src/repositories/modules.rs`), update those types and the Nitro mappers together.
 

@@ -12,18 +12,29 @@ export function useContactForm() {
   const error = ref<ContactError | null>(null)
   const retryAfter = ref<number | null>(null)
 
-  async function send(payload: ContactPayload) {
+  /** `getToken` gives the Turnstile token; it may wait for the visitor to act. */
+  async function send(payload: ContactPayload, getToken: () => Promise<string>) {
     if (state.value === 'sending') return
     state.value = 'sending'
     error.value = null
     retryAfter.value = null
+    let token: string
+    try {
+      token = await getToken()
+    }
+    catch {
+      error.value = 'captcha_blocked'
+      state.value = 'error'
+      return
+    }
     try {
       const res = await $fetch.raw<{ status: string, error?: ContactError, retry_after?: number }>('/contact', {
         baseURL: apiBase,
         method: 'POST',
-        body: { ...payload, phone: payload.phone ?? '' },
+        body: { ...payload, phone: payload.phone ?? '', turnstile_token: token },
         ignoreResponseError: true,
-        timeout: 20000,
+        // The API may spend 5 s on the captcha and 15 s on SMTP.
+        timeout: 25000,
       })
       const body = res._data
       if (res.status === 429) {

@@ -197,7 +197,7 @@
     "limits": {
       "contact": {
         "value": "3 por minuto",
-        "body": "Mensajes que acepta el formulario desde una misma conexión. Frena el spam sin captchas."
+        "body": "Mensajes que acepta el formulario desde una misma conexión, con un captcha que casi nunca verás."
       },
       "api": {
         "value": "120 por minuto",
@@ -234,6 +234,7 @@
     "submit": "Enviar mensaje",
     "sending": "Enviando",
     "again": "Enviar otro mensaje",
+    "captcha": "Cloudflare quiere confirmar que no eres un bot. Complétalo y el mensaje podrá salir.",
     "errors": {
       "name": "Escribe tu nombre.",
       "email": "Revisa el email: así no podré responderte.",
@@ -246,6 +247,8 @@
       "rateLimited": "Has enviado varios mensajes seguidos. Espera {s} segundos y vuelve a intentarlo.",
       "invalidMail": "El servidor no acepta ese email. Revísalo y vuelve a enviar.",
       "network": "No hay conexión con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
+      "captchaFailed": "La comprobación contra bots ha caducado. Vuelve a enviar el mensaje.",
+      "captchaBlocked": "La comprobación contra bots no se ha podido completar. Si usas un bloqueador, permite challenges.cloudflare.com y vuelve a enviar.",
       "failed": "No se ha podido enviar el mensaje. Inténtalo de nuevo en unos minutos."
     }
   },
@@ -487,7 +490,7 @@
   "privacy": {
     "title": "Privacidad",
     "updated": "Última actualización: noviembre de 2026",
-    "intro": "Este sitio recoge los mínimos datos necesarios para responder a quien escribe. No usa cookies de seguimiento ni herramientas de publicidad.",
+    "intro": "Este sitio recoge los mínimos datos necesarios para responder a quien escribe y saber qué páginas se visitan. No usa cookies de seguimiento ni herramientas de publicidad.",
     "sections": [
       {
         "title": "Responsable",
@@ -495,11 +498,19 @@
       },
       {
         "title": "Qué datos recojo",
-        "body": "Solo los que escribes en el formulario de contacto: nombre, email, teléfono si lo indicas y tu mensaje. El servidor también registra de forma temporal la dirección IP para limitar el número de envíos y evitar abusos."
+        "body": "En el formulario de contacto, los que escribes: nombre, email, teléfono si lo indicas y tu mensaje. El servidor también registra de forma temporal la dirección IP para limitar el número de envíos y evitar abusos."
       },
       {
         "title": "Para qué los uso",
         "body": "Para responder a tu mensaje y, si llegamos a trabajar juntos, para gestionar esa relación. La base legal es tu consentimiento al enviar el formulario."
+      },
+      {
+        "title": "Analítica",
+        "body": "Cuento las visitas con Umami, instalado en mi propio servidor. Registra la página que ves, la web de la que llegas, tu ubicación aproximada, el idioma, el tamaño de pantalla, el navegador y el tipo de dispositivo, y si el formulario se ha enviado, nunca lo que escribes en él. No usa cookies, no guarda tu dirección IP y no te sigue por otras webs. La base legal es mi interés legítimo en saber qué páginas sirven."
+      },
+      {
+        "title": "Protección contra bots",
+        "body": "El formulario usa Cloudflare Turnstile para distinguir a las personas de los bots. Se carga cuando empiezas a rellenarlo: Cloudflare recibe entonces tu dirección IP y datos técnicos de tu navegador, que trata según su política de Turnstile (cloudflare.com/turnstile-privacy-policy). La base legal es mi interés legítimo en evitar el spam y los abusos."
       },
       {
         "title": "Cuánto tiempo los conservo",
@@ -507,7 +518,7 @@
       },
       {
         "title": "Con quién los comparto",
-        "body": "Con nadie con fines comerciales. Los datos se guardan en servidores propios y el aviso de cada mensaje se envía por correo electrónico a través del proveedor de email."
+        "body": "Con nadie con fines comerciales. Los datos se guardan en servidores propios y el aviso de cada mensaje se envía por correo electrónico a través del proveedor de email. Cloudflare interviene en la protección contra bots del formulario."
       },
       {
         "title": "Tus derechos",

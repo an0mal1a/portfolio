@@ -197,7 +197,7 @@
     "limits": {
       "contact": {
         "value": "3 per minute",
-        "body": "Messages the contact form accepts from one connection. It stops spam without captchas."
+        "body": "Messages the contact form accepts from one connection, behind a captcha you will rarely see."
       },
       "api": {
         "value": "120 per minute",
@@ -234,6 +234,7 @@
     "submit": "Send message",
     "sending": "Sending",
     "again": "Send another message",
+    "captcha": "Cloudflare wants to confirm you are not a bot. Complete it and the message can go out.",
     "errors": {
       "name": "Please add your name.",
       "email": "Check the email address, otherwise I cannot reply.",
@@ -246,6 +247,8 @@
       "rateLimited": "You have sent several messages in a row. Wait {s} seconds and try again.",
       "invalidMail": "The server does not accept that email. Check it and send again.",
       "network": "Cannot reach the server. Check your connection and try again.",
+      "captchaFailed": "The bot check has expired. Please send the message again.",
+      "captchaBlocked": "The bot check could not be completed. If you use a blocker, allow challenges.cloudflare.com and send again.",
       "failed": "The message could not be sent. Please try again in a few minutes."
     }
   },
@@ -487,7 +490,7 @@
   "privacy": {
     "title": "Privacy",
     "updated": "Last updated: November 2026",
-    "intro": "This site collects the minimum data needed to reply to people who write. It uses no tracking cookies or advertising tools.",
+    "intro": "This site collects the minimum data needed to reply to people who write and to know which pages are visited. It uses no tracking cookies or advertising tools.",
     "sections": [
       {
         "title": "Controller",
@@ -495,11 +498,19 @@
       },
       {
         "title": "What data I collect",
-        "body": "Only what you type into the contact form: name, email, phone if you add it and your message. The server also temporarily logs the IP address to limit the number of submissions and prevent abuse."
+        "body": "In the contact form, what you type: name, email, phone if you add it and your message. The server also temporarily logs the IP address to limit the number of submissions and prevent abuse."
       },
       {
         "title": "What I use it for",
         "body": "To reply to your message and, if we end up working together, to manage that relationship. The legal basis is your consent when you send the form."
+      },
+      {
+        "title": "Analytics",
+        "body": "I count visits with Umami, installed on my own server. It records the page you view, the site you came from, your approximate location, language, screen size, browser and type of device, and whether the form was sent, never what you type in it. It uses no cookies, does not store your IP address and does not follow you across other sites. The legal basis is my legitimate interest in knowing which pages are useful."
+      },
+      {
+        "title": "Protection against bots",
+        "body": "The form uses Cloudflare Turnstile to tell people from bots. It loads when you start filling it in: Cloudflare then receives your IP address and technical data about your browser, which it handles under its Turnstile policy (cloudflare.com/turnstile-privacy-policy). The legal basis is my legitimate interest in preventing spam and abuse."
       },
       {
         "title": "How long I keep it",
@@ -507,7 +518,7 @@
       },
       {
         "title": "Who I share it with",
-        "body": "Nobody, for commercial purposes. Data is stored on my own servers and each message notification is sent by email through the email provider."
+        "body": "Nobody, for commercial purposes. Data is stored on my own servers and each message notification is sent by email through the email provider. Cloudflare takes part in the form's protection against bots."
       },
       {
         "title": "Your rights",

@@ -2,6 +2,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 const SITE_URL = 'https://impablo.dev'
 const CDN_BASE = process.env.NODE_ENV === 'development' ? '' : 'https://cdn.impablo.dev'
+const UMAMI_SCRIPT_URL = process.env.NODE_ENV === 'development' ? '' : 'https://analytics.impablo.dev/script.js'
 
 // Bump when the icons change and update the icon URLs in public/site.webmanifest.
 const ICON_VERSION = 5
@@ -52,6 +53,12 @@ export default defineNuxtConfig({
       siteUrl: SITE_URL,
       // Mirror of /media, /covers, /logos and /certificates (npm run cdn). Dev uses the local files.
       cdnBase: CDN_BASE,
+      // Self-hosted analytics. Both values are public; off in dev.
+      umamiScriptUrl: UMAMI_SCRIPT_URL,
+      umamiWebsiteId: '598d4332-ea10-4306-b713-253835fff019',
+      // Cloudflare Turnstile widget of the contact form (NUXT_PUBLIC_TURNSTILE_SITE_KEY).
+      // Empty turns it off here; the Rust API needs its secret (TURNSTILE_SECRET_KEY) too.
+      turnstileSiteKey: '',
     },
   },
 

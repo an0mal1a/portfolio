@@ -24,6 +24,8 @@ pub struct Config {
     pub from_name: String,
     pub from_email: String,
     pub python_api_url: String,
+
+    pub turnstile_secret_key: String,
 }
 
 impl Config {
@@ -57,6 +59,12 @@ impl Config {
             from_email: env::var("FROM_EMAIL").unwrap_or_default(),
             python_api_url: env::var("PYTHON_API_URL")
                 .unwrap_or_else(|_| "http://python-api:8001".to_string()),
+
+            // Cloudflare Turnstile (contact form). Empty turns the check off.
+            turnstile_secret_key: env::var("TURNSTILE_SECRET_KEY")
+                .unwrap_or_default()
+                .trim()
+                .to_string(),
         })
     }
 }

@@ -3,7 +3,7 @@ import { PROFILES } from '~/content/profiles'
 
 const { t } = useI18n()
 const head = useLocaleHead({ seo: true })
-const { public: { siteUrl } } = useRuntimeConfig()
+const { public: { siteUrl, umamiScriptUrl, umamiWebsiteId } } = useRuntimeConfig()
 
 useHead(() => ({
   htmlAttrs: { lang: head.value.htmlAttrs?.lang },
@@ -11,6 +11,21 @@ useHead(() => ({
   meta: head.value.meta ?? [],
   titleTemplate: (title?: string) => (title ? `${title} · Pablo Diez` : 'Pablo Diez'),
 }))
+
+// Umami. It only counts visits to the live domain, and an anchor is not a new page.
+if (umamiScriptUrl && umamiWebsiteId) {
+  useHead({
+    script: [{
+      'key': 'umami',
+      'src': umamiScriptUrl,
+      'defer': true,
+      'fetchpriority': 'low',
+      'data-website-id': umamiWebsiteId,
+      'data-domains': new URL(siteUrl).hostname,
+      'data-exclude-hash': 'true',
+    }],
+  })
+}
 
 useSchemaOrg([
   definePerson({

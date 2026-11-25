@@ -13,6 +13,8 @@ const { state, error, retryAfter, send, reset } = useContactForm()
 const kinds = ['web', 'software', 'automation', 'other'] as const
 type Kind = typeof kinds[number]
 
+const captcha = useTemplateRef('captcha')
+
 const form = reactive({ kind: 'web' as Kind, name: '', email: '', phone: '', message: '', consent: false, website: '' })
 const touched = reactive({ name: false, email: false, message: false, consent: false })
 
@@ -42,7 +44,18 @@ async function submit() {
     phone: form.phone.trim() || undefined,
     subject: `${t(`form.kinds.${form.kind}`)} · ${form.name.trim()}`,
     message: form.message.trim(),
-  })
+  }, () => captcha.value?.token() ?? Promise.resolve(''))
+  if (state.value === 'sent') {
+    trackEvent('contact_sent', { kind: form.kind })
+    return
+  }
+  if (error.value) trackEvent('contact_error', { code: error.value })
+  captcha.value?.reset()
+}
+
+// Cloudflare's script waits for the first sign that someone is going to write.
+function prepareCaptcha() {
+  captcha.value?.prepare().catch(() => {}) // The submit reports it.
 }
 
 function again() {
@@ -56,6 +69,8 @@ const errorText = computed(() => {
   if (error.value === 'rate_limited') return t('form.status.rateLimited', { s: retryAfter.value ?? 60 })
   if (error.value === 'invalid_mail') return t('form.status.invalidMail')
   if (error.value === 'network_error') return t('form.status.network')
+  if (error.value === 'captcha_failed') return t('form.status.captchaFailed')
+  if (error.value === 'captcha_blocked') return t('form.status.captchaBlocked')
   return t('form.status.failed')
 })
 </script>
@@ -69,7 +84,7 @@ const errorText = computed(() => {
       <button type="button" class="again" @click="again">{{ t('form.again') }}</button>
     </div>
 
-    <form v-else novalidate class="grid gap-6" @submit.prevent="submit">
+    <form v-else novalidate class="relative grid gap-6" @submit.prevent="submit" @focusin.once="prepareCaptcha">
       <fieldset>
         <legend class="label mb-3">{{ t('form.kind') }}</legend>
         <div class="flex flex-wrap gap-2">
@@ -119,6 +134,8 @@ const errorText = computed(() => {
         </label>
         <p :id="id('consent-err')" class="field-error">{{ touched.consent ? errors.consent : '' }}</p>
       </div>
+
+      <TurnstileField ref="captcha" action="contact" />
 
       <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
         <UiButton type="submit" size="md" :disabled="state === 'sending'">

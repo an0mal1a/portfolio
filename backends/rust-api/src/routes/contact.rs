@@ -8,9 +8,11 @@ use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::{
     app_state::AppState,
+    config::CONFIG,
     services::{
         email::client::EmailClient,
         rate_limiter::limiter::{RateLimitState, rate_limit_middleware},
+        turnstile::{self, TurnstileError},
     },
     repositories::write,
 };
@@ -26,6 +28,10 @@ pub struct Contact {
 
     #[serde(default)]
     pub phone: String,
+
+    /// Token de Cloudflare Turnstile. Un solo uso; obligatorio si la API tiene secreto.
+    #[serde(default)]
+    pub turnstile_token: String,
 }
 
 #[derive(ToSchema)]
@@ -67,6 +73,24 @@ pub async fn contact(
                 "error": "invalid_mail"
             }));
         }
+    }
+
+    // After the cheap checks: a token can only be verified once.
+    let config = CONFIG
+        .get()
+        .expect("[Routes.Contact.contact] !> CONFIG not initialized");
+    if let Err(error) =
+        turnstile::verify(&config.turnstile_secret_key, &contact_data.turnstile_token).await
+    {
+        eprintln!("[Routes.Contact.contact] Captcha: {error}");
+
+        return Json(json!({
+            "status": "ko",
+            "error": match error {
+                TurnstileError::Rejected(_) => "captcha_failed",
+                TurnstileError::Unavailable(_) => "captcha_unavailable",
+            }
+        }));
     }
 
     // Prepare mail

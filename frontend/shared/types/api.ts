@@ -177,7 +177,8 @@ export interface ContactPayload {
   message: string
 }
 
-export type ContactError = 'invalid_mail' | 'email_error' | 'database_error' | 'rate_limited' | 'network_error' | 'unknown'
+/** `captcha_blocked` is the browser's own: Turnstile could not run, nothing was sent. */
+export type ContactError = 'invalid_mail' | 'email_error' | 'database_error' | 'rate_limited' | 'captcha_failed' | 'captcha_unavailable' | 'captcha_blocked' | 'network_error' | 'unknown'
 
 export type JobType = 'repo_sync' | 'profile'
 

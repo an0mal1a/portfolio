@@ -108,7 +108,17 @@ En Docker, el `Dockerfile` del worker usa el puerto 8001 dentro de su red:
 PYTHON_API_URL=http://python-api:8001
 ```
 
-Las credenciales de PostgreSQL, SMTP y GitHub viven solo en el `.env` local; no
+El captcha del formulario (Cloudflare Turnstile) necesita sus dos claves. Los
+`.env.example` traen las de prueba de Cloudflare, que siempre pasan:
+
+```env
+# frontend/.env
+NUXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
+# backends/.env
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+```
+
+Las credenciales de PostgreSQL, SMTP, GitHub y Turnstile viven solo en el `.env` local; no
 deben añadirse al repositorio.
 
 ## Arranque

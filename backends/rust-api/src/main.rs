@@ -27,6 +27,9 @@ use axum::{
 #[tokio::main]
 async fn main() {
     let config = Config::load().unwrap();
+    if config.turnstile_secret_key.is_empty() {
+        eprintln!("[MAIN] TURNSTILE_SECRET_KEY is empty: the contact form has no captcha check");
+    }
     CONFIG.set(config).expect("Config already initialized");
 
     // DB App state
