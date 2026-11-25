@@ -63,8 +63,10 @@ importante en local, donde Uvicorn suele escuchar solo en `127.0.0.1`.
 
 El worker de Python es quien habla con GitHub. Recoge repositorios, propietarios,
 colaboradores, temas y lenguajes; después actualiza las tablas del esquema
-`github`. La API Rust no dispara ese trabajo: únicamente expone su último estado
-cuando está disponible en `github.sync_jobs`.
+`github`. La API Rust no dispara ese trabajo: únicamente lee su historial. El
+estado es el de la última ejecución, sea la diaria (`github.sync_jobs`) o una
+lanzada por un visitante (`github.job_runs`), y `last_sync` es la última que
+terminó bien.
 
 Un `github.status` igual a `unavailable` significa que la consulta del historial
 no se ha podido completar. No implica necesariamente que GitHub esté caído. Un

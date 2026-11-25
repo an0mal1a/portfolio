@@ -156,8 +156,28 @@ async fn probe_pool(db: DBClient, window: Duration) -> ServiceStatus {
 async fn probe_github(db: DBClient, window: Duration) -> GithubStatus {
     let result = timeout(window, async {
         let conn = db.get_db_connection().await.map_err(|e| e.to_string())?;
+        // The worker records its daily runs in `sync_jobs` and the ones visitors start
+        // from /laboratorio in `job_runs`: the latest of either says how the sync is
+        // doing, and the last one that finished well says when the data was fetched.
         let job = conn.query_opt(
-            "SELECT completed_at, started_at, status, duration_ms FROM github.sync_jobs ORDER BY started_at DESC LIMIT 1",
+            "WITH runs AS (
+                SELECT started_at, completed_at, status, duration_ms
+                FROM github.sync_jobs
+                UNION ALL
+                SELECT COALESCE(started_at, created_at),
+                       finished_at,
+                       CASE WHEN status IN ('pending', 'running') THEN 'in_progress' ELSE status END,
+                       (EXTRACT(EPOCH FROM finished_at - started_at) * 1000)::integer
+                FROM github.job_runs
+            )
+            SELECT latest.status, latest.duration_ms, last_ok.completed_at AS last_sync
+            FROM (SELECT status, duration_ms FROM runs ORDER BY started_at DESC LIMIT 1) latest
+            LEFT JOIN LATERAL (
+                SELECT completed_at FROM runs
+                WHERE status = 'completed'
+                ORDER BY completed_at DESC NULLS LAST
+                LIMIT 1
+            ) last_ok ON TRUE",
             &[],
         ).await.map_err(|e| e.to_string())?;
         let repositories = conn.query_one("SELECT COUNT(*) FROM github.repositories", &[]).await.map_err(|e| e.to_string())?.get::<_, i64>(0);
@@ -169,8 +189,7 @@ async fn probe_github(db: DBClient, window: Duration) -> GithubStatus {
             let (last_sync, status, duration_ms) =
                 job.map_or((None, "unknown".to_string(), None), |row| {
                     (
-                        row.get::<_, Option<DateTime<Utc>>>("completed_at")
-                            .or_else(|| row.get("started_at")),
+                        row.get("last_sync"),
                         row.get("status"),
                         row.get("duration_ms"),
                     )
