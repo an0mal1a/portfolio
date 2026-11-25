@@ -67,8 +67,8 @@ Constraints:
 
 ## Evidence on Hand
 
-- 9 public case studies in the database (Vestta CRM, Vestta.io, Brisa Operations, Post Producciones, Tierras de Ibiza, La Casa de Susana, NextLevelApps, self-debrid, Nightmare Framework). AlcoberBot is hidden (owner decision, 2026-11-24): show nothing from Alcober on the home.
-- 5 real clients with logos: Post Producciones, Tierras de Ibiza, La Casa de Susana, Limpiezas Alcober, Alcober Services.
+- 8 public case studies in the database (Vestta CRM, Vestta.io, Brisa Operations, Post Producciones, Tierras de Ibiza, La Casa de Susana, NextLevelApps, Nightmare Framework).
+- 3 real clients with logos: Post Producciones, Tierras de Ibiza, La Casa de Susana.
 - GitHub: 36 visible repositories, 17 languages, ~2,750 contributions in the last year, 15 followers; profile links to LinkedIn, X and Hack The Box.
 - Stack evidence from shipped work: Nuxt/Vue, Tailwind, FastAPI, PostgreSQL, Redis, Docker, Rust/Axum, C/C++, WhatsApp Business API, LLM pipelines, SSE.
 - Studies and certificates (`frontend/app/content/credentials.ts`, shown on About): Grado Medio SMR, Hack4u, Mastermind and Rustlang en Español. A verification link is only published after opening the issuer's page.

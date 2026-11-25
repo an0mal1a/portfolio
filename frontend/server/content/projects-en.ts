@@ -119,16 +119,4 @@ export const PROJECTS_EN: Record<string, ProjectTranslation> = {
       + '<figure><img src="https://res.cloudinary.com/dasenzdvq/image/upload/v1791238916/03-control-de-horas_ifp5pn.webp" alt="Time tracking in Brisa" loading="lazy"/><figcaption>Time tracking</figcaption></figure>'
       + '<figure><img src="https://res.cloudinary.com/dasenzdvq/image/upload/v1791238916/04-brisa-en-el-movil_fwq4qi.webp" alt="Brisa on a phone" loading="lazy"/><figcaption>Brisa on a phone</figcaption></figure></div>',
   },
-  'self-debrid': {
-    tagline: 'Self-hosted debrid service to play in Kodi from torrents and direct downloads, with no monthly fees.',
-    content_html: '<div><p><em>personal note / a tool for my own stack</em></p>'
-      + '<h2>Self-Debrid: taking a subscription out of the equation</h2>'
-      + '<p>This project was born from a very specific annoyance: I wanted to play in Kodi from my own network without depending on a monthly fee to act as the middleman between a link and the player.</p>'
-      + '<p>Self-Debrid is a self-hosted service that exposes an API compatible with the Kodi add-on flow. Depending on the source, it delegates the download to qBittorrent or JDownloader and starts serving the file while it is still downloading. That way there is no need to wait for everything to finish before you start watching.</p>'
-      + '<h2>A small service, plenty of details</h2>'
-      + '<ul><li>Direct downloads and torrents with separate adapters.</li><li>A local cache so as not to repeat a download that already exists.</li><li>Files tracked by identifier to avoid duplicates.</li><li>A pairing flow from Kodi without copying keys by hand.</li><li>An HTTPS API and configuration designed to work on a home network.</li></ul>'
-      + '<p>The interesting part was designing the whole cycle: receiving a request, queuing the job, detecting when there is enough content to serve it and cleaning the cache when it stops making sense. It is not a public platform, nor does it try to be; it is a piece of personal infrastructure for content I have the right to access.</p>'
-      + '<blockquote>I like these projects because they solve a small friction and, along the way, teach you how a system behaves when there is state, queues and large files.</blockquote>'
-      + '<p>It is still under way. Each pass improves compatibility a little and makes the whole feel less like a script and more like a service.</p></div>',
-  },
 }

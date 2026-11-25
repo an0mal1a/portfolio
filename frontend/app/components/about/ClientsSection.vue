@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ArrowUpRight } from '@lucide/vue'
 import type { Client } from '#shared/types/api'
-import { CLIENT_STAGES, ROW_LOGOS } from '~/content/clients'
+import { CLIENT_STAGES, HIDDEN_CLIENT_NAMES, ROW_LOGOS } from '~/content/clients'
 
 /**
  * Who the work was for. Clients with a recorded site are stages: logo in front, the
@@ -13,7 +13,7 @@ const { t } = useI18n()
 const cdn = useCdn()
 
 const stages = computed(() => props.clients.filter(c => CLIENT_STAGES[c.name]).map(c => ({ ...c, ...CLIENT_STAGES[c.name]! })))
-const rows = computed(() => props.clients.filter(c => !CLIENT_STAGES[c.name]))
+const rows = computed(() => props.clients.filter(c => !CLIENT_STAGES[c.name] && !HIDDEN_CLIENT_NAMES.has(c.name)))
 const host = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/[/?].*$/, '')
 
 // The recording is only mounted for the stage under a mouse.

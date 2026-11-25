@@ -11,8 +11,10 @@ export const CLIENT_STAGES: Readonly<Record<string, { logo: ClientLogo, media: s
   'La Casa de Susana': { logo: LOGO_BY_SLUG['lacasadesusana-web']!, media: 'susana' },
 }
 
+export const HIDDEN_CLIENT_NAMES: ReadonlySet<string> = new Set([
+  'Limpiezas Alcober',
+  'Alcober Services',
+])
+
 /** Marks for the rows below the stages. */
-export const ROW_LOGOS: Readonly<Record<string, ClientLogo>> = {
-  'Limpiezas Alcober': { src: '/logos/limpiezas-alcober.webp', width: 761, height: 128 },
-  'Alcober Services': { src: '/logos/alcober-services.webp', width: 303, height: 192 },
-}
+export const ROW_LOGOS: Readonly<Record<string, ClientLogo>> = {}
